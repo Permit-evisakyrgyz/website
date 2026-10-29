@@ -4,8 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MINISTRY OF MIGRATION AND INTERNATIONAL PROTECTION
-GÖÇ VE ULUSLARARASI KORUMA BAKANLIĞI</title>
+<title>Document Editor Demo</title>
 
 <style>
 * {
@@ -17,7 +16,7 @@ body {
   padding: 15px;
   background: #d9f3f3;
   font-family: Arial, Helvetica, sans-serif;
-  color: #222;
+  color: #222222;
 }
 
 .toolbar {
@@ -34,7 +33,7 @@ body {
   border: 0;
   border-radius: 6px;
   background: #1456a0;
-  color: white;
+  color: #ffffff;
   font-size: 14px;
   cursor: pointer;
 }
@@ -53,6 +52,7 @@ body {
   margin: 0 auto;
   padding: 35px;
   background: #95DDDD;
+  color: #000000;
   box-shadow: 0 2px 12px rgba(0,0,0,.12);
 }
 
@@ -70,17 +70,25 @@ body {
   pointer-events: none;
 }
 
+/* Keep document content above watermark */
 .page-content {
   position: relative;
   z-index: 1;
+  color: #000000;
+}
+
+/* All warning text and borders are black */
+.demo-warning,
+.footer-warning {
+  color: #000000 !important;
+  border-color: #000000 !important;
 }
 
 .demo-warning {
   text-align: center;
-  color: #a51d36;
   font-size: 17px;
   font-weight: bold;
-  border: 2px dashed #a51d36;
+  border: 2px dashed #000000;
   padding: 9px;
   margin-bottom: 25px;
   letter-spacing: 1px;
@@ -90,6 +98,7 @@ body {
 .document-header {
   text-align: center;
   margin-bottom: 28px;
+  color: #000000;
 }
 
 .document-header h1 {
@@ -114,6 +123,7 @@ body {
   padding: 10px;
   background: rgba(220, 240, 245, 0.82);
   border: 1px solid #8abcbc;
+  color: #000000;
   font-size: 15px;
   font-weight: bold;
 }
@@ -128,13 +138,14 @@ body {
   min-width: 0;
   padding: 7px 0;
   border-bottom: 1px solid #629f9f;
+  color: #000000;
 }
 
 .field label,
 .long-field label {
   display: block;
   font-size: 11px;
-  color: #304d4d;
+  color: #000000;
   margin-bottom: 5px;
   font-weight: bold;
 }
@@ -145,18 +156,21 @@ body {
   overflow-wrap: anywhere;
   font-size: 14px;
   line-height: 1.5;
+  color: #000000;
 }
 
 .editable:focus,
 [contenteditable="true"]:focus {
   background: rgba(255,249,190,0.8);
-  outline: 1px dashed #777;
+  outline: 1px dashed #777777;
+  color: #000000;
 }
 
 .long-field {
   margin-top: 12px;
   padding: 8px 0;
   border-bottom: 1px solid #629f9f;
+  color: #000000;
 }
 
 .notice {
@@ -164,6 +178,7 @@ body {
   padding: 12px;
   border: 1px solid #8abcbc;
   background: rgba(240,250,250,0.78);
+  color: #000000;
   font-size: 12px;
   line-height: 1.6;
 }
@@ -172,9 +187,9 @@ body {
   margin-top: 35px;
   text-align: center;
   font-size: 13px;
-  color: #a51d36;
+  color: #000000 !important;
   font-weight: bold;
-  border-top: 1px solid #629f9f;
+  border-top: 1px solid #000000 !important;
   padding-top: 12px;
 }
 
@@ -229,8 +244,7 @@ body {
   <div class="page-content" id="documentContent">
 
     <div class="demo-warning" contenteditable="true">
-      MINISTRY OF MIGRATION AND INTERNATIONAL PROTECTION
-GÖÇ VE ULUSLARARASI KORUMA BAKANLIĞI
+      DEMO DOCUMENT — NOT FOR OFFICIAL USE
     </div>
 
     <header class="document-header">
@@ -369,7 +383,7 @@ function addSection() {
     <div class="long-field">
       <label>DETAILS</label>
       <div class="editable" contenteditable="true">
-        Enter additional information here.
+        Enter details here.
       </div>
     </div>
   `;
@@ -388,6 +402,7 @@ function addSection() {
 
 </body>
 </html>
+
 
 
 
