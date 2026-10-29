@@ -1,344 +1,785 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>MINISTRY OF FOREIGN AFFAIRS OF THE KYRGYZ REPUBLIC</title>
-
-<style>
-
-* {
-    box-sizing: border-box;
-}
-
-html, body {
-    margin: 0;
-    padding: 0;
-    background: white;
-    font-family: Arial, sans-serif;
-    color: #222;
-}
-
-/* Main A4 Page */
-.page {
-    width: 210mm;
-    min-height: 297mm;
-    margin: 0 auto;
-    padding: 8mm 10mm;
-    background: white;
-}
-
-/* Header */
-.header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    padding: 2px 0 6px;
-}
-
-.header img {
-    width: 42px;
-    height: 42px;
-    object-fit: contain;
-}
-
-.header-text {
-    text-align: center;
-}
-
-.header-title {
-    font-size: 11px;
-    line-height: 14px;
-}
-
-.header-subtitle {
-    font-size: 7px;
-    margin-top: 2px;
-}
-
-/* Line */
-hr {
-    border: 0;
-    border-top: 1px solid #999;
-    margin: 5px 0 8px;
-}
-
-/* Photo + QR */
-.photo-qr {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 3px;
-}
-
-.photo-qr td {
-    border: none;
-    padding: 0;
-    vertical-align: top;
-}
-
-.photo-cell {
-    width: 50%;
-    text-align: left;
-}
-
-.qr-cell {
-    width: 50%;
-    text-align: right;
-}
-
-.photo {
-    width: 100px;
-    height: 130px;
-    object-fit: contain;
-}
-
-.qr {
-    width: 100px;
-    height: 100px;
-    object-fit: contain;
-}
-
-/* Information Table */
-.info {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-}
-
-.info td {
-    padding: 4px 5px;
-    vertical-align: middle;
-    border-bottom: 1px solid #ddd;
-    font-size: 10px;
-    line-height: 12px;
-}
-
-.info td:first-child {
-    width: 48%;
-    font-weight: bold;
-}
-
-.info td:last-child {
-    width: 52%;
-}
-
-/* Footer */
-.footer {
-    margin-top: 10px;
-    font-size: 9px;
-    line-height: 12px;
-    color: #666;
-    text-align: center;
-}
-
-/* Print */
-@media print {
-
-    @page {
-        size: A4;
-        margin: 0;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyprus Entry Permit Demo & Specimen Designer (Form M. 70)</title>
+  <style>
+    /* CSS Styles for Cyprus Entry Permit Demo */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    html, body {
-        width: 210mm;
-        height: 297mm;
-        margin: 0;
-        padding: 0;
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: #f1f5f9;
+      color: #0f172a;
+      line-height: 1.5;
     }
 
-    .page {
-        width: 210mm;
-        height: 297mm;
-        min-height: 297mm;
-        margin: 0;
-        padding: 8mm 10mm;
-        box-shadow: none;
+    header.top-bar {
+      background: #ffffff;
+      border-bottom: 1px solid #cbd5e1;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
-    table,
-    tr,
-    td {
+    .brand-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #083344;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-badge {
+      background: #0891b2;
+      color: #fff;
+      padding: 3px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 7px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+    }
+
+    .btn-secondary {
+      background: #fff;
+      border-color: #cbd5e1;
+      color: #334155;
+    }
+    .btn-secondary:hover { background: #f8fafc; }
+
+    .btn-primary {
+      background: #0891b2;
+      color: #fff;
+    }
+    .btn-primary:hover { background: #0e7490; }
+
+    .app-layout {
+      max-width: 1400px;
+      margin: 20px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 24px;
+    }
+
+    /* Form Container */
+    .form-panel {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      height: fit-content;
+    }
+
+    .form-section-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #0e7490;
+      margin-bottom: 12px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 4px;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%;
+      padding: 7px 10px;
+      font-size: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      color: #0f172a;
+    }
+    .form-group input:focus, .form-group select:focus {
+      outline: none;
+      border-color: #0891b2;
+      box-shadow: 0 0 0 2px rgba(8,145,178,0.2);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    /* Document Sheet Preview */
+    .preview-panel {
+      background: #94a3b8;
+      border-radius: 8px;
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+      overflow-x: auto;
+    }
+
+    .permit-sheet {
+      width: 760px;
+      min-height: 1040px;
+      background-color: #54d2e0; /* Authentic cyan color from Cyprus document reference */
+      color: #0a192f;
+      padding: 32px;
+      position: relative;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+      border: 1px solid rgba(14, 116, 144, 0.5);
+      user-select: none;
+    }
+
+    /* Diagonal Watermark */
+    .watermark-layer {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 50;
+    }
+
+    .watermark-box {
+      transform: rotate(-34deg);
+      border: 6px solid rgba(159, 18, 57, 0.7);
+      background: rgba(255, 228, 230, 0.25);
+      padding: 16px 36px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .watermark-title {
+      font-size: 38px;
+      font-weight: 900;
+      color: #9f1239;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .watermark-sub {
+      font-size: 13px;
+      font-weight: 800;
+      color: #881337;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* Document Internal Typography & Alignment */
+    .doc-form-tag {
+      text-align: right;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .doc-header-top {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 4px;
+    }
+
+    .ministry-text {
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .state-title {
+      text-align: center;
+      margin: 12px 0 16px 0;
+    }
+    .state-title h1 {
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
+    .state-title h2 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .employer-and-permit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+      align-items: start;
+    }
+
+    .employer-box {
+      border: 2px solid #0f172a;
+      padding: 10px;
+      background: rgba(255,255,255,0.15);
+    }
+
+    .employer-box .box-title {
+      font-size: 10px;
+      font-weight: 800;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .employer-box .content {
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .permit-title-block h3 {
+      font-size: 15px;
+      font-weight: 900;
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(15,23,42,0.4);
+      padding-bottom: 4px;
+      margin-bottom: 8px;
+    }
+
+    .permit-meta-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .fields-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 16px;
+      border-top: 1px solid rgba(15,23,42,0.4);
+      border-bottom: 1px solid rgba(15,23,42,0.4);
+      padding: 12px 0;
+      margin-bottom: 12px;
+    }
+
+    .field-item {
+      margin-bottom: 10px;
+    }
+
+    .field-lbl-el {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .field-lbl-en {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #1e293b;
+    }
+
+    .field-val {
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .valid-until-banner {
+      border-top: 1px solid rgba(15,23,42,0.3);
+      border-bottom: 1px solid rgba(15,23,42,0.3);
+      padding: 6px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .banner-text-el {
+      font-size: 10px;
+      font-weight: 800;
+    }
+    .banner-text-en {
+      font-size: 9.5px;
+      font-weight: 700;
+    }
+    .banner-date {
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .conditions-section {
+      font-size: 10.5px;
+      line-height: 1.45;
+      text-align: justify;
+    }
+
+    .conditions-header {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 900;
+      margin-bottom: 8px;
+      border-bottom: 1px solid rgba(15,23,42,0.3);
+      padding-bottom: 4px;
+    }
+
+    .conditions-section p {
+      margin-bottom: 6px;
+    }
+
+    .doc-footer {
+      margin-top: 16px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(15,23,42,0.4);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .barcode-area {
+      font-size: 9px;
+      font-family: monospace;
+      font-weight: 700;
+    }
+    .barcode-bars {
+      display: flex;
+      gap: 2px;
+      height: 28px;
+      margin-bottom: 2px;
+    }
+    .barcode-bar {
+      background: #000;
+      height: 100%;
+    }
+
+    .attention-box {
+      border: 1px solid #0f172a;
+      padding: 6px;
+      font-size: 8.5px;
+      font-weight: 800;
+      margin-top: 8px;
+      max-width: 440px;
+      background: rgba(255,255,255,0.2);
+    }
+
+    .stamp-container {
+      text-align: center;
+    }
+
+    .stamp-circle {
+      width: 100px;
+      height: 100px;
+      border: 2px dashed #1e40af;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #1e3a8a;
+      transform: rotate(-5deg);
+      background: rgba(219, 234, 254, 0.3);
+    }
+
+    /* Print Configuration */
+    @media print {
+      body {
+        background: transparent !important;
+        margin: 0 !important;
+      }
+      header.top-bar, .form-panel {
+        display: none !important;
+      }
+      .app-layout {
+        display: block !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      .preview-panel {
+        background: transparent !important;
+        padding: 0 !important;
+      }
+      .permit-sheet {
+        box-shadow: none !important;
+        margin: 0 auto !important;
+        width: 100% !important;
         page-break-inside: avoid;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      @page {
+        size: A4 portrait;
+        margin: 8mm;
+      }
     }
-}
 
-</style>
-
+    @media (max-width: 900px) {
+      .app-layout {
+        grid-template-columns: 1fr;
+      }
+      .permit-sheet {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="page">
+  <!-- Top Header Navigation -->
+  <header class="top-bar">
+    <div class="brand-title">
+      <span class="brand-badge">CY</span>
+      <span>Cyprus Permit Studio — Educational Specimen (Form M. 70)</span>
+    </div>
+    <div class="action-buttons">
+      <button class="btn btn-secondary" onclick="resetForm()">Reset</button>
+      <button class="btn btn-primary" onclick="window.print()">Print Sample</button>
+    </div>
+  </header>
 
-    <!-- HEADER -->
-    <div class="header">
+  <!-- Main Container -->
+  <main class="app-layout">
+    
+    <!-- Left: Editable Form Panel -->
+    <aside class="form-panel">
+      <div class="form-section-title">Applicant Particulars</div>
+      
+      <div class="form-group">
+        <label>Full Name (- ΟΝΟΜΑ / NAME)</label>
+        <input type="text" id="inputName" value="SHAKEEL HAIDER">
+      </div>
 
-        <img src="logo.jpeg" alt="Logo">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nationality (ΥΠΗΚΟΟΤΗΤΑ)</label>
+          <input type="text" id="inputNationality" value="PAKISTANI">
+        </div>
+        <div class="form-group">
+          <label>Passport No. (ΑΡ. ΔΙΑΒΑΤΗΡΙΟΥ)</label>
+          <input type="text" id="inputPassport" value="FX6975401">
+        </div>
+      </div>
 
-        <div class="header-text">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nat. Code (PAK / CAN)</label>
+          <input type="text" id="inputNatCode" value="PAK">
+        </div>
+        <div class="form-group">
+          <label>File No. (M.P. No.)</label>
+          <input type="text" id="inputFileNo" value="E26-06782">
+        </div>
+      </div>
 
-            <div class="header-title">
-                КЫРГЫЗ РЕСПУБЛИКАСЫНЫН ТЫШКЫ ИШТЕР МИНИСТРЛИИ<br>
-                MINISTRY OF FOREIGN AFFAIRS OF THE KYRGYZ REPUBLIC
+      <div class="form-section-title" style="margin-top: 16px;">Employer / Educational Institution</div>
+      
+      <div class="form-group">
+        <label>Employer / College Name</label>
+        <input type="text" id="inputEmployer" value="LEDRA COLLEGE">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Address Line 1</label>
+          <input type="text" id="inputAddr1" value="60 ATHALASSAS AVE.,">
+        </div>
+        <div class="form-group">
+          <label>Address Line 2 (City)</label>
+          <input type="text" id="inputAddr2" value="2023 STROVOLOS, NICOSIA">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="text" id="inputPhone" value="22560000">
+        </div>
+        <div class="form-group">
+          <label>Permit Code (EDU / EMP)</label>
+          <input type="text" id="inputCategoryCode" value="EDU">
+        </div>
+      </div>
+
+      <div class="form-section-title" style="margin-top: 16px;">Permit Particulars & Validity</div>
+      
+      <div class="form-group">
+        <label>Category of Entry (ΚΑΤΗΓΟΡΙΑ ΕΙΣΟΔΟΥ)</label>
+        <input type="text" id="inputCategory" value="STUDENT">
+      </div>
+
+      <div class="form-group">
+        <label>Purpose of Permit (ΣΚΟΠΟΣ ΑΔΕΙΑΣ)</label>
+        <input type="text" id="inputPurpose" value="ENGLISH FOUNDATION">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Validity of Residence Permit</label>
+          <input type="text" id="inputValidity" value="90 DAY(S) FROM ARRIVAL">
+        </div>
+        <div class="form-group">
+          <label>Use Until Date</label>
+          <input type="text" id="inputValidUntil" value="25 December, 2026">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Date of Issue</label>
+        <input type="text" id="inputIssueDate" value="26 September, 2026">
+      </div>
+    </aside>
+
+    <!-- Right: Specimen Document Sheet -->
+    <section class="preview-panel">
+      <div class="permit-sheet" id="permitSheet">
+        
+        <!-- Diagonal Watermark (SAMPLE — NOT VALID FOR TRAVEL) -->
+        <div class="watermark-layer">
+          <div class="watermark-box">
+            <div class="watermark-title">SAMPLE — NOT VALID FOR TRAVEL</div>
+            <div class="watermark-sub">ΔΕΙΓΜΑ — ΧΩΡΙΣ ΙΣΧΥ ΓΙΑ ΤΑΞΙΔΙ</div>
+          </div>
+        </div>
+
+        <!-- Top Form Indicator -->
+        <div class="doc-form-tag">(Form M. 70)</div>
+
+        <!-- Ministry & Department Titles -->
+        <div class="doc-header-top">
+          <div class="ministry-text">
+            <div>ΥΦΥΠΟΥΡΓΕΙΟ ΜΕΤΑΝΑΣΤΕΥΣΗΣ ΚΑΙ ΔΙΕΘΝΟΥΣ ΠΡΟΣΤΑΣΙΑΣ</div>
+            <div>ΤΜΗΜΑ ΜΕΤΑΝΑΣΤΕΥΣΗΣ</div>
+            <div style="font-size: 8.5px; margin-top: 2px;">DEPUTY MINISTRY OF MIGRATION AND INTERNATIONAL PROTECTION</div>
+            <div style="font-size: 8.5px;">MIGRATION DEPARTMENT</div>
+          </div>
+        </div>
+
+        <!-- State Title -->
+        <div class="state-title">
+          <h1>ΚΥΠΡΙΑΚΗ ΔΗΜΟΚΡΑΤΙΑ</h1>
+          <h2>REPUBLIC OF CYPRUS</h2>
+        </div>
+
+        <!-- Employer Box & Permit Metadata Header -->
+        <div class="employer-and-permit-grid">
+          
+          <div class="employer-box">
+            <div class="box-title">ΕΡΓΟΔΟΤΗΣ / ΑΙΤΗΤΗΣ - EMPLOYER / APPLICANT</div>
+            <div class="content">
+              <div id="dispEmployer">LEDRA COLLEGE</div>
+              <div id="dispAddr1">60 ATHALASSAS AVE.,</div>
+              <div id="dispAddr2">2023 STROVOLOS, NICOSIA</div>
+              <div id="dispPhone">22560000</div>
             </div>
+          </div>
 
-            <div class="header-subtitle">
-                Бирдиктүү уруксат / Uniform Permit
+          <div class="permit-title-block">
+            <h3>ΑΔΕΙΑ ΕΙΣΟΔΟΥ / ENTRY PERMIT</h3>
+            <div class="permit-meta-row">
+              <span>Αρ. Φακ. / M.P. No.</span>
+              <span id="dispFileNo" style="font-family: monospace;">E26-06782</span>
             </div>
+            <div class="permit-meta-row">
+              <span>Υπηκ. / Nat.</span>
+              <span id="dispNatCode">PAK</span>
+            </div>
+            <div class="permit-meta-row">
+              <span>Κωδ. / Code</span>
+              <span id="dispCategoryCode">EDU</span>
+            </div>
+          </div>
 
         </div>
 
-    </div>
+        <!-- Main Fields Grid (2 Columns as in Cyprus M. 70) -->
+        <div class="fields-grid">
+          <div>
+            <div class="field-item">
+              <div class="field-lbl-el">- ΟΝΟΜΑ</div>
+              <div class="field-lbl-en">NAME</div>
+              <div class="field-val" id="dispName">SHAKEEL HAIDER</div>
+            </div>
 
-    <hr>
+            <div class="field-item">
+              <div class="field-lbl-el">ΥΠΗΚΟΟΤΗΤΑ</div>
+              <div class="field-lbl-en">NATIONALITY</div>
+              <div class="field-val" id="dispNationality">PAKISTANI</div>
+            </div>
 
-    <!-- PHOTO + QR -->
-    <table class="photo-qr">
+            <div class="field-item">
+              <div class="field-lbl-el">ΚΑΤΗΓΟΡΙΑ ΕΙΣΟΔΟΥ / ΠΑΡΑΜΟΝΗΣ</div>
+              <div class="field-lbl-en">CATEGORY OF ENTRY / RESIDENCE</div>
+              <div class="field-val" id="dispCategory">STUDENT</div>
+            </div>
 
-        <tr>
+            <div class="field-item">
+              <div class="field-lbl-el">ΣΚΟΠΟΣ ΑΔΕΙΑΣ</div>
+              <div class="field-lbl-en">PURPOSE OF PERMIT</div>
+              <div class="field-val" id="dispPurpose">ENGLISH FOUNDATION</div>
+            </div>
+          </div>
 
-            <td class="photo-cell">
+          <div>
+            <div class="field-item">
+              <div class="field-lbl-el">ΑΡ. ΔΙΑΒΑΤΗΡΙΟΥ</div>
+              <div class="field-lbl-en">PASSPORT NO</div>
+              <div class="field-val" id="dispPassport" style="font-family: monospace;">FX6975401</div>
+            </div>
 
-                <img
-                    src="my photo.jpeg"
-                    alt="Photo"
-                    class="photo"
-                >
+            <div class="field-item">
+              <div class="field-lbl-el">ΙΣΧΥΣ ΑΔΕΙΑΣ ΠΑΡΑΜΟΝΗΣ</div>
+              <div class="field-lbl-en">VALIDITY OF RESIDENCE PERMIT</div>
+              <div class="field-val" id="dispValidity">90 DAY(S) FROM ARRIVAL</div>
+            </div>
+          </div>
+        </div>
 
-            </td>
+        <!-- Valid Until Banner -->
+        <div class="valid-until-banner">
+          <div>
+            <div class="banner-text-el">Η ΠΑΡΟΥΣΑ ΑΔΕΙΑ ΜΠΟΡΕΙ ΝΑ ΧΡΗΣΙΜΟΠΟΙΗΘΕΙ ΓΙΑ ΕΙΣΟΔΟ ΣΤΗΝ ΚΥΠΡΟ ΜΕΧΡΙ</div>
+            <div class="banner-text-en">THIS PERMIT SHOULD BE USED TO ENTER CYPRUS UNTIL</div>
+          </div>
+          <div class="banner-date" id="dispValidUntil">25 December, 2026</div>
+        </div>
 
-            <td class="qr-cell">
+        <!-- Remarks & Conditions -->
+        <div class="conditions-section">
+          <div class="conditions-header">
+            ΠΑΡΑΤΗΡΗΣΕΙΣ / ΟΡΟΙ &nbsp;&nbsp;&nbsp;&nbsp; REMARKS / CONDITIONS
+          </div>
+          <p>Ο/Η κάτοχος της παρούσας άδειας, εντός επτά (7) ημερών από την άφιξή του στην Δημοκρατία, οφείλει να παρουσιαστεί στο Τμήμα Μετανάστευσης για την Επαρχία Λευκωσίας ή στο Κλιμάκιο της Υπηρεσίας Αλλοδαπών και Μετανάστευσης της Αστυνομίας της Επαρχίας όπου θα διαμένει, για να εγγραφεί ως αλλοδαπός, να αιτηθεί για άδεια προσωρινής διαμονής και να ληφθούν τα βιομετρικά του στοιχεία (φωτογραφία και δακτυλικά αποτυπώματα) καθώς και η υπογραφή του, δυνάμει της κείμενης Νομοθεσίας.</p>
+          <p>The holder of this permit must register at the Migration Department for the Nicosia District or at the Police Aliens and Immigration Unit of the District of residence within seven (7) days of his/her arrival in the Republic, apply for a residence permit and provide his/her biometric features (photo and fingerprints) and signature, according to the Legislation.</p>
+          <p>He/She is also obliged to proceed to medical examinations for AIDS, Syphilis, Hepatitis B, Hepatitis C and Tuberculosis (chest x-rays), on the first working day after his/her arrival in Cyprus.</p>
+          <p>The holder of this permit can enter Cyprus solely for the purpose of full time study in a tertiary educational institute. In case he/she enters Cyprus for the first time, he/she must upon arrival hold an amount of at least USD $2,400 or €2,000.</p>
+        </div>
 
-                <img
-                    src="qr.png"
-                    alt="QR Code"
-                    class="qr"
-                >
+        <!-- Footer -->
+        <div class="doc-footer">
+          <div>
+            <!-- Simulated Barcode -->
+            <div class="barcode-area">
+              <div class="barcode-bars">
+                <div class="barcode-bar" style="width: 4px;"></div>
+                <div class="barcode-bar" style="width: 2px;"></div>
+                <div class="barcode-bar" style="width: 3px;"></div>
+                <div class="barcode-bar" style="width: 1px;"></div>
+                <div class="barcode-bar" style="width: 4px;"></div>
+                <div class="barcode-bar" style="width: 2px;"></div>
+                <div class="barcode-bar" style="width: 3px;"></div>
+                <div class="barcode-bar" style="width: 4px;"></div>
+                <div class="barcode-bar" style="width: 1px;"></div>
+                <div class="barcode-bar" style="width: 3px;"></div>
+                <div class="barcode-bar" style="width: 2px;"></div>
+                <div class="barcode-bar" style="width: 4px;"></div>
+              </div>
+              <div>7170771</div>
+            </div>
 
-            </td>
+            <div style="font-size: 11px; font-weight: 800; margin-top: 6px;">
+              <div>ΗΜΕΡΟΜΗΝΙΑ ΕΚΔΟΣΗΣ / DATE OF ISSUE:</div>
+              <div id="dispIssueDate" style="font-size: 13px;">26 September, 2026</div>
+            </div>
 
-        </tr>
+            <div class="attention-box">
+              <div>ΠΡΟΣΟΧΗ: ΑΝΤΙΓΡΑΦΟ ΤΗΣ ΑΔΕΙΑΣ ΑΥΤΗΣ ΠΡΕΠΕΙ ΝΑ ΠΑΡΟΥΣΙΑΣΘΕΙ ΣΤΟ ΣΗΜΕΙΟ ΕΙΣΟΔΟΥ. Η ΠΡΩΤΟΤΥΠΗ ΑΔΕΙΑ ΠΡΕΠΕΙ ΝΑ ΠΑΡΟΥΣΙΑΣΘΕΙ ΚΑΤΑ ΤΗΝ ΕΓΓΡΑΦΗ</div>
+              <div>ATTENTION: COPY OF THIS PERMIT SHOULD BE PRESENTED AT THE POINT OF ENTRY. THE ORIGINAL PERMIT SHOULD BE PRESENTED AT THE TIME OF REGISTRATION</div>
+            </div>
 
-<button onclick="window.print()" class="print-btn">
-    Print
-</button>
+            <div style="font-size: 9px; font-family: monospace; margin-top: 4px;">132503/2026</div>
+          </div>
 
-<style>
-.print-btn {
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    margin: 0;
-    padding: 8px 22px;
-    font-size: 15px;
-    cursor: pointer;
+          <!-- Circular Blue Stamp & Signature -->
+          <div class="stamp-container">
+            <div class="stamp-circle">
+              <div style="font-size: 7px; font-weight: 800;">ΥΦΥΠΟΥΡΓΕΙΟ ΜΕΤΑΝΑΣΤΕΥΣΗΣ</div>
+              <div style="font-size: 8px; font-weight: 900; margin: 2px 0;">DEMO SPECIMEN</div>
+              <div style="font-size: 7px; font-family: monospace;">NOT VALID / ΧΩΡΙΣ ΙΣΧΥ</div>
+              <div style="font-size: 7.5px; font-weight: 800; margin-top: 3px;">(S. Lampaskis)</div>
+            </div>
+            <div style="font-size: 10px; font-weight: 800; margin-top: 4px;">
+              Για Διευθυντήρια / For Director
+            </div>
+          </div>
+        </div>
 
-    border: 1px solid #888888;
-    border-radius: 4px;
+      </div>
+    </section>
 
-    background: #b0b0b0;
-    color: white;
-    z-index: 9999;
+  </main>
 
-    box-shadow: 0 3px 5px rgba(0,0,0,0.25);
-}
-
-.print-btn:active {
-    box-shadow: 0 1px 2px rgba(0,0,0,0.25);
-    transform: translateY(2px);
-}
-
-@media print {
-    .print-btn {
-        display: none;
+  <!-- JavaScript: Live Two-Way Binding -->
+  <script>
+    // Live update function binding input fields to document elements
+    function bindField(inputId, displayId) {
+      const input = document.getElementById(inputId);
+      const display = document.getElementById(displayId);
+      if (input && display) {
+        input.addEventListener('input', function() {
+          display.textContent = input.value || '—';
+        });
+      }
     }
-}
-</style>
-    </table>
 
-    <!-- INFORMATION -->
-    <table class="info">
+    bindField('inputName', 'dispName');
+    bindField('inputNationality', 'dispNationality');
+    bindField('inputPassport', 'dispPassport');
+    bindField('inputNatCode', 'dispNatCode');
+    bindField('inputFileNo', 'dispFileNo');
+    bindField('inputEmployer', 'dispEmployer');
+    bindField('inputAddr1', 'dispAddr1');
+    bindField('inputAddr2', 'dispAddr2');
+    bindField('inputPhone', 'dispPhone');
+    bindField('inputCategoryCode', 'dispCategoryCode');
+    bindField('inputCategory', 'dispCategory');
+    bindField('inputPurpose', 'dispPurpose');
+    bindField('inputValidity', 'dispValidity');
+    bindField('inputValidUntil', 'dispValidUntil');
+    bindField('inputIssueDate', 'dispIssueDate');
 
-        <tr>
-            <td>ТОЛУК АТЫ-ЖӨНҮ/FULL NAME</td>
-            <td>SHAMRAIZ IQBAL</td>
-        </tr>
-
-        <tr>
-            <td>Туулган күнү/DATE OF BIRTH</td>
-            <td>22-10-1997</td>
-        </tr>
-
-        <tr>
-            <td>Жарандыгы/CITIZENSHIP</td>
-            <td>PAKISTANI</td>
-        </tr>
-
-        <tr>
-            <td>Жол жүрүү документинин номери/TRAVEL DOCUMENT NUMBER</td>
-            <td>EX1350431</td>
-        </tr>
-
-        <tr>
-            <td>Жол жүрүү документинин түрү/TRAVEL DOCUMENT TYPE</td>
-            <td>ORDINARY</td>
-        </tr>
-
-        <tr>
-            <td>Берилген күнү/DATE OF ISSUE</td>
-            <td>15-05-2026</td>
-        </tr>
-
-        <tr>
-            <td>Жарактуулук мөөнөтү/DATE OF EXPIRY</td>
-            <td>14-05-2031</td>
-        </tr>
-
-        <tr>
-            <td>Бирдиктүү уруксаттын жарактуулук мөөнөтү/VALIDITY OF UNIFORM PERMIT</td>
-            <td>21-09-2026 to 20-11-2026</td>
-        </tr>
-
-        <tr>
-            <td>Визанын түрү/VISA TYPE</td>
-            <td>WORKING VISA</td>
-        </tr>
-
-        <tr>
-            <td>Кирүүлөрдүн саны/NUMBER OF ENTRIES</td>
-            <td>MULTIPLE ENTRY</td>
-        </tr>
-
-        <tr>
-            <td>Болуу мөөнөтү/PERIOD OF STAY</td>
-            <td>59 DAYS</td>
-        </tr>
-
-        <tr>
-            <td>Иш берүүчү / Чакыруучу тарап/EMPLOYER / INVITING PARTY</td>
-            <td>CREDO SEWING</td>
-        </tr>
-
-        <tr>
-            <td>RIGHT TO WORK</td>
-            <td>UNIFORM PERMIT</td>
-        </tr>
-
-    </table>
-
-    <!-- FOOTER -->
-    <div class="footer">
-        Бул барак Кыргыз Республикасынын Тышкы иштер министрлиги тарабынан
-        күбөлөндүрүлгөн, мамлекеттик орган /
-        This page is Ministry of Foreign Affairs Kyrgyz Republic, certified,
-        government authority.
-    </div>
-
-</div>
+    function resetForm() {
+      document.getElementById('inputName').value = "SHAKEEL HAIDER";
+      document.getElementById('dispName').textContent = "SHAKEEL HAIDER";
+      document.getElementById('inputNationality').value = "PAKISTANI";
+      document.getElementById('dispNationality').textContent = "PAKISTANI";
+      document.getElementById('inputPassport').value = "FX6975401";
+      document.getElementById('dispPassport').textContent = "FX6975401";
+      document.getElementById('inputEmployer').value = "LEDRA COLLEGE";
+      document.getElementById('dispEmployer').textContent = "LEDRA COLLEGE";
+      document.getElementById('inputCategory').value = "STUDENT";
+      document.getElementById('dispCategory').textContent = "STUDENT";
+      document.getElementById('inputPurpose').value = "ENGLISH FOUNDATION";
+      document.getElementById('dispPurpose').textContent = "ENGLISH FOUNDATION";
+    }
+  </script>
 
 </body>
 </html>
+
+
