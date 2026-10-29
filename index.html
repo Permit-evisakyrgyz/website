@@ -1,6 +1,510 @@
 
 <!DOCTYPE html>
 <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blue PDF Watermark Editor</title>
+
+<style>
+:root {
+  --blue: #0878d1;
+  --dark-blue: #064b8d;
+  --light-blue: #eff7ff;
+  --white: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--light-blue);
+  color: #17324a;
+}
+
+header {
+  background: linear-gradient(120deg, var(--dark-blue), var(--blue));
+  color: white;
+  padding: 22px 15px;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0 0 8px;
+  font-size: 25px;
+}
+
+header p {
+  margin: 0;
+}
+
+main {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 0 12px 30px;
+}
+
+.card {
+  background: var(--white);
+  padding: 18px;
+  margin-bottom: 16px;
+  border: 1px solid #cfe3f7;
+  border-radius: 15px;
+  box-shadow: 0 5px 18px #064b8d12;
+}
+
+h2 {
+  color: var(--dark-blue);
+  font-size: 19px;
+  margin-top: 0;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin: 14px 0 7px;
+}
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #bdd7ed;
+  border-radius: 9px;
+  background: white;
+  font-size: 15px;
+}
+
+input[type="range"] {
+  padding: 0;
+  accent-color: var(--blue);
+}
+
+button {
+  border: none;
+  border-radius: 10px;
+  padding: 13px 16px;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.primary {
+  background: var(--blue);
+  color: white;
+}
+
+.secondary {
+  background: #e4f2ff;
+  color: var(--dark-blue);
+}
+
+button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.buttons button {
+  flex: 1;
+}
+
+#preview {
+  display: block;
+  max-width: 100%;
+  max-height: 230px;
+  margin: 12px auto;
+  object-fit: contain;
+}
+
+#status {
+  margin-top: 14px;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.small {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #526c80;
+}
+
+@media (max-width: 500px) {
+  header h1 {
+    font-size: 21px;
+  }
+
+  .card {
+    padding: 14px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>PDF Watermark Editor</h1>
+  <p>Upload PDF • Add Logo • Save PDF</p>
+</header>
+
+<main>
+
+<section class="card">
+  <h2>1. Upload PDF</h2>
+
+  <label for="pdfFile">Select PDF File</label>
+  <input
+    type="file"
+    id="pdfFile"
+    accept=".pdf,application/pdf"
+  >
+
+  <p class="small">
+    Select a PDF document from your phone or computer.
+  </p>
+</section>
+
+<section class="card">
+  <h2>2. Upload Logo</h2>
+
+  <label for="logoFile">Select Logo (PNG or JPEG)</label>
+  <input
+    type="file"
+    id="logoFile"
+    accept=".png,.jpg,.jpeg,image/png,image/jpeg"
+  >
+
+  <img id="preview" alt="Logo preview" hidden>
+
+  <p class="small">
+    Transparent PNG logos are recommended for watermarks.
+  </p>
+</section>
+
+<section class="card">
+  <h2>3. Watermark Settings</h2>
+
+  <label for="position">Logo Position</label>
+  <select id="position">
+    <option value="center">Center</option>
+    <option value="top-left">Top Left</option>
+    <option value="top-center">Top Center</option>
+    <option value="top-right">Top Right</option>
+    <option value="bottom-left">Bottom Left</option>
+    <option value="bottom-center">Bottom Center</option>
+    <option value="bottom-right">Bottom Right</option>
+  </select>
+
+  <label for="size">
+    Logo Width: <span id="sizeValue">22</span>% of page
+  </label>
+  <input
+    type="range"
+    id="size"
+    min="5"
+    max="80"
+    value="22"
+  >
+
+  <label for="opacity">
+    Watermark Opacity: <span id="opacityValue">15</span>%
+  </label>
+  <input
+    type="range"
+    id="opacity"
+    min="5"
+    max="100"
+    value="15"
+  >
+
+  <label for="pages">Apply Watermark</label>
+  <select id="pages">
+    <option value="all">All Pages</option>
+    <option value="first">First Page Only</option>
+  </select>
+</section>
+
+<section class="card">
+  <h2>4. Save and Export</h2>
+
+  <div class="buttons">
+    <button class="primary" id="exportBtn" disabled>
+      Apply Watermark & Download PDF
+    </button>
+
+    <button class="secondary" id="resetBtn">
+      Reset Settings
+    </button>
+  </div>
+
+  <div id="status" role="status" aria-live="polite">
+    Upload a PDF and a logo to begin.
+  </div>
+</section>
+
+</main>
+
+<!-- PDF processing library -->
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+
+<script>
+const pdfInput = document.getElementById("pdfFile");
+const logoInput = document.getElementById("logoFile");
+const exportBtn = document.getElementById("exportBtn");
+const statusBox = document.getElementById("status");
+const preview = document.getElementById("preview");
+
+const sizeInput = document.getElementById("size");
+const opacityInput = document.getElementById("opacity");
+
+let pdfBytes = null;
+let logoBytes = null;
+let logoFormat = null;
+let originalPdfName = "document.pdf";
+let previewUrl = null;
+
+function setStatus(message) {
+  statusBox.textContent = message;
+}
+
+function updateButton() {
+  exportBtn.disabled = !(pdfBytes && logoBytes);
+}
+
+pdfInput.addEventListener("change", async function () {
+  pdfBytes = null;
+  updateButton();
+
+  const file = this.files[0];
+
+  if (!file) return;
+
+  if (!file.name.toLowerCase().endsWith(".pdf")) {
+    setStatus("Please select a PDF file.");
+    return;
+  }
+
+  try {
+    const buffer = await file.arrayBuffer();
+
+    // Validate the uploaded PDF.
+    const testPdf = await PDFLib.PDFDocument.load(buffer);
+
+    pdfBytes = new Uint8Array(buffer);
+    originalPdfName = file.name;
+
+    setStatus(
+      "PDF loaded successfully. Pages: " +
+      testPdf.getPageCount()
+    );
+  } catch (error) {
+    pdfBytes = null;
+    setStatus(
+      "Unable to open this PDF. It may be encrypted or damaged."
+    );
+  }
+
+  updateButton();
+});
+
+logoInput.addEventListener("change", async function () {
+  logoBytes = null;
+  logoFormat = null;
+  updateButton();
+
+  const file = this.files[0];
+
+  if (!file) return;
+
+  const isPng =
+    file.type === "image/png" ||
+    file.name.toLowerCase().endsWith(".png");
+
+  const isJpeg =
+    file.type === "image/jpeg" ||
+    /\.(jpg|jpeg)$/i.test(file.name);
+
+  if (!isPng && !isJpeg) {
+    setStatus("Please upload a PNG or JPEG logo.");
+    return;
+  }
+
+  try {
+    logoBytes = new Uint8Array(
+      await file.arrayBuffer()
+    );
+
+    logoFormat = isPng ? "png" : "jpg";
+
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
+
+    previewUrl = URL.createObjectURL(file);
+    preview.src = previewUrl;
+    preview.hidden = false;
+
+    setStatus("Logo loaded successfully.");
+  } catch (error) {
+    logoBytes = null;
+    setStatus("Unable to read the selected logo.");
+  }
+
+  updateButton();
+});
+
+sizeInput.addEventListener("input", function () {
+  document.getElementById("sizeValue").textContent =
+    this.value;
+});
+
+opacityInput.addEventListener("input", function () {
+  document.getElementById("opacityValue").textContent =
+    this.value;
+});
+
+document.getElementById("resetBtn").addEventListener(
+  "click",
+  function () {
+    document.getElementById("position").value = "center";
+    document.getElementById("pages").value = "all";
+
+    sizeInput.value = 22;
+    opacityInput.value = 15;
+
+    document.getElementById("sizeValue").textContent = "22";
+    document.getElementById("opacityValue").textContent = "15";
+
+    setStatus("Watermark settings reset.");
+  }
+);
+
+exportBtn.addEventListener("click", async function () {
+  if (!pdfBytes || !logoBytes) return;
+
+  exportBtn.disabled = true;
+  setStatus("Processing PDF. Please wait...");
+
+  try {
+    const pdfDoc = await PDFLib.PDFDocument.load(pdfBytes);
+
+    let logo;
+
+    if (logoFormat === "png") {
+      logo = await pdfDoc.embedPng(logoBytes);
+    } else {
+      logo = await pdfDoc.embedJpg(logoBytes);
+    }
+
+    const allPages = pdfDoc.getPages();
+    const selectedPages =
+      document.getElementById("pages").value === "first"
+        ? allPages.slice(0, 1)
+        : allPages;
+
+    const position =
+      document.getElementById("position").value;
+
+    const widthRatio =
+      Number(sizeInput.value) / 100;
+
+    const opacity =
+      Number(opacityInput.value) / 100;
+
+    for (const page of selectedPages) {
+      const { width, height } = page.getSize();
+
+      const logoWidth = width * widthRatio;
+      const logoHeight =
+        logoWidth * logo.height / logo.width;
+
+      const margin = Math.min(width, height) * 0.04;
+
+      let x = (width - logoWidth) / 2;
+      let y = (height - logoHeight) / 2;
+
+      if (position.includes("left")) {
+        x = margin;
+      }
+
+      if (position.includes("right")) {
+        x = width - logoWidth - margin;
+      }
+
+      if (position.startsWith("top")) {
+        y = height - logoHeight - margin;
+      }
+
+      if (position.startsWith("bottom")) {
+        y = margin;
+      }
+
+      page.drawImage(logo, {
+        x,
+        y,
+        width: logoWidth,
+        height: logoHeight,
+        opacity: opacity
+      });
+    }
+
+    const result = await pdfDoc.save();
+
+    const blob = new Blob(
+      [result],
+      { type: "application/pdf" }
+    );
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    const baseName = originalPdfName.replace(
+      /\.pdf$/i,
+      ""
+    );
+
+    link.href = url;
+    link.download = baseName + "-watermarked.pdf";
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    setTimeout(function () {
+      URL.revokeObjectURL(url);
+    }, 2000);
+
+    setStatus(
+      "Export finished. Open the downloaded PDF to verify the watermark."
+    );
+
+  } catch (error) {
+    console.error(error);
+
+    setStatus(
+      "Export failed. This PDF may be encrypted or unsupported."
+    );
+  } finally {
+    updateButton();
+  }
+});
+</script>
+
+</body>
+</html>
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
