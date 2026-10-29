@@ -1,691 +1,272 @@
 
 <!DOCTYPE html>
-<html lang="ur">
+<html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Document Studio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Document Demo Editor</title>
 
 <style>
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
+  padding: 16px;
+  background: #eaf1f7;
   font-family: Arial, sans-serif;
-  background: #edf3fa;
-  color: #183153;
+  color: #17364e;
 }
-
-header {
-  background: #075bc5;
-  color: white;
-  padding: 17px;
-  text-align: center;
-}
-
-header h2 { margin: 0 0 6px; }
 
 .toolbar {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  padding: 12px;
   justify-content: center;
-  background: white;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  box-shadow: 0 2px 5px #0001;
+  gap: 8px;
+  margin-bottom: 16px;
 }
 
-button, .file-label {
+button {
+  padding: 11px 15px;
   border: 0;
-  border-radius: 7px;
-  background: #0968d5;
+  border-radius: 6px;
+  background: #075eaa;
   color: white;
-  padding: 10px 13px;
-  font-size: 14px;
   cursor: pointer;
 }
 
-button.secondary { background: #52657d; }
-button.danger { background: #bd3543; }
-
-input, textarea, select {
-  max-width: 100%;
-  padding: 9px;
-  border: 1px solid #cbd5e1;
-  border-radius: 6px;
-}
-
-input[type="file"] { width: 100%; }
-
-.layout {
-  display: grid;
-  grid-template-columns: 270px minmax(0, 1fr);
-  gap: 15px;
-  max-width: 1400px;
-  padding: 15px;
+.document {
+  position: relative;
+  max-width: 800px;
+  min-height: 1050px;
   margin: auto;
+  padding: 35px;
+  background: #b9e5e8;
+  border: 5px solid #d9f2f3;
+  box-shadow: 0 4px 16px #0002;
 }
 
-.sidebar, .workspace {
-  background: white;
-  border-radius: 10px;
+.demo-banner {
+  padding: 12px;
+  margin-bottom: 25px;
+  text-align: center;
+  color: white;
+  background: #b32435;
+  font-weight: bold;
+  font-size: 20px;
+  letter-spacing: 1px;
+}
+
+.header {
+  text-align: center;
   padding: 15px;
-  min-width: 0;
+  border: 2px solid #3c8792;
+  background: #d9f1f1;
 }
 
-.sidebar h3 { margin-top: 5px; }
+.header h2 { margin: 5px; }
+
+.section {
+  margin-top: 22px;
+  padding: 16px;
+  border: 1px solid #538f98;
+  background: #ffffff35;
+}
+
+.section h3 {
+  margin-top: 0;
+  color: #174e66;
+  border-bottom: 1px solid #6c9fa7;
+  padding-bottom: 8px;
+}
 
 .field {
   display: grid;
-  gap: 7px;
-  margin-bottom: 14px;
-}
-
-.field label {
-  font-size: 13px;
-  font-weight: bold;
-}
-
-.layers {
-  padding: 0;
-  list-style: none;
-}
-
-.layers li {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  justify-content: space-between;
-  padding: 9px 0;
-  border-bottom: 1px solid #e5eaf1;
-  font-size: 13px;
-  overflow-wrap: anywhere;
-}
-
-.layers button {
-  padding: 6px 8px;
-  font-size: 12px;
-}
-
-.canvas-wrap {
-  overflow: auto;
-  padding: 12px;
-  background: #dce5ef;
-  border-radius: 8px;
-}
-
-#page {
-  position: relative;
-  width: 700px;
-  min-height: 990px;
-  margin: 0 auto;
-  background: white;
-  overflow: hidden;
-  box-shadow: 0 3px 15px #0002;
-  isolation: isolate;
-}
-
-#watermark {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-  z-index: 8;
-  overflow: hidden;
-}
-
-#watermark img {
-  width: 85%;
-  height: 85%;
-  object-fit: contain;
-  opacity: 0.12;
-}
-
-#watermark span {
-  position: absolute;
-  transform: rotate(-35deg);
-  color: rgba(190, 30, 45, 0.17);
-  font-size: 58px;
-  font-weight: bold;
-  text-align: center;
-  white-space: nowrap;
-}
-
-#sampleBanner {
-  position: absolute;
-  z-index: 20;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 8px;
-  text-align: center;
-  font-size: 13px;
-  font-weight: bold;
-  color: white;
-  background: #b52c39;
-  pointer-events: none;
-}
-
-.page-content {
-  position: relative;
-  z-index: 2;
-  padding: 65px 35px 40px;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  padding: 8px 0;
+  border-bottom: 1px solid #83b5bb;
 }
 
 .editable {
-  outline: 1px dashed #a8c8ec;
-  padding: 5px;
-  min-height: 25px;
+  min-height: 24px;
+  padding: 3px;
   overflow-wrap: anywhere;
 }
 
 .editable:focus {
-  outline: 2px solid #0968d5;
-  background: #f0f7ff;
+  outline: 2px dashed #075eaa;
+  background: #ffffff90;
 }
 
-.sample-heading {
-  text-align: center;
-  color: #075bc5;
-  border-bottom: 2px solid #075bc5;
-  padding-bottom: 15px;
-}
-
-.sample-card {
-  margin-top: 20px;
-  padding: 15px;
-  border: 1px solid #b9c9db;
-  border-radius: 6px;
-}
-
-.image-layer {
-  position: absolute;
-  width: 130px;
-  height: 130px;
-  object-fit: contain;
-  cursor: move;
-  border: 1px dashed #8aa2bd;
-  touch-action: none;
-}
-
-.layer-help {
-  font-size: 12px;
-  color: #60748a;
+.hint {
+  max-width: 800px;
+  margin: 12px auto;
+  color: #526a7d;
+  font-size: 13px;
   line-height: 1.6;
 }
 
-footer {
-  text-align: center;
-  color: #60748a;
-  padding: 20px;
+@media(max-width: 600px) {
+  body { padding: 6px; }
+  .document { padding: 14px; }
+  .field { grid-template-columns: 1fr; gap: 4px; }
+  .demo-banner { font-size: 16px; }
 }
 
-@media(max-width: 760px) {
-  .layout { grid-template-columns: 1fr; }
-  .sidebar { order: 2; }
-  .workspace { order: 1; }
-  #page { margin: 0; }
-  .canvas-wrap { overflow-x: auto; }
+@media print {
+  body { padding: 0; background: white; }
+  .toolbar, .hint { display: none !important; }
+  .document {
+    max-width: none;
+    margin: 0;
+    box-shadow: none;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .editable:focus { outline: none; }
 }
 </style>
 </head>
 
 <body>
 
-<header>
-  <h2>Document Studio</h2>
-  <div>Image Layers · Text Editor · Watermark · Export</div>
-</header>
-
 <div class="toolbar">
-  <button onclick="addText()">+ Add Text</button>
-
-  <label class="file-label">
-    + Add Image
-    <input type="file" id="imageInput" accept="image/*"
-      hidden>
-  </label>
-
-  <label class="file-label">
-    Watermark Image
-    <input type="file" id="watermarkInput" accept="image/*"
-      hidden>
-  </label>
-
-  <button onclick="printPage()">Print / Save PDF</button>
-  <button onclick="exportPNG()">Export PNG</button>
-  <button class="secondary" onclick="resetPage()">Reset</button>
+  <button onclick="addSection()">+ Add Section</button>
+  <button onclick="window.print()">Print / Save PDF</button>
+  <button onclick="resetPage()">Reset Sample</button>
 </div>
 
-<div class="layout">
+<div class="document" id="document">
 
-  <aside class="sidebar">
-    <h3>Text Settings</h3>
+  <div class="demo-banner">
+    DEMO — NOT FOR OFFICIAL USE
+  </div>
 
-    <div class="field">
-      <label>Selected text</label>
-      <textarea id="textValue" rows="3"
-        placeholder="Select a text box on the page"></textarea>
-    </div>
-
-    <div class="field">
-      <label>Font size</label>
-      <input type="number" id="fontSize"
-        min="8" max="72" value="18">
-    </div>
-
-    <div class="field">
-      <label>Text colour</label>
-      <input type="color" id="textColor" value="#183153">
-    </div>
-
-    <button onclick="applyText()">Apply Text Settings</button>
-
-    <hr>
-
-    <h3>Watermark Settings</h3>
-
-    <div class="field">
-      <label>Watermark opacity</label>
-      <input type="range" id="opacity"
-        min="2" max="35" value="12">
-    </div>
-
-    <div class="field">
-      <label>Watermark size</label>
-      <input type="range" id="wmSize"
-        min="30" max="100" value="85">
-    </div>
-
-    <button onclick="applyWatermark()">Apply Watermark</button>
-
-    <hr>
-
-    <h3>Layers</h3>
-    <ul class="layers" id="layerList"></ul>
-
-    <p class="layer-help">
-      Image layer پر کلک کرکے منتخب کریں۔ تصویر کو ماؤس یا
-      انگلی سے حرکت دیں۔ Hide سے تصویر چھپائیں۔
+  <header class="header">
+    <h2 class="editable" contenteditable="true">
+      ÖRNEK BELGE
+    </h2>
+    <p class="editable" contenteditable="true">
+      SAMPLE DOCUMENT
     </p>
-  </aside>
-
-  <section class="workspace">
-    <h3>Page Editor</h3>
-    <p class="layer-help">
-      یہ ایک نمونہ صفحہ ہے۔ متن پر کلک کرکے اسے تبدیل کریں۔
-      برآمد شدہ فائل پر SAMPLE واٹرمارک برقرار رہے گا۔
+    <p class="editable" contenteditable="true">
+      Düzenlenebilir Demo Sayfası / Editable Demo Page
     </p>
+  </header>
 
-    <div class="canvas-wrap">
-      <div id="page">
+  <section class="section">
+    <h3 class="editable" contenteditable="true">
+      KİŞİSEL BİLGİLER / PERSONAL INFORMATION
+    </h3>
 
-        <div id="sampleBanner">
-          SAMPLE DOCUMENT — NOT AN OFFICIAL DOCUMENT
-        </div>
+    <div class="field">
+      <strong>Adı Soyadı / Full Name</strong>
+      <div class="editable" contenteditable="true">
+        Örnek Kullanıcı / Sample User
+      </div>
+    </div>
 
-        <div id="watermark">
-          <img id="wmImage" alt="" hidden>
-          <span>SAMPLE</span>
-        </div>
+    <div class="field">
+      <strong>Uyruğu / Nationality</strong>
+      <div class="editable" contenteditable="true">
+        Örnek / Sample
+      </div>
+    </div>
 
-        <div class="page-content">
+    <div class="field">
+      <strong>Doğum Tarihi / Date of Birth</strong>
+      <div class="editable" contenteditable="true">
+        01.01.1990
+      </div>
+    </div>
 
-          <div class="sample-heading">
-            <h2 class="editable" contenteditable="true"
-              data-text="true">DOCUMENT STUDIO</h2>
-
-            <p class="editable" contenteditable="true"
-              data-text="true">Editable Sample Document</p>
-          </div>
-
-          <div class="sample-card">
-            <h3 class="editable" contenteditable="true"
-              data-text="true">General Information</h3>
-
-            <p class="editable" contenteditable="true"
-              data-text="true">Name: Sample User</p>
-
-            <p class="editable" contenteditable="true"
-              data-text="true">Document Number: SAMPLE-0001</p>
-
-            <p class="editable" contenteditable="true"
-              data-text="true">Date: 29 October 2026</p>
-
-            <p class="editable" contenteditable="true"
-              data-text="true">Category: Demonstration</p>
-          </div>
-
-          <div class="sample-card">
-            <h3 class="editable" contenteditable="true"
-              data-text="true">Additional Information</h3>
-
-            <p class="editable" contenteditable="true"
-              data-text="true">
-              Click here to type your own sample text.
-            </p>
-
-            <p class="editable" contenteditable="true"
-              data-text="true">
-              This page is for general document layout testing.
-            </p>
-          </div>
-
-          <div class="sample-card">
-            <h3 class="editable" contenteditable="true"
-              data-text="true">Notes</h3>
-
-            <p class="editable" contenteditable="true"
-              data-text="true">
-              Add your notes or other general information here.
-            </p>
-          </div>
-
-        </div>
+    <div class="field">
+      <strong>Belge Türü / Document Type</strong>
+      <div class="editable" contenteditable="true">
+        Demo Belgesi / Demo Document
       </div>
     </div>
   </section>
+
+  <section class="section">
+    <h3 class="editable" contenteditable="true">
+      BELGE BİLGİLERİ / DOCUMENT INFORMATION
+    </h3>
+
+    <div class="field">
+      <strong>Tarih / Date</strong>
+      <div class="editable" contenteditable="true">
+        29.10.2026
+      </div>
+    </div>
+
+    <div class="field">
+      <strong>Referans / Reference</strong>
+      <div class="editable" contenteditable="true">
+        SAMPLE-001
+      </div>
+    </div>
+
+    <div class="field">
+      <strong>Durum / Status</strong>
+      <div class="editable" contenteditable="true">
+        Örnek / Sample
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h3 class="editable" contenteditable="true">
+      AÇIKLAMALAR / NOTES
+    </h3>
+    <p class="editable" contenteditable="true">
+      Buraya kendi örnek metninizi yazabilirsiniz.
+    </p>
+    <p class="editable" contenteditable="true">
+      You can enter your own sample text here.
+    </p>
+  </section>
+
 </div>
 
-<footer>
-  Document Studio · Static HTML, CSS and JavaScript · No database
-</footer>
+<p class="hint">
+  متن تبدیل کرنے کے لیے اس پر کلک کریں اور ٹائپ کریں۔
+  PDF کے لیے Print / Save PDF دبائیں۔
+  تمام معلومات صرف نمونے کے لیے ہیں۔
+</p>
 
 <script>
-const page = document.getElementById("page");
-const imageInput = document.getElementById("imageInput");
-const watermarkInput = document.getElementById("watermarkInput");
-const layerList = document.getElementById("layerList");
+const initialHTML =
+  document.getElementById("document").innerHTML;
 
-let selectedText = null;
-let selectedImage = null;
-let imageCounter = 0;
+function addSection() {
+  const section = document.createElement("section");
+  section.className = "section";
 
-document.addEventListener("click", function(event) {
-  if (event.target.matches("[data-text='true']")) {
-    selectedText = event.target;
-    selectedImage = null;
+  section.innerHTML = `
+    <h3 class="editable" contenteditable="true">
+      Yeni Bölüm / New Section
+    </h3>
+    <p class="editable" contenteditable="true">
+      Buraya metin yazın / Enter text here
+    </p>
+  `;
 
-    document.getElementById("textValue").value =
-      selectedText.innerText;
-
-    document.getElementById("fontSize").value =
-      parseInt(getComputedStyle(selectedText).fontSize) || 18;
-
-    document.getElementById("textColor").value =
-      rgbToHex(getComputedStyle(selectedText).color);
-  }
-});
-
-function rgbToHex(rgb) {
-  const nums = rgb.match(/\d+/g);
-  if (!nums || nums.length < 3) return "#183153";
-
-  return "#" + nums.slice(0, 3).map(n =>
-    Number(n).toString(16).padStart(2, "0")
-  ).join("");
-}
-
-function addText() {
-  const p = document.createElement("p");
-  p.contentEditable = "true";
-  p.dataset.text = "true";
-  p.className = "editable";
-  p.textContent = "New sample text";
-  p.style.fontSize = "18px";
-
-  page.querySelector(".page-content").appendChild(p);
-  p.focus();
-  selectedText = p;
-  document.getElementById("textValue").value = p.textContent;
-}
-
-function applyText() {
-  if (!selectedText) {
-    alert("Select a text box on the page first.");
-    return;
-  }
-
-  selectedText.innerText =
-    document.getElementById("textValue").value;
-
-  selectedText.style.fontSize =
-    Math.max(8, Math.min(72,
-      Number(document.getElementById("fontSize").value) || 18
-    )) + "px";
-
-  selectedText.style.color =
-    document.getElementById("textColor").value;
-}
-
-imageInput.addEventListener("change", function(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-
-  if (!file.type.startsWith("image/")) {
-    alert("Please choose an image.");
-    return;
-  }
-
-  const reader = new FileReader();
-
-  reader.onload = function() {
-    const img = document.createElement("img");
-    img.src = reader.result;
-    img.alt = "Sample image layer";
-    img.className = "image-layer";
-
-    imageCounter++;
-    img.dataset.layerId = "layer-" + imageCounter;
-
-    img.style.left = "40px";
-    img.style.top = (200 + imageCounter * 20) + "px";
-
-    page.appendChild(img);
-
-    img.addEventListener("click", function(e) {
-      e.stopPropagation();
-      selectedImage = img;
-      selectedText = null;
-      refreshLayers();
-    });
-
-    makeDraggable(img);
-    refreshLayers();
-  };
-
-  reader.readAsDataURL(file);
-  event.target.value = "";
-});
-
-function makeDraggable(element) {
-  let startX, startY, initialLeft, initialTop;
-
-  element.addEventListener("pointerdown", function(event) {
-    selectedImage = element;
-    startX = event.clientX;
-    startY = event.clientY;
-    initialLeft = element.offsetLeft;
-    initialTop = element.offsetTop;
-
-    element.setPointerCapture(event.pointerId);
-
-    function move(e) {
-      const scale = page.getBoundingClientRect().width /
-        page.offsetWidth;
-
-      element.style.left =
-        (initialLeft + (e.clientX - startX) / scale) + "px";
-
-      element.style.top =
-        (initialTop + (e.clientY - startY) / scale) + "px";
-    }
-
-    function up() {
-      element.removeEventListener("pointermove", move);
-      element.removeEventListener("pointerup", up);
-      refreshLayers();
-    }
-
-    element.addEventListener("pointermove", move);
-    element.addEventListener("pointerup", up);
-  });
-}
-
-watermarkInput.addEventListener("change", function(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-
-  if (!file.type.startsWith("image/")) {
-    alert("Please choose an image.");
-    return;
-  }
-
-  const reader = new FileReader();
-
-  reader.onload = function() {
-    const wm = document.getElementById("wmImage");
-    wm.src = reader.result;
-    wm.hidden = false;
-    applyWatermark();
-  };
-
-  reader.readAsDataURL(file);
-  event.target.value = "";
-});
-
-function applyWatermark() {
-  const wm = document.getElementById("wmImage");
-
-  wm.style.opacity =
-    Number(document.getElementById("opacity").value) / 100;
-
-  wm.style.width =
-    document.getElementById("wmSize").value + "%";
-
-  wm.style.height =
-    document.getElementById("wmSize").value + "%";
-}
-
-document.getElementById("opacity").addEventListener(
-  "input", applyWatermark
-);
-
-document.getElementById("wmSize").addEventListener(
-  "input", applyWatermark
-);
-
-function refreshLayers() {
-  layerList.replaceChildren();
-
-  page.querySelectorAll(".image-layer").forEach(function(img) {
-    const li = document.createElement("li");
-    const label = document.createElement("span");
-    label.textContent = img.dataset.layerId;
-
-    const hide = document.createElement("button");
-    hide.textContent = img.style.visibility === "hidden"
-      ? "Show" : "Hide";
-
-    hide.onclick = function() {
-      img.style.visibility =
-        img.style.visibility === "hidden" ? "visible" : "hidden";
-
-      refreshLayers();
-    };
-
-    const remove = document.createElement("button");
-    remove.textContent = "Delete";
-    remove.className = "danger";
-
-    remove.onclick = function() {
-      img.remove();
-
-      if (selectedImage === img) selectedImage = null;
-      refreshLayers();
-    };
-
-    li.append(label, hide, remove);
-    layerList.appendChild(li);
-  });
+  document.getElementById("document").appendChild(section);
+  section.querySelector("p").focus();
 }
 
 function resetPage() {
-  if (!confirm("Reset the editor to the original sample page?")) {
-    return;
-  }
+  if (!confirm("Reset the sample page?")) return;
 
-  location.reload();
-}
-
-function printPage() {
-  window.print();
-}
-
-async function exportPNG() {
-  if (!window.html2canvas) {
-    alert("Export library is loading. Please try again.");
-    return;
-  }
-
-  const banner = document.getElementById("sampleBanner");
-  banner.style.display = "block";
-
-  try {
-    const canvas = await html2canvas(page, {
-      scale: 2,
-      backgroundColor: "#ffffff",
-      useCORS: true
-    });
-
-    const link = document.createElement("a");
-    link.download = "sample-document.png";
-    link.href = canvas.toDataURL("image/png");
-    link.click();
-  } catch (error) {
-    alert("Export failed. Please try printing the page instead.");
-  }
+  document.getElementById("document").innerHTML = initialHTML;
 }
 </script>
-
-<script
-  src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
-</script>
-
-<style>
-@media print {
-  body { background: white; }
-  header, .toolbar, .sidebar, footer,
-  .workspace > h3, .workspace > p {
-    display: none !important;
-  }
-
-  .layout, .workspace, .canvas-wrap {
-    display: block;
-    padding: 0;
-    margin: 0;
-    background: white;
-    box-shadow: none;
-  }
-
-  #page {
-    margin: 0;
-    box-shadow: none;
-    print-color-adjust: exact;
-    -webkit-print-color-adjust: exact;
-  }
-
-  .editable { outline: none; }
-}
-</style>
 
 </body>
 </html>
+
+
 
 
 
