@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>One Page Demo Editor</title>
+<title>Document Editor Demo</title>
 
 <style>
 * {
@@ -13,203 +13,201 @@
 
 body {
   margin: 0;
-  padding: 8px;
+  padding: 15px;
   background: #eeeeee;
-  color: #222222;
-  font-family: Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #222;
 }
 
 .toolbar {
+  max-width: 900px;
+  margin: 0 auto 12px;
   display: flex;
   flex-wrap: wrap;
+  gap: 8px;
   justify-content: center;
-  gap: 7px;
-  max-width: 800px;
-  margin: 0 auto 10px;
 }
 
-button,
-.upload-label {
-  border: none;
-  border-radius: 5px;
-  padding: 9px 12px;
-  background: #222222;
+.toolbar button {
+  padding: 10px 15px;
+  border: 0;
+  border-radius: 6px;
+  background: #1456a0;
   color: white;
+  font-size: 14px;
   cursor: pointer;
-  font-size: 12px;
 }
 
-button:hover,
-.upload-label:hover {
-  background: #444444;
-}
-
-#watermarkInput {
-  display: none;
+.toolbar button:hover {
+  background: #0d3d75;
 }
 
 .page {
   position: relative;
   isolation: isolate;
-  width: 100%;
-  max-width: 800px;
-  margin: auto;
-  padding: clamp(9px, 3vw, 25px);
-  background: #ffffff;
   overflow: hidden;
-  overflow-wrap: anywhere;
-  box-shadow: 0 2px 10px #0001;
+  width: 100%;
+  max-width: 850px;
+  min-height: 1100px;
+  margin: 0 auto;
+  padding: 35px;
+  background: white;
+  box-shadow: 0 2px 12px rgba(0,0,0,.18);
 }
 
-/* Full-page watermark */
+/* Automatically load the watermark image */
 .page::before {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: var(--page-watermark, none);
+  z-index: 0;
+  background-image: url("my%20watermark.png");
   background-repeat: repeat;
   background-position: center;
   background-size: 220px auto;
   opacity: 0.15;
   pointer-events: none;
-  z-index: -1;
 }
 
-.demo {
+/* Keep document content above the watermark */
+.page-content {
+  position: relative;
+  z-index: 1;
+}
+
+.demo-warning {
   text-align: center;
-  color: #c00020;
-  border: 2px solid #c00020;
-  font-size: clamp(12px, 2.4vw, 19px);
-  font-weight: 900;
-  padding: 8px 4px;
-  margin-bottom: 12px;
+  color: #b00020;
+  font-size: 17px;
+  font-weight: bold;
+  border: 2px dashed #b00020;
+  padding: 9px;
+  margin-bottom: 25px;
+  letter-spacing: 1px;
 }
 
-.header {
+.document-header {
   text-align: center;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #999;
+  margin-bottom: 28px;
 }
 
-.header h2 {
-  font-size: clamp(14px, 2.6vw, 21px);
-  margin: 4px 0;
+.document-header h1 {
+  font-size: 25px;
+  margin: 8px 0;
 }
 
-.header p {
-  font-size: clamp(10px, 1.8vw, 13px);
+.document-header h2 {
+  font-size: 17px;
+  margin: 6px 0;
+  font-weight: normal;
+}
+
+.document-header p {
   margin: 5px 0;
+  font-size: 13px;
 }
 
-.columns {
+.section-title {
+  margin-top: 24px;
+  margin-bottom: 12px;
+  padding: 8px;
+  background: rgba(220, 230, 240, 0.88);
+  border: 1px solid #aebdcd;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.details-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 14px;
-}
-
-.section {
-  min-width: 0;
-  margin-bottom: 12px;
-}
-
-.section h3 {
-  font-size: clamp(10px, 1.8vw, 14px);
-  margin: 0 0 8px;
-  padding-bottom: 5px;
-  border-bottom: 1px solid #aaa;
+  gap: 12px 20px;
 }
 
 .field {
-  margin: 7px 0;
+  min-width: 0;
+  padding: 5px 0;
+  border-bottom: 1px solid #999;
 }
 
 .field label {
   display: block;
-  font-size: clamp(9px, 1.5vw, 11px);
+  font-size: 11px;
+  color: #444;
+  margin-bottom: 5px;
   font-weight: bold;
-  margin-bottom: 2px;
-  color: #555;
 }
 
 .editable {
-  min-height: 16px;
-  padding: 2px;
-  font-size: clamp(10px, 1.7vw, 13px);
+  min-height: 22px;
+  outline: none;
   overflow-wrap: anywhere;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 .editable:focus {
-  outline: 1px dashed #555;
-  background: #ffffff80;
+  background: rgba(255, 249, 190, 0.75);
+  outline: 1px dashed #777;
 }
 
-.paragraph {
-  font-size: clamp(10px, 1.6vw, 12px);
-  line-height: 1.4;
-  margin: 5px 0;
+.long-field {
+  margin-top: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid #999;
 }
 
-.watermark-settings {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 8px auto 12px;
-}
-
-.watermark-settings label {
+.notice {
+  margin-top: 25px;
+  padding: 12px;
+  border: 1px solid #aaa;
+  background: rgba(255,255,255,.78);
   font-size: 12px;
+  line-height: 1.6;
 }
 
-.watermark-settings input[type="range"] {
-  width: 110px;
-}
-
-.footer {
+.footer-warning {
+  margin-top: 35px;
   text-align: center;
-  color: #c00020;
-  font-size: clamp(10px, 1.8vw, 13px);
+  font-size: 13px;
+  color: #b00020;
   font-weight: bold;
-  border-top: 1px solid #999;
-  padding-top: 8px;
-  margin-top: 10px;
+  border-top: 1px solid #aaa;
+  padding-top: 12px;
 }
 
-#extraSections {
-  margin-top: 8px;
-}
-
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   body {
-    padding: 3px;
+    padding: 6px;
   }
 
   .page {
-    padding: 9px;
+    padding: 18px 13px;
+    min-height: 100vh;
   }
 
-  .columns {
-    grid-template-columns: 1fr 1fr;
-    gap: 7px;
+  .page::before {
+    background-size: 150px auto;
   }
 
-  .section {
-    margin-bottom: 8px;
+  .document-header h1 {
+    font-size: 20px;
   }
 
-  .field {
-    margin: 5px 0;
+  .document-header h2 {
+    font-size: 15px;
   }
 
-  .editable {
-    padding: 1px;
+  .details-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 
-  .toolbar button,
-  .upload-label {
-    padding: 8px;
-    font-size: 11px;
+  .demo-warning {
+    font-size: 13px;
+  }
+
+  .toolbar button {
+    padding: 9px 11px;
   }
 }
 </style>
@@ -218,298 +216,167 @@ button:hover,
 <body>
 
 <div class="toolbar">
-
-  <button type="button" onclick="addSection()">
-    + Add Section
-  </button>
-
-  <label class="upload-label" for="watermarkInput">
-    Upload Watermark PNG
-  </label>
-
-  <input
-    type="file"
-    id="watermarkInput"
-    accept="image/png,image/jpeg,image/webp"
-  >
-
-  <button type="button" onclick="removeWatermark()">
-    Remove Watermark
-  </button>
-
-  <button type="button" onclick="resetPage()">
-    Reset Sample
-  </button>
-
+  <button type="button" onclick="addSection()">Add Section</button>
+  <button type="button" onclick="toggleEdit()">Edit / Lock Text</button>
+  <button type="button" onclick="location.reload()">Reload Original</button>
 </div>
 
-<div class="watermark-settings">
-  <label for="watermarkOpacity">
-    Watermark transparency
-  </label>
+<main class="page">
+  <div class="page-content" id="documentContent">
 
-  <input
-    type="range"
-    id="watermarkOpacity"
-    min="0.03"
-    max="0.40"
-    step="0.01"
-    value="0.15"
-  >
+    <div class="demo-warning">
+      DEMO DOCUMENT — NOT FOR OFFICIAL USE
+    </div>
 
-  <label for="watermarkSize">
-    Watermark size
-  </label>
+    <header class="document-header">
+      <h1 contenteditable="true">SAMPLE DOCUMENT</h1>
+      <h2 contenteditable="true">ÖRNEK BELGE / SAMPLE RECORD</h2>
+      <p contenteditable="true">Document Design and Editing Demonstration</p>
+    </header>
 
-  <input
-    type="range"
-    id="watermarkSize"
-    min="80"
-    max="500"
-    step="10"
-    value="220"
-  >
-</div>
+    <div class="section-title" contenteditable="true">
+      PERSONAL INFORMATION / KİŞİSEL BİLGİLER
+    </div>
 
-<main class="page" id="page">
-
-  <div class="demo">
-    DEMO — NOT FOR OFFICIAL USE
-  </div>
-
-  <header class="header">
-
-    <h2 class="editable" contenteditable="true">
-      DEMO DOCUMENT
-    </h2>
-
-    <h2 class="editable" contenteditable="true">
-      ÖRNEK BELGE
-    </h2>
-
-    <p class="editable" contenteditable="true">
-      Editable Demonstration Page
-    </p>
-
-  </header>
-
-  <div class="columns">
-
-    <section class="section">
-
-      <h3 class="editable" contenteditable="true">
-        PERSONAL INFORMATION
-      </h3>
-
+    <div class="details-grid">
       <div class="field">
-        <label>Full Name / Adı Soyadı</label>
-        <div class="editable" contenteditable="true">
-          Sample User / Örnek Kullanıcı
-        </div>
+        <label>FULL NAME / AD SOYAD</label>
+        <div class="editable" contenteditable="true">Sample Person</div>
       </div>
 
       <div class="field">
-        <label>Nationality / Uyruğu</label>
-        <div class="editable" contenteditable="true">
-          Sample / Örnek
-        </div>
+        <label>REFERENCE NUMBER / REFERANS NO</label>
+        <div class="editable" contenteditable="true">DEMO-000001</div>
       </div>
 
       <div class="field">
-        <label>Category / Kategori</label>
-        <div class="editable" contenteditable="true">
-          Education / Eğitim
-        </div>
+        <label>DATE OF BIRTH / DOĞUM TARİHİ</label>
+        <div class="editable" contenteditable="true">DD / MM / YYYY</div>
       </div>
 
       <div class="field">
-        <label>Purpose / Amaç</label>
-        <div class="editable" contenteditable="true">
-          Demonstration Only
-        </div>
-      </div>
-
-    </section>
-
-    <section class="section">
-
-      <h3 class="editable" contenteditable="true">
-        DOCUMENT DETAILS
-      </h3>
-
-      <div class="field">
-        <label>Reference / Referans</label>
-        <div class="editable" contenteditable="true">
-          SAMPLE-001
-        </div>
+        <label>NATIONALITY / UYRUK</label>
+        <div class="editable" contenteditable="true">Sample Nationality</div>
       </div>
 
       <div class="field">
-        <label>Date / Tarih</label>
-        <div class="editable" contenteditable="true">
-          Enter Date
-        </div>
+        <label>DOCUMENT TYPE / BELGE TÜRÜ</label>
+        <div class="editable" contenteditable="true">Sample Record</div>
       </div>
 
       <div class="field">
-        <label>Status / Durum</label>
-        <div class="editable" contenteditable="true">
-          Sample Only
-        </div>
+        <label>ISSUE DATE / DÜZENLEME TARİHİ</label>
+        <div class="editable" contenteditable="true">DD / MM / YYYY</div>
       </div>
 
       <div class="field">
-        <label>Document Type / Belge Türü</label>
-        <div class="editable" contenteditable="true">
-          Demo Document
-        </div>
+        <label>VALID FROM / BAŞLANGIÇ</label>
+        <div class="editable" contenteditable="true">DD / MM / YYYY</div>
       </div>
 
-    </section>
+      <div class="field">
+        <label>VALID UNTIL / BİTİŞ</label>
+        <div class="editable" contenteditable="true">DD / MM / YYYY</div>
+      </div>
+    </div>
+
+    <div class="section-title" contenteditable="true">
+      ADDITIONAL DETAILS / EK BİLGİLER
+    </div>
+
+    <div class="long-field">
+      <label>ADDRESS / ADRES</label>
+      <div class="editable" contenteditable="true">
+        Enter sample address here.
+      </div>
+    </div>
+
+    <div class="long-field">
+      <label>NOTES / NOTLAR</label>
+      <div class="editable" contenteditable="true">
+        This is a demonstration template. Click any text to edit it.
+      </div>
+    </div>
+
+    <div id="extraSections"></div>
+
+    <div class="notice" contenteditable="true">
+      <strong>IMPORTANT NOTICE / ÖNEMLİ NOT</strong>
+      <p>
+        This page is a sample design for testing document editing
+        and watermark placement. It is not an official document and
+        does not establish identity, immigration status, permission
+        to reside, or any legal entitlement.
+      </p>
+    </div>
+
+    <div class="footer-warning" contenteditable="true">
+      DEMO ONLY — NOT A VALID OFFICIAL DOCUMENT
+    </div>
 
   </div>
-
-  <section class="section">
-
-    <h3 class="editable" contenteditable="true">
-      GENERAL INFORMATION / GENEL BİLGİLER
-    </h3>
-
-    <p class="paragraph editable" contenteditable="true">
-      This is a demonstration document for layout and editing practice.
-      Click on any text to change it.
-    </p>
-
-    <p class="paragraph editable" contenteditable="true">
-      Bu belge tasarım ve metin düzenleme denemeleri için hazırlanmıştır.
-      Metni değiştirmek için üzerine tıklayın.
-    </p>
-
-  </section>
-
-  <section class="section">
-
-    <h3 class="editable" contenteditable="true">
-      ADDITIONAL NOTES / EK NOTLAR
-    </h3>
-
-    <p class="paragraph editable" contenteditable="true">
-      Enter your additional sample information here.
-    </p>
-
-  </section>
-
-  <div id="extraSections"></div>
-
-  <div class="footer">
-    DEMO ONLY — NOT FOR OFFICIAL USE
-  </div>
-
 </main>
 
 <script>
-const page = document.getElementById("page");
-const watermarkInput = document.getElementById("watermarkInput");
-const watermarkOpacity = document.getElementById("watermarkOpacity");
-const watermarkSize = document.getElementById("watermarkSize");
+let editingEnabled = true;
+let sectionCount = 0;
 
-let watermarkURL = null;
+function toggleEdit() {
+  editingEnabled = !editingEnabled;
 
-watermarkInput.addEventListener("change", function(event) {
-  const file = event.target.files[0];
+  document.querySelectorAll(
+    '#documentContent [contenteditable="true"]'
+  ).forEach(function(element) {
+    element.contentEditable = editingEnabled ? "true" : "false";
+  });
 
-  if (!file) return;
-
-  if (!file.type.startsWith("image/")) {
-    alert("Please select an image file.");
-    return;
-  }
-
-  if (watermarkURL) {
-    URL.revokeObjectURL(watermarkURL);
-    watermarkURL = null;
-  }
-
-  const temporaryURL = URL.createObjectURL(file);
-  const image = new Image();
-
-  image.onload = function() {
-    watermarkURL = temporaryURL;
-
-    page.style.setProperty(
-      "--page-watermark",
-      `url("${watermarkURL}")`
-    );
-
-    applyWatermarkSettings();
-  };
-
-  image.onerror = function() {
-    URL.revokeObjectURL(temporaryURL);
-    alert("Unable to load the selected image.");
-  };
-
-  image.src = temporaryURL;
-});
-
-function applyWatermarkSettings() {
-  page.style.setProperty(
-    "--watermark-opacity",
-    watermarkOpacity.value
+  const button = document.querySelector(
+    '.toolbar button:nth-child(2)'
   );
 
-  page.style.setProperty(
-    "--watermark-size",
-    watermarkSize.value + "px"
-  );
-}
-
-watermarkOpacity.addEventListener("input", applyWatermarkSettings);
-watermarkSize.addEventListener("input", applyWatermarkSettings);
-
-function removeWatermark() {
-  page.style.removeProperty("--page-watermark");
-
-  if (watermarkURL) {
-    URL.revokeObjectURL(watermarkURL);
-    watermarkURL = null;
-  }
-
-  watermarkInput.value = "";
+  button.textContent = editingEnabled
+    ? "Lock Text"
+    : "Edit Text";
 }
 
 function addSection() {
+  sectionCount++;
+
+  const container = document.getElementById("extraSections");
   const section = document.createElement("section");
-  section.className = "section";
 
   section.innerHTML = `
-    <h3 class="editable" contenteditable="true">
-      NEW SECTION / YENİ BÖLÜM
-    </h3>
-    <p class="paragraph editable" contenteditable="true">
-      Enter your text here.
-    </p>
+    <div class="section-title" contenteditable="true">
+      EXTRA SECTION ${sectionCount}
+    </div>
+    <div class="long-field">
+      <label>HEADING</label>
+      <div class="editable" contenteditable="true">
+        Click here to enter text.
+      </div>
+    </div>
+    <div class="long-field">
+      <label>DETAILS</label>
+      <div class="editable" contenteditable="true">
+        Enter additional information here.
+      </div>
+    </div>
   `;
 
-  document.getElementById("extraSections").appendChild(section);
-  section.querySelector("p").focus();
-}
+  if (!editingEnabled) {
+    section.querySelectorAll('[contenteditable="true"]')
+      .forEach(function(element) {
+        element.contentEditable = "false";
+      });
+  }
 
-function resetPage() {
-  if (!confirm("Reset the sample page?")) return;
-
-  removeWatermark();
-
-  page.querySelectorAll(".editable").forEach(element => {
-    element.textContent = "";
-  });
-
-  alert("Editable text cleared. Reload the page to restore the original sample.");
+  container.appendChild(section);
 }
 </script>
 
 </body>
 </html>
+
 
 
 
