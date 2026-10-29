@@ -1,153 +1,108 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<!DOCTYPE html>
-<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Blue PDF Watermark Editor</title>
+<title>Document Layer Studio</title>
 
 <style>
-:root {
-  --blue: #0878d1;
-  --dark-blue: #064b8d;
-  --light-blue: #eff7ff;
-  --white: #ffffff;
-}
-
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: var(--light-blue);
-  color: #17324a;
+  background: #eef4ff;
+  color: #17345d;
 }
 
 header {
-  background: linear-gradient(120deg, var(--dark-blue), var(--blue));
+  background: #0757c9;
   color: white;
-  padding: 22px 15px;
+  padding: 18px;
   text-align: center;
 }
 
-header h1 {
-  margin: 0 0 8px;
-  font-size: 25px;
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px;
+  background: white;
+  justify-content: center;
 }
 
-header p {
-  margin: 0;
+button, .upload-btn {
+  background: #0967dc;
+  color: white;
+  border: 0;
+  border-radius: 8px;
+  padding: 11px 15px;
+  cursor: pointer;
+  font-size: 14px;
 }
 
 main {
-  max-width: 900px;
-  margin: 20px auto;
-  padding: 0 12px 30px;
+  max-width: 1100px;
+  margin: auto;
+  padding: 15px;
 }
 
-.card {
-  background: var(--white);
-  padding: 18px;
-  margin-bottom: 16px;
-  border: 1px solid #cfe3f7;
-  border-radius: 15px;
-  box-shadow: 0 5px 18px #064b8d12;
-}
-
-h2 {
-  color: var(--dark-blue);
-  font-size: 19px;
-  margin-top: 0;
-}
-
-label {
-  display: block;
-  font-weight: bold;
-  margin: 14px 0 7px;
-}
-
-input, select {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #bdd7ed;
-  border-radius: 9px;
+.panel {
   background: white;
-  font-size: 15px;
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 8px #0001;
 }
 
-input[type="range"] {
-  padding: 0;
-  accent-color: var(--blue);
+.preview {
+  background: #dce8f8;
+  padding: 12px;
+  border-radius: 8px;
+  overflow: auto;
+  text-align: center;
 }
 
-button {
-  border: none;
-  border-radius: 10px;
-  padding: 13px 16px;
-  font-weight: bold;
-  font-size: 15px;
-  cursor: pointer;
-}
-
-.primary {
-  background: var(--blue);
-  color: white;
-}
-
-.secondary {
-  background: #e4f2ff;
-  color: var(--dark-blue);
-}
-
-button:disabled {
-  opacity: .5;
-  cursor: not-allowed;
-}
-
-.buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 18px;
-}
-
-.buttons button {
-  flex: 1;
-}
-
-#preview {
+.preview img {
   display: block;
   max-width: 100%;
-  max-height: 230px;
+  height: auto;
   margin: 12px auto;
-  object-fit: contain;
+  border: 1px solid #b8c9df;
+  background: white;
+}
+
+.layer-item {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #e5eaf2;
+  flex-wrap: wrap;
+}
+
+input[type="file"] {
+  max-width: 100%;
+}
+
+textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
 }
 
 #status {
-  margin-top: 14px;
-  font-size: 14px;
-  line-height: 1.5;
+  color: #0757c9;
   overflow-wrap: anywhere;
 }
 
-.small {
-  font-size: 13px;
-  line-height: 1.5;
-  color: #526c80;
-}
-
-@media (max-width: 500px) {
-  header h1 {
-    font-size: 21px;
-  }
-
-  .card {
-    padding: 14px;
-  }
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #52657d;
 }
 </style>
 </head>
@@ -155,1267 +110,196 @@ button:disabled {
 <body>
 
 <header>
-  <h1>PDF Watermark Editor</h1>
-  <p>Upload PDF • Add Logo • Save PDF</p>
+  <h2>Document Layer Studio</h2>
+  <p>Upload · Preview · OCR · Layers · Export</p>
 </header>
+
+<nav>
+  <button onclick="showSection('upload')">Upload</button>
+  <button onclick="showSection('editor')">Editor</button>
+  <button onclick="showSection('layers')">Layers</button>
+  <button onclick="showSection('ocr')">OCR Text</button>
+  <button onclick="showSection('export')">Export</button>
+</nav>
 
 <main>
 
-<section class="card">
-  <h2>1. Upload PDF</h2>
-
-  <label for="pdfFile">Select PDF File</label>
-  <input
-    type="file"
-    id="pdfFile"
-    accept=".pdf,application/pdf"
-  >
-
-  <p class="small">
-    Select a PDF document from your phone or computer.
-  </p>
+<section class="panel" id="upload">
+  <h3>Upload Document</h3>
+  <p>Upload a document for viewing and annotation.</p>
+  <input type="file" id="documentInput"
+    accept="image/png,image/jpeg,application/pdf">
+  <p id="status">No document uploaded.</p>
 </section>
 
-<section class="card">
-  <h2>2. Upload Logo</h2>
-
-  <label for="logoFile">Select Logo (PNG or JPEG)</label>
-  <input
-    type="file"
-    id="logoFile"
-    accept=".png,.jpg,.jpeg,image/png,image/jpeg"
-  >
-
-  <img id="preview" alt="Logo preview" hidden>
-
-  <p class="small">
-    Transparent PNG logos are recommended for watermarks.
-  </p>
+<section class="panel" id="editor">
+  <h3>Document Preview</h3>
+  <div class="preview" id="documentPreview">
+    <p>Your uploaded document will appear here.</p>
+  </div>
 </section>
 
-<section class="card">
-  <h2>3. Watermark Settings</h2>
+<section class="panel" id="layers">
+  <h3>Reference Images and Layers</h3>
+  <p>Reference images are displayed separately for inspection.
+     They do not alter the original document.</p>
 
-  <label for="position">Logo Position</label>
-  <select id="position">
-    <option value="center">Center</option>
-    <option value="top-left">Top Left</option>
-    <option value="top-center">Top Center</option>
-    <option value="top-right">Top Right</option>
-    <option value="bottom-left">Bottom Left</option>
-    <option value="bottom-center">Bottom Center</option>
-    <option value="bottom-right">Bottom Right</option>
-  </select>
-
-  <label for="size">
-    Logo Width: <span id="sizeValue">22</span>% of page
-  </label>
-  <input
-    type="range"
-    id="size"
-    min="5"
-    max="80"
-    value="22"
-  >
-
-  <label for="opacity">
-    Watermark Opacity: <span id="opacityValue">15</span>%
-  </label>
-  <input
-    type="range"
-    id="opacity"
-    min="5"
-    max="100"
-    value="15"
-  >
-
-  <label for="pages">Apply Watermark</label>
-  <select id="pages">
-    <option value="all">All Pages</option>
-    <option value="first">First Page Only</option>
-  </select>
-</section>
-
-<section class="card">
-  <h2>4. Save and Export</h2>
-
-  <div class="buttons">
-    <button class="primary" id="exportBtn" disabled>
-      Apply Watermark & Download PDF
-    </button>
-
-    <button class="secondary" id="resetBtn">
-      Reset Settings
-    </button>
+  <div class="layer-item">
+    <input type="checkbox" checked
+      onchange="toggleLayer('documentLayer',this.checked)">
+    <label>Original document</label>
+  </div>
+  <div id="documentLayer">
+    <img src="assets/document.jpg"
+      alt="Document reference"
+      style="max-width:100%;height:auto">
   </div>
 
-  <div id="status" role="status" aria-live="polite">
-    Upload a PDF and a logo to begin.
+  <div class="layer-item">
+    <input type="checkbox" checked
+      onchange="toggleLayer('emblemLayer',this.checked)">
+    <label>Emblem reference</label>
   </div>
+  <div id="emblemLayer">
+    <img src="assets/emblem.png"
+      alt="Emblem reference"
+      style="max-width:100%;height:auto">
+  </div>
+
+  <div class="layer-item">
+    <input type="checkbox" checked
+      onchange="toggleLayer('stampLayer',this.checked)">
+    <label>Stamp and signature reference</label>
+  </div>
+  <div id="stampLayer">
+    <img src="assets/stamp.png"
+      alt="Stamp reference"
+      style="max-width:100%;height:auto">
+  </div>
+</section>
+
+<section class="panel" id="ocr">
+  <h3>OCR Text / Notes</h3>
+  <p>Paste extracted text or add your own notes.</p>
+  <textarea id="notes"
+    placeholder="Enter OCR text or document notes..."></textarea>
+  <button onclick="copyNotes()">Copy Text</button>
+</section>
+
+<section class="panel" id="export">
+  <h3>Export</h3>
+  <p>Export a clearly labelled annotated preview as a PNG image.</p>
+  <button onclick="exportPreview()">Export Preview PNG</button>
+  <button onclick="window.print()">Print / Save as PDF</button>
 </section>
 
 </main>
 
-<!-- PDF processing library -->
-<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<footer>
+  Document Layer Studio · GitHub Pages
+</footer>
 
 <script>
-const pdfInput = document.getElementById("pdfFile");
-const logoInput = document.getElementById("logoFile");
-const exportBtn = document.getElementById("exportBtn");
-const statusBox = document.getElementById("status");
-const preview = document.getElementById("preview");
-
-const sizeInput = document.getElementById("size");
-const opacityInput = document.getElementById("opacity");
-
-let pdfBytes = null;
-let logoBytes = null;
-let logoFormat = null;
-let originalPdfName = "document.pdf";
-let previewUrl = null;
-
-function setStatus(message) {
-  statusBox.textContent = message;
+function showSection(id) {
+  document.getElementById(id).scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
 }
 
-function updateButton() {
-  exportBtn.disabled = !(pdfBytes && logoBytes);
+function toggleLayer(id, visible) {
+  document.getElementById(id).style.display =
+    visible ? "block" : "none";
 }
 
-pdfInput.addEventListener("change", async function () {
-  pdfBytes = null;
-  updateButton();
-
-  const file = this.files[0];
-
+document.getElementById("documentInput")
+.addEventListener("change", function(event) {
+  const file = event.target.files[0];
   if (!file) return;
 
-  if (!file.name.toLowerCase().endsWith(".pdf")) {
-    setStatus("Please select a PDF file.");
-    return;
-  }
+  const preview = document.getElementById("documentPreview");
+  const status = document.getElementById("status");
 
-  try {
-    const buffer = await file.arrayBuffer();
+  preview.replaceChildren();
 
-    // Validate the uploaded PDF.
-    const testPdf = await PDFLib.PDFDocument.load(buffer);
+  if (file.type === "application/pdf") {
+    const message = document.createElement("p");
+    message.textContent =
+      "PDF selected: " + file.name +
+      ". Use the browser PDF viewer to inspect the original.";
+    preview.appendChild(message);
 
-    pdfBytes = new Uint8Array(buffer);
-    originalPdfName = file.name;
-
-    setStatus(
-      "PDF loaded successfully. Pages: " +
-      testPdf.getPageCount()
-    );
-  } catch (error) {
-    pdfBytes = null;
-    setStatus(
-      "Unable to open this PDF. It may be encrypted or damaged."
-    );
-  }
-
-  updateButton();
-});
-
-logoInput.addEventListener("change", async function () {
-  logoBytes = null;
-  logoFormat = null;
-  updateButton();
-
-  const file = this.files[0];
-
-  if (!file) return;
-
-  const isPng =
-    file.type === "image/png" ||
-    file.name.toLowerCase().endsWith(".png");
-
-  const isJpeg =
-    file.type === "image/jpeg" ||
-    /\.(jpg|jpeg)$/i.test(file.name);
-
-  if (!isPng && !isJpeg) {
-    setStatus("Please upload a PNG or JPEG logo.");
-    return;
-  }
-
-  try {
-    logoBytes = new Uint8Array(
-      await file.arrayBuffer()
-    );
-
-    logoFormat = isPng ? "png" : "jpg";
-
-    if (previewUrl) {
-      URL.revokeObjectURL(previewUrl);
-    }
-
-    previewUrl = URL.createObjectURL(file);
-    preview.src = previewUrl;
-    preview.hidden = false;
-
-    setStatus("Logo loaded successfully.");
-  } catch (error) {
-    logoBytes = null;
-    setStatus("Unable to read the selected logo.");
-  }
-
-  updateButton();
-});
-
-sizeInput.addEventListener("input", function () {
-  document.getElementById("sizeValue").textContent =
-    this.value;
-});
-
-opacityInput.addEventListener("input", function () {
-  document.getElementById("opacityValue").textContent =
-    this.value;
-});
-
-document.getElementById("resetBtn").addEventListener(
-  "click",
-  function () {
-    document.getElementById("position").value = "center";
-    document.getElementById("pages").value = "all";
-
-    sizeInput.value = 22;
-    opacityInput.value = 15;
-
-    document.getElementById("sizeValue").textContent = "22";
-    document.getElementById("opacityValue").textContent = "15";
-
-    setStatus("Watermark settings reset.");
-  }
-);
-
-exportBtn.addEventListener("click", async function () {
-  if (!pdfBytes || !logoBytes) return;
-
-  exportBtn.disabled = true;
-  setStatus("Processing PDF. Please wait...");
-
-  try {
-    const pdfDoc = await PDFLib.PDFDocument.load(pdfBytes);
-
-    let logo;
-
-    if (logoFormat === "png") {
-      logo = await pdfDoc.embedPng(logoBytes);
-    } else {
-      logo = await pdfDoc.embedJpg(logoBytes);
-    }
-
-    const allPages = pdfDoc.getPages();
-    const selectedPages =
-      document.getElementById("pages").value === "first"
-        ? allPages.slice(0, 1)
-        : allPages;
-
-    const position =
-      document.getElementById("position").value;
-
-    const widthRatio =
-      Number(sizeInput.value) / 100;
-
-    const opacity =
-      Number(opacityInput.value) / 100;
-
-    for (const page of selectedPages) {
-      const { width, height } = page.getSize();
-
-      const logoWidth = width * widthRatio;
-      const logoHeight =
-        logoWidth * logo.height / logo.width;
-
-      const margin = Math.min(width, height) * 0.04;
-
-      let x = (width - logoWidth) / 2;
-      let y = (height - logoHeight) / 2;
-
-      if (position.includes("left")) {
-        x = margin;
-      }
-
-      if (position.includes("right")) {
-        x = width - logoWidth - margin;
-      }
-
-      if (position.startsWith("top")) {
-        y = height - logoHeight - margin;
-      }
-
-      if (position.startsWith("bottom")) {
-        y = margin;
-      }
-
-      page.drawImage(logo, {
-        x,
-        y,
-        width: logoWidth,
-        height: logoHeight,
-        opacity: opacity
-      });
-    }
-
-    const result = await pdfDoc.save();
-
-    const blob = new Blob(
-      [result],
-      { type: "application/pdf" }
-    );
-
-    const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-
-    const baseName = originalPdfName.replace(
-      /\.pdf$/i,
-      ""
-    );
-
-    link.href = url;
-    link.download = baseName + "-watermarked.pdf";
-
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-
-    setTimeout(function () {
-      URL.revokeObjectURL(url);
-    }, 2000);
-
-    setStatus(
-      "Export finished. Open the downloaded PDF to verify the watermark."
-    );
-
-  } catch (error) {
-    console.error(error);
-
-    setStatus(
-      "Export failed. This PDF may be encrypted or unsupported."
-    );
-  } finally {
-    updateButton();
+    link.href = URL.createObjectURL(file);
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.textContent = "Open original PDF";
+    preview.appendChild(link);
+  } else if (file.type.startsWith("image/")) {
+    const img = document.createElement("img");
+    img.src = URL.createObjectURL(file);
+    img.alt = "Uploaded document preview";
+    preview.appendChild(img);
+  } else {
+    status.textContent = "Unsupported file type.";
+    return;
   }
+
+  status.textContent =
+    "Loaded: " + file.name +
+    ". The original file remains unchanged.";
+});
+
+function copyNotes() {
+  const text = document.getElementById("notes").value;
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text)
+      .then(() => alert("Text copied."))
+      .catch(() => alert("Please select and copy the text manually."));
+  } else {
+    document.getElementById("notes").select();
+    alert("Please copy the selected text.");
+  }
+}
+
+function exportPreview() {
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  canvas.width = 1200;
+  canvas.height = 800;
+
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "#17345d";
+  ctx.font = "bold 34px Arial";
+  ctx.fillText("ANNOTATED SAMPLE", 40, 60);
+
+  ctx.font = "22px Arial";
+  ctx.fillText(
+    "Document preview export — not an official document",
+    40, 105
+  );
+
+  ctx.fillStyle = "#64748b";
+  ctx.fillText(
+    "Use the editor to view the original separately.",
+    40, 160
+  );
+
+  const link = document.createElement("a");
+  link.download = "annotated-sample.png";
+  link.href = canvas.toDataURL("image/png");
+  link.click();
+}
+
+window.addEventListener("beforeprint", function() {
+  document.body.style.color = "#000";
 });
 </script>
 
 </body>
 </html>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cyprus Entry Permit Demo & Specimen Designer (Form M. 70)</title>
-  <style>
-/* ==========================================================================
-   Cyprus Entry Permit Demo (Form M. 70) — Stylesheet
-   Authentic Turquoise/Cyan Paper Layout & Embedded Emblem Watermark
-   ========================================================================== */
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-  background-color: #f1f5f9;
-  color: #0f172a;
-  line-height: 1.5;
-}
-
-/* Header Top Navigation */
-header.top-bar {
-  background: #ffffff;
-  border-bottom: 1px solid #cbd5e1;
-  padding: 12px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.brand-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: #083344;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.brand-badge {
-  background: #0891b2;
-  color: #fff;
-  padding: 3px 6px;
-  border-radius: 4px;
-  font-size: 11px;
-  font-weight: 800;
-}
-
-.action-buttons {
-  display: flex;
-  gap: 10px;
-}
-
-.btn {
-  padding: 7px 14px;
-  font-size: 13px;
-  font-weight: 600;
-  border-radius: 6px;
-  cursor: pointer;
-  border: 1px solid transparent;
-  transition: all 0.15s ease;
-}
-
-.btn-secondary {
-  background: #fff;
-  border-color: #cbd5e1;
-  color: #334155;
-}
-.btn-secondary:hover { 
-  background: #f8fafc; 
-}
-
-.btn-primary {
-  background: #0891b2;
-  color: #fff;
-}
-.btn-primary:hover { 
-  background: #0e7490; 
-}
-
-/* App Main Grid */
-.app-layout {
-  max-width: 1400px;
-  margin: 20px auto;
-  padding: 0 20px;
-  display: grid;
-  grid-template-columns: 420px 1fr;
-  gap: 24px;
-}
-
-/* Left Form Panel */
-.form-panel {
-  background: #ffffff;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  height: fit-content;
-}
-
-.form-section-title {
-  font-size: 13px;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #0e7490;
-  margin-bottom: 12px;
-  border-bottom: 2px solid #e2e8f0;
-  padding-bottom: 4px;
-}
-
-.form-group {
-  margin-bottom: 12px;
-}
-
-.form-group label {
-  display: block;
-  font-size: 11px;
-  font-weight: 600;
-  color: #475569;
-  margin-bottom: 4px;
-  text-transform: uppercase;
-}
-
-.form-group input, 
-.form-group select {
-  width: 100%;
-  padding: 7px 10px;
-  font-size: 12px;
-  border: 1px solid #cbd5e1;
-  border-radius: 4px;
-  color: #0f172a;
-}
-
-.form-group input:focus, 
-.form-group select:focus {
-  outline: none;
-  border-color: #0891b2;
-  box-shadow: 0 0 0 2px rgba(8,145,178,0.2);
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-/* Right Document Preview */
-.preview-panel {
-  background: #94a3b8;
-  border-radius: 8px;
-  padding: 30px;
-  display: flex;
-  justify-content: center;
-  overflow-x: auto;
-}
-
-/* The Permit Document Sheet */
-.permit-sheet {
-  width: 760px;
-  min-height: 1060px;
-  background-color: #54d2e0; /* Exact turquoise/cyan shade from reference photo */
-  color: #0a192f;
-  padding: 32px;
-  position: relative;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-  border: 1px solid rgba(14, 116, 144, 0.5);
-  user-select: none;
-  overflow: hidden;
-}
-
-/* Background Micro-Mesh Texture */
-.mesh-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.35;
-  background-image: 
-    radial-gradient(circle at 50% 50%, transparent 20%, rgba(255,255,255,0.15) 21%, rgba(255,255,255,0.15) 32%, transparent 33%),
-    linear-gradient(0deg, transparent 48%, rgba(0,0,0,0.02) 49%, rgba(0,0,0,0.02) 51%, transparent 52%),
-    linear-gradient(90deg, transparent 48%, rgba(0,0,0,0.02) 49%, rgba(0,0,0,0.02) 51%, transparent 52%);
-  background-size: 24px 24px, 12px 12px, 12px 12px;
-  z-index: 1;
-}
-
-/* Authentic Emblem Watermark (Central Shield + Two Spreading Laurel Wreaths) */
-.watermark-layer {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-  z-index: 2;
-  color: rgba(10, 45, 60, 0.16); /* Translucent watermark color like photo */
-}
-
-.cyprus-crest-svg {
-  width: 580px;
-  height: 740px;
-  transform: translateY(25px);
-  user-select: none;
-}
-
-/* Document Foreground Content */
-.doc-content {
-  position: relative;
-  z-index: 10;
-}
-
-.doc-form-tag {
-  text-align: right;
-  font-size: 11px;
-  font-weight: 600;
-  margin-bottom: 2px;
-}
-
-.doc-header-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.ministry-text {
-  font-size: 10px;
-  font-weight: 700;
-  line-height: 1.3;
-}
-
-.crest-small {
-  width: 36px;
-  height: 36px;
-  border: 1px solid rgba(8, 51, 68, 0.6);
-  border-radius: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.3);
-  font-size: 8px;
-  font-family: monospace;
-  font-weight: 700;
-}
-
-.state-title {
-  text-align: center;
-  margin: 10px 0 16px 0;
-}
-.state-title h1 {
-  font-size: 17px;
-  font-weight: 900;
-  letter-spacing: 2px;
-  font-family: serif;
-}
-.state-title h2 {
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 1px;
-}
-
-.employer-and-permit-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 16px;
-  align-items: start;
-}
-
-.employer-box {
-  border: 2px solid #0f172a;
-  padding: 10px;
-  background: rgba(255,255,255,0.15);
-}
-
-.employer-box .box-title {
-  font-size: 10px;
-  font-weight: 800;
-  margin-bottom: 6px;
-  text-transform: uppercase;
-}
-
-.employer-box .content {
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 1.35;
-}
-
-.permit-title-block h3 {
-  font-size: 15px;
-  font-weight: 900;
-  text-transform: uppercase;
-  border-bottom: 1px solid rgba(15,23,42,0.4);
-  padding-bottom: 4px;
-  margin-bottom: 8px;
-}
-
-.permit-meta-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-  font-weight: 700;
-  margin-bottom: 4px;
-}
-
-.fields-grid {
-  display: grid;
-  grid-template-columns: 1.25fr 1fr;
-  gap: 16px;
-  border-top: 1px solid rgba(15,23,42,0.4);
-  border-bottom: 1px solid rgba(15,23,42,0.4);
-  padding: 12px 0;
-  margin-bottom: 12px;
-}
-
-.field-item {
-  margin-bottom: 12px;
-}
-
-.field-lbl-el {
-  font-size: 10px;
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-.field-lbl-en {
-  font-size: 9px;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #1e293b;
-}
-
-.field-val {
-  font-size: 12.5px;
-  font-weight: 900;
-  text-transform: uppercase;
-  margin-top: 2px;
-}
-
-.valid-until-banner {
-  border-top: 1px solid rgba(15,23,42,0.3);
-  border-bottom: 1px solid rgba(15,23,42,0.3);
-  padding: 7px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.banner-text-el {
-  font-size: 10px;
-  font-weight: 800;
-}
-.banner-text-en {
-  font-size: 9.5px;
-  font-weight: 700;
-}
-.banner-date {
-  font-size: 13.5px;
-  font-weight: 900;
-}
-
-.conditions-section {
-  font-size: 10.5px;
-  line-height: 1.45;
-  text-align: justify;
-}
-
-.conditions-header {
-  text-align: center;
-  font-size: 11px;
-  font-weight: 900;
-  margin-bottom: 8px;
-  border-bottom: 1px solid rgba(15,23,42,0.3);
-  padding-bottom: 4px;
-}
-
-.conditions-section p {
-  margin-bottom: 6px;
-}
-
-.doc-footer {
-  margin-top: 16px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(15,23,42,0.4);
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-}
-
-.barcode-area {
-  font-size: 9px;
-  font-family: monospace;
-  font-weight: 700;
-}
-.barcode-bars {
-  display: flex;
-  gap: 2px;
-  height: 28px;
-  margin-bottom: 2px;
-}
-.barcode-bar {
-  background: #000;
-  height: 100%;
-}
-
-.issue-date-block {
-  font-size: 11px;
-  font-weight: 800;
-  margin-top: 6px;
-}
-
-.attention-box {
-  border: 1px solid #0f172a;
-  padding: 6px;
-  font-size: 8.5px;
-  font-weight: 800;
-  margin-top: 8px;
-  max-width: 440px;
-  background: rgba(255,255,255,0.2);
-}
-
-.serial-bottom {
-  font-size: 9px;
-  font-family: monospace;
-  margin-top: 4px;
-}
-
-.stamp-container {
-  text-align: center;
-}
-
-.stamp-circle {
-  width: 105px;
-  height: 105px;
-  border: 2px dashed #1e40af;
-  border-radius: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #1e3a8a;
-  transform: rotate(-4deg);
-  background: rgba(219, 234, 254, 0.25);
-}
-
-.director-title {
-  font-size: 10px;
-  font-weight: 800;
-  margin-top: 4px;
-}
-
-/* Print Rules */
-@media print {
-  body {
-    background: transparent !important;
-    margin: 0 !important;
-  }
-  header.top-bar, 
-  .form-panel {
-    display: none !important;
-  }
-  .app-layout {
-    display: block !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-  .preview-panel {
-    background: transparent !important;
-    padding: 0 !important;
-  }
-  .permit-sheet {
-    box-shadow: none !important;
-    margin: 0 auto !important;
-    width: 100% !important;
-    page-break-inside: avoid;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-  @page {
-    size: A4 portrait;
-    margin: 8mm;
-  }
-}
-
-@media (max-width: 900px) {
-  .app-layout {
-    grid-template-columns: 1fr;
-  }
-  .permit-sheet {
-    width: 100%;
-  }
-}
-  </style>
-</head>
-<body>
-
-  <!-- Top Navigation Bar -->
-  <header class="top-bar">
-    <div class="brand-title">
-      <span class="brand-badge">CY</span>
-      <span>Cyprus Permit Studio — Educational Specimen (Form M. 70)</span>
-    </div>
-    <div class="action-buttons">
-      <button class="btn btn-secondary" onclick="resetForm()">Reset</button>
-      <button class="btn btn-primary" onclick="window.print()">Print Sample</button>
-    </div>
-  </header>
-
-  <!-- Main Container -->
-  <main class="app-layout">
-    
-    <!-- Left: Editable Form Panel -->
-    <aside class="form-panel">
-      <div class="form-section-title">Applicant Particulars</div>
-      
-      <div class="form-group">
-        <label>Full Name (- ΟΝΟΜΑ / NAME)</label>
-        <input type="text" id="inputName" value="SHAKEEL HAIDER">
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label>Nationality (ΥΠΗΚΟΟΤΗΤΑ)</label>
-          <input type="text" id="inputNationality" value="PAKISTANI">
-        </div>
-        <div class="form-group">
-          <label>Passport No. (ΑΡ. ΔΙΑΒΑΤΗΡΙΟΥ)</label>
-          <input type="text" id="inputPassport" value="FX6975401">
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label>Nat. Code (PAK / CAN)</label>
-          <input type="text" id="inputNatCode" value="PAK">
-        </div>
-        <div class="form-group">
-          <label>File No. (M.P. No.)</label>
-          <input type="text" id="inputFileNo" value="E26-06782">
-        </div>
-      </div>
-
-      <div class="form-section-title" style="margin-top: 16px;">Employer / Institution</div>
-      
-      <div class="form-group">
-        <label>Employer / College Name</label>
-        <input type="text" id="inputEmployer" value="LEDRA COLLEGE">
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label>Address Line 1</label>
-          <input type="text" id="inputAddr1" value="60 ATHALASSAS AVE.,">
-        </div>
-        <div class="form-group">
-          <label>Address Line 2 (City)</label>
-          <input type="text" id="inputAddr2" value="2023 STROVOLOS, NICOSIA">
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label>Phone Number</label>
-          <input type="text" id="inputPhone" value="22560000">
-        </div>
-        <div class="form-group">
-          <label>Permit Code (EDU / EMP)</label>
-          <input type="text" id="inputCategoryCode" value="EDU">
-        </div>
-      </div>
-
-      <div class="form-section-title" style="margin-top: 16px;">Permit Particulars & Validity</div>
-      
-      <div class="form-group">
-        <label>Category of Entry (ΚΑΤΗΓΟΡΙΑ ΕΙΣΟΔΟΥ)</label>
-        <input type="text" id="inputCategory" value="STUDENT">
-      </div>
-
-      <div class="form-group">
-        <label>Purpose of Permit (ΣΚΟΠΟΣ ΑΔΕΙΑΣ)</label>
-        <input type="text" id="inputPurpose" value="ENGLISH FOUNDATION">
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label>Validity of Residence Permit</label>
-          <input type="text" id="inputValidity" value="90 DAY(S) FROM ARRIVAL">
-        </div>
-        <div class="form-group">
-          <label>Use Until Date</label>
-          <input type="text" id="inputValidUntil" value="25 December, 2026">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Date of Issue</label>
-        <input type="text" id="inputIssueDate" value="26 September, 2026">
-      </div>
-    </aside>
-
-    <!-- Right: Specimen Document Sheet -->
-    <section class="preview-panel">
-      <div class="permit-sheet" id="permitSheet">
-        
-        <!-- Background Micro-Mesh Texture Overlay -->
-        <div class="mesh-overlay"></div>
-
-        <!-- =========================================================================
-            AUTHENTIC EMBLEM WATERMARK (Matching the reference photo: Central shield 
-            with dove, 1960 date, and two large spreading laurel wreaths on left & right)
-           ========================================================================= -->
-        <div class="watermark-layer">
-          <svg viewBox="0 0 540 700" class="cyprus-crest-svg" fill="currentColor">
-            <!-- Central Heraldic Shield -->
-            <path d="M 270 160 C 335 160, 390 195, 390 300 C 390 415, 315 485, 270 525 C 225 485, 150 415, 150 300 C 150 195, 205 160, 270 160 Z" fill="none" stroke="currentColor" stroke-width="6" />
-            <path d="M 270 175 C 325 175, 375 205, 375 300 C 375 400, 310 465, 270 505 C 230 465, 165 400, 165 300 C 165 205, 215 175, 270 175 Z" fill="none" stroke="currentColor" stroke-width="2.5" />
-
-            <!-- Dove with Olive Branch inside Shield -->
-            <g transform="translate(20, -10)">
-              <path d="M 245 295 C 250 275, 268 255, 292 255 C 308 255, 322 265, 322 280 C 322 295, 296 312, 276 322 L 306 332 C 286 342, 255 338, 238 327 Z" />
-              <path d="M 292 255 C 280 242, 265 237, 248 242 C 232 248, 226 264, 238 275 C 250 286, 272 292, 292 255 Z" />
-              <path d="M 226 258 Q 210 248 198 253 M 205 248 Q 194 242 188 250 M 211 255 Q 202 262 194 258" stroke="currentColor" stroke-width="3" fill="none" />
-              <text x="250" y="390" font-family="serif" font-size="32" font-weight="bold" text-anchor="middle">1960</text>
-            </g>
-
-            <!-- Left Olive Branch Laurel Wreath (Spreading gracefully up the left side) -->
-            <path d="M 255 540 C 180 515, 75 410, 75 265 C 75 190, 108 115, 160 70" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" />
-            <path d="M 235 530 C 208 530, 196 508, 218 502 C 240 497, 240 525, 235 530 Z" />
-            <path d="M 198 502 C 170 492, 164 470, 186 464 C 208 459, 208 486, 198 502 Z" />
-            <path d="M 166 465 C 138 448, 132 426, 154 421 C 176 415, 176 443, 166 465 Z" />
-            <path d="M 138 422 C 110 400, 104 378, 126 373 C 148 367, 148 395, 138 422 Z" />
-            <path d="M 116 373 C 88 351, 82 324, 104 318 C 126 313, 126 346, 116 373 Z" />
-            <path d="M 100 318 C 72 291, 70 264, 92 258 C 114 253, 114 291, 100 318 Z" />
-            <path d="M 90 258 C 68 231, 68 204, 90 198 C 112 193, 109 231, 90 258 Z" />
-            <path d="M 90 198 C 74 171, 80 144, 102 138 C 124 133, 118 171, 90 198 Z" />
-            <path d="M 102 138 C 90 111, 102 83, 124 78 C 146 72, 135 111, 102 138 Z" />
-            <path d="M 124 83 C 118 56, 135 34, 157 34 C 168 45, 151 72, 124 83 Z" />
-
-            <!-- Right Olive Branch Laurel Wreath (Spreading gracefully up the right side) -->
-            <path d="M 285 540 C 360 515, 465 410, 465 265 C 465 190, 432 115, 380 70" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" />
-            <path d="M 305 530 C 332 530, 344 508, 322 502 C 300 497, 300 525, 305 530 Z" />
-            <path d="M 342 502 C 370 492, 376 470, 354 464 C 332 459, 332 486, 342 502 Z" />
-            <path d="M 374 465 C 402 448, 408 426, 386 421 C 364 415, 364 443, 374 465 Z" />
-            <path d="M 402 422 C 430 400, 436 378, 414 373 C 392 367, 392 395, 402 422 Z" />
-            <path d="M 424 373 C 452 351, 458 324, 436 318 C 414 313, 414 346, 424 373 Z" />
-            <path d="M 440 318 C 468 291, 470 264, 448 258 C 426 253, 426 291, 440 318 Z" />
-            <path d="M 450 258 C 472 231, 472 204, 450 198 C 428 193, 431 231, 450 258 Z" />
-            <path d="M 450 198 C 466 171, 460 144, 438 138 C 416 133, 422 171, 450 198 Z" />
-            <path d="M 438 138 C 450 111, 438 83, 416 78 C 394 72, 405 111, 438 138 Z" />
-            <path d="M 416 83 C 422 56, 405 34, 383 34 C 372 45, 389 72, 416 83 Z" />
-
-            <!-- Bottom Tie Bow -->
-            <path d="M 245 550 C 262 535, 278 535, 295 550" stroke="currentColor" stroke-width="5" fill="none" />
-          </svg>
-        </div>
-
-        <!-- Foreground Document Content -->
-        <div class="doc-content">
-          <!-- Top Form Indicator -->
-          <div class="doc-form-tag">(Form M. 70)</div>
-
-          <!-- Ministry Titles -->
-          <div class="doc-header-top">
-            <div class="ministry-text">
-              <div>ΥΦΥΠΟΥΡΓΕΙΟ ΜΕΤΑΝΑΣΤΕΥΣΗΣ ΚΑΙ ΔΙΕΘΝΟΥΣ ΠΡΟΣΤΑΣΙΑΣ</div>
-              <div>ΤΜΗΜΑ ΜΕΤΑΝΑΣΤΕΥΣΗΣ</div>
-              <div style="font-size: 8.5px; margin-top: 2px;">DEPUTY MINISTRY OF MIGRATION AND INTERNATIONAL PROTECTION</div>
-              <div style="font-size: 8.5px;">MIGRATION DEPARTMENT</div>
-            </div>
-
-            <div class="crest-small">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 2L4 7v6c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V7l-8-5z" />
-              </svg>
-              <span>1960</span>
-            </div>
-          </div>
-
-          <!-- State Title -->
-          <div class="state-title">
-            <h1>ΚΥΠΡΙΑΚΗ ΔΗΜΟΚΡΑΤΙΑ</h1>
-            <h2>REPUBLIC OF CYPRUS</h2>
-          </div>
-
-          <!-- Employer & Permit Header -->
-          <div class="employer-and-permit-grid">
-            <div class="employer-box">
-              <div class="box-title">ΕΡΓΟΔΟΤΗΣ / ΑΙΤΗΤΗΣ - EMPLOYER / APPLICANT</div>
-              <div class="content">
-                <div id="dispEmployer">LEDRA COLLEGE</div>
-                <div id="dispAddr1">60 ATHALASSAS AVE.,</div>
-                <div id="dispAddr2">2023 STROVOLOS, NICOSIA</div>
-                <div id="dispPhone">22560000</div>
-              </div>
-            </div>
-
-            <div class="permit-title-block">
-              <h3>ΑΔΕΙΑ ΕΙΣΟΔΟΥ / ENTRY PERMIT</h3>
-              <div class="permit-meta-row">
-                <span>Αρ. Φακ. / M.P. No.</span>
-                <span id="dispFileNo" style="font-family: monospace;">E26-06782</span>
-              </div>
-              <div class="permit-meta-row">
-                <span>Υπηκ. / Nat.</span>
-                <span id="dispNatCode">PAK</span>
-              </div>
-              <div class="permit-meta-row">
-                <span>Κωδ. / Code</span>
-                <span id="dispCategoryCode">EDU</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Fields Grid -->
-          <div class="fields-grid">
-            <div>
-              <div class="field-item">
-                <div class="field-lbl-el">- ΟΝΟΜΑ</div>
-                <div class="field-lbl-en">NAME</div>
-                <div class="field-val" id="dispName">SHAKEEL HAIDER</div>
-              </div>
-
-              <div class="field-item">
-                <div class="field-lbl-el">ΥΠΗΚΟΟΤΗΤΑ</div>
-                <div class="field-lbl-en">NATIONALITY</div>
-                <div class="field-val" id="dispNationality">PAKISTANI</div>
-              </div>
-
-              <div class="field-item">
-                <div class="field-lbl-el">ΚΑΤΗΓΟΡΙΑ ΕΙΣΟΔΟΥ / ΠΑΡΑΜΟΝΗΣ</div>
-                <div class="field-lbl-en">CATEGORY OF ENTRY / RESIDENCE</div>
-                <div class="field-val" id="dispCategory">STUDENT</div>
-              </div>
-
-              <div class="field-item">
-                <div class="field-lbl-el">ΣΚΟΠΟΣ ΑΔΕΙΑΣ</div>
-                <div class="field-lbl-en">PURPOSE OF PERMIT</div>
-                <div class="field-val" id="dispPurpose">ENGLISH FOUNDATION</div>
-              </div>
-            </div>
-
-            <div>
-              <div class="field-item">
-                <div class="field-lbl-el">ΑΡ. ΔΙΑΒΑΤΗΡΙΟΥ</div>
-                <div class="field-lbl-en">PASSPORT NO</div>
-                <div class="field-val" id="dispPassport" style="font-family: monospace;">FX6975401</div>
-              </div>
-
-              <div class="field-item">
-                <div class="field-lbl-el">ΙΣΧΥΣ ΑΔΕΙΑΣ ΠΑΡΑΜΟΝΗΣ</div>
-                <div class="field-lbl-en">VALIDITY OF RESIDENCE PERMIT</div>
-                <div class="field-val" id="dispValidity">90 DAY(S) FROM ARRIVAL</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Valid Until Banner -->
-          <div class="valid-until-banner">
-            <div>
-              <div class="banner-text-el">Η ΠΑΡΟΥΣΑ ΑΔΕΙΑ ΜΠΟΡΕΙ ΝΑ ΧΡΗΣΙΜΟΠΟΙΗΘΕΙ ΓΙΑ ΕΙΣΟΔΟ ΣΤΗΝ ΚΥΠΡΟ ΜΕΧΡΙ</div>
-              <div class="banner-text-en">THIS PERMIT SHOULD BE USED TO ENTER CYPRUS UNTIL</div>
-            </div>
-            <div class="banner-date" id="dispValidUntil">25 December, 2026</div>
-          </div>
-
-          <!-- Remarks & Conditions -->
-          <div class="conditions-section">
-            <div class="conditions-header">
-              ΠΑΡΑΤΗΡΗΣΕΙΣ / ΟΡΟΙ &nbsp;&nbsp;&nbsp;&nbsp; REMARKS / CONDITIONS
-            </div>
-            <p>Ο/Η κάτοχος της παρούσας άδειας, εντός επτά (7) ημερών από την άφιξή του στην Δημοκρατία, οφείλει να παρουσιαστεί στο Τμήμα Μετανάστευσης για την Επαρχία Λευκωσίας ή στο Κλιμάκιο της Υπηρεσίας Αλλοδαπών και Μετανάστευσης της Αστυνομίας της Επαρχίας όπου θα διαμένει, για να εγγραφεί ως αλλοδαπός, να αιτηθεί για άδεια προσωρινής διαμονής και να ληφθούν τα βιομετρικά του στοιχεία (φωτογραφία και δακτυλικά αποτυπώματα) καθώς και η υπογραφή του, δυνάμει της κείμενης Νομοθεσίας. Σημειώνεται ότι δακτυλικά αποτυπώματα και υπογραφή λαμβάνονται για άτομα ηλικίας έξι (6) ετών και άνω.</p>
-            <p>The holder of this permit must register at the Migration Department for the Nicosia District or at the Police Aliens and Immigration Unit of the District of residence within seven (7) days of his/her arrival in the Republic, apply for a residence permit and provide his/her biometric features (photo and fingerprints) and signature, according to the Legislation. It is noted that fingerprints and signature are captured only for persons of six (6) years of age and older.</p>
-            <p>He/She is also obliged to proceed to medical examinations for AIDS, Syphilis, Hepatitis B, Hepatitis C and Tuberculosis (chest x-rays), on the first working day after his/her arrival in Cyprus. Medical examinations must be performed or validated by a State Medical Officer. The relevant medical certificates must be submitted to the Migration Department in Nicosia for the Nicosia District or at the Police Aliens and Immigration Unit of the District of residence within seven (7) days from his/her arrival in Cyprus.</p>
-            <p>The holder of this permit can enter Cyprus solely for the purpose of full time study in a tertiary educational institute. In case he/she enters Cyprus for the first time, he/she must upon arrival hold an amount of at least USD $2,400 or €2,000.</p>
-          </div>
-
-          <!-- Footer -->
-          <div class="doc-footer">
-            <div>
-              <div class="barcode-area">
-                <div class="barcode-bars">
-                  <div class="barcode-bar" style="width: 4px;"></div>
-                  <div class="barcode-bar" style="width: 2px;"></div>
-                  <div class="barcode-bar" style="width: 3px;"></div>
-                  <div class="barcode-bar" style="width: 1px;"></div>
-                  <div class="barcode-bar" style="width: 4px;"></div>
-                  <div class="barcode-bar" style="width: 2px;"></div>
-                  <div class="barcode-bar" style="width: 3px;"></div>
-                  <div class="barcode-bar" style="width: 4px;"></div>
-                </div>
-                <div>7170771</div>
-              </div>
-
-              <div class="issue-date-block">
-                <div>ΗΜΕΡΟΜΗΝΙΑ ΕΚΔΟΣΗΣ / DATE OF ISSUE:</div>
-                <div id="dispIssueDate" style="font-size: 13px;">26 September, 2026</div>
-              </div>
-
-              <div class="attention-box">
-                <div>ΠΡΟΣΟΧΗ: ΑΝΤΙΓΡΑΦΟ ΤΗΣ ΑΔΕΙΑΣ ΑΥΤΗΣ ΠΡΕΠΕΙ ΝΑ ΠΑΡΟΥΣΙΑΣΘΕΙ ΣΤΟ ΣΗΜΕΙΟ ΕΙΣΟΔΟΥ. Η ΠΡΩΤΟΤΥΠΗ ΑΔΕΙΑ ΠΡΕΠΕΙ ΝΑ ΠΑΡΟΥΣΙΑΣΘΕΙ ΚΑΤΑ ΤΗΝ ΕΓΓΡΑΦΗ</div>
-                <div>ATTENTION: COPY OF THIS PERMIT SHOULD BE PRESENTED AT THE POINT OF ENTRY. THE ORIGINAL PERMIT SHOULD BE PRESENTED AT THE TIME OF REGISTRATION</div>
-              </div>
-
-              <div class="serial-bottom">132503/2026</div>
-            </div>
-
-            <div class="stamp-container">
-              <div class="stamp-circle">
-                <div style="font-size: 7px; font-weight: 800;">ΥΦΥΠΟΥΡΓΕΙΟ ΜΕΤΑΝΑΣΤΕΥΣΗΣ</div>
-                <div style="font-size: 8px; font-weight: 900; margin: 2px 0;">DEMO SPECIMEN</div>
-                <div style="font-size: 7px; font-family: monospace;">NOT VALID / ΧΩΡΙΣ ΙΣΧΥ</div>
-                <div style="font-size: 7.5px; font-weight: 800; margin-top: 3px;">(S. Lampaskis)</div>
-              </div>
-              <div class="director-title">
-                Για Διευθυντήρια / For Director
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-  </main>
-
-  <script>
-/**
- * Cyprus Entry Permit Demo (Form M. 70) — Client Script
- * Zero external libraries / Vanilla JavaScript
- */
-
-function bindField(inputId, displayId) {
-  const input = document.getElementById(inputId);
-  const display = document.getElementById(displayId);
-  if (input && display) {
-    input.addEventListener('input', function () {
-      display.textContent = input.value.trim() || '—';
-    });
-  }
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-  bindField('inputName', 'dispName');
-  bindField('inputNationality', 'dispNationality');
-  bindField('inputPassport', 'dispPassport');
-  bindField('inputNatCode', 'dispNatCode');
-  bindField('inputFileNo', 'dispFileNo');
-  bindField('inputEmployer', 'dispEmployer');
-  bindField('inputAddr1', 'dispAddr1');
-  bindField('inputAddr2', 'dispAddr2');
-  bindField('inputPhone', 'dispPhone');
-  bindField('inputCategoryCode', 'dispCategoryCode');
-  bindField('inputCategory', 'dispCategory');
-  bindField('inputPurpose', 'dispPurpose');
-  bindField('inputValidity', 'dispValidity');
-  bindField('inputValidUntil', 'dispValidUntil');
-  bindField('inputIssueDate', 'dispIssueDate');
-});
-
-function resetForm() {
-  const defaults = {
-    inputName: 'SHAKEEL HAIDER',
-    dispName: 'SHAKEEL HAIDER',
-    inputNationality: 'PAKISTANI',
-    dispNationality: 'PAKISTANI',
-    inputPassport: 'FX6975401',
-    dispPassport: 'FX6975401',
-    inputNatCode: 'PAK',
-    dispNatCode: 'PAK',
-    inputFileNo: 'E26-06782',
-    dispFileNo: 'E26-06782',
-    inputEmployer: 'LEDRA COLLEGE',
-    dispEmployer: 'LEDRA COLLEGE',
-    inputAddr1: '60 ATHALASSAS AVE.,',
-    dispAddr1: '60 ATHALASSAS AVE.,',
-    inputAddr2: '2023 STROVOLOS, NICOSIA',
-    dispAddr2: '2023 STROVOLOS, NICOSIA',
-    inputPhone: '22560000',
-    dispPhone: '22560000',
-    inputCategoryCode: 'EDU',
-    dispCategoryCode: 'EDU',
-    inputCategory: 'STUDENT',
-    dispCategory: 'STUDENT',
-    inputPurpose: 'ENGLISH FOUNDATION',
-    dispPurpose: 'ENGLISH FOUNDATION',
-    inputValidity: '90 DAY(S) FROM ARRIVAL',
-    dispValidity: '90 DAY(S) FROM ARRIVAL',
-    inputValidUntil: '25 December, 2026',
-    dispValidUntil: '25 December, 2026',
-    inputIssueDate: '26 September, 2026',
-    dispIssueDate: '26 September, 2026',
-  };
-
-  for (const [id, value] of Object.entries(defaults)) {
-    const el = document.getElementById(id);
-    if (el) {
-      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-        el.value = value;
-      } else {
-        el.textContent = value;
-      }
-    }
-  }
-}
-  </script>
-</body>
-</html>
 
 
