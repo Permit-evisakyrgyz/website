@@ -4,34 +4,46 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Document Editor Demo</title>
+<title>A4 Document Editor Demo</title>
 
 <style>
 * {
   box-sizing: border-box;
 }
 
+:root {
+  --page-color: #95DDDD;
+  --text-color: #000000;
+  --line-color: #000000;
+}
+
+html,
 body {
   margin: 0;
-  padding: 15px;
-  background: #d9f3f3;
+  padding: 0;
   font-family: Arial, Helvetica, sans-serif;
-  color: #222222;
+  color: var(--text-color);
+}
+
+body {
+  padding: 16px;
+  background: #d9f3f3;
 }
 
 .toolbar {
-  max-width: 900px;
-  margin: 0 auto 12px;
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto 14px;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
   justify-content: center;
+  gap: 8px;
 }
 
 .toolbar button {
-  padding: 10px 15px;
-  border: 0;
-  border-radius: 6px;
+  padding: 10px 14px;
+  border: 1px solid #123c66;
+  border-radius: 5px;
   background: #1456a0;
   color: #ffffff;
   font-size: 14px;
@@ -42,191 +54,242 @@ body {
   background: #0d3d75;
 }
 
+/* A4 PAPER: 210 x 297 mm */
 .page {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  width: 100%;
-  max-width: 850px;
-  min-height: 1100px;
+
+  width: 210mm;
+  height: 297mm;
+  min-height: 297mm;
+
   margin: 0 auto;
-  padding: 35px;
-  background: #95DDDD;
-  color: #000000;
-  box-shadow: 0 2px 12px rgba(0,0,0,.12);
+  padding: 12mm;
+
+  background-color: var(--page-color);
+  color: var(--text-color);
+  box-shadow: 0 2px 12px rgba(0,0,0,.15);
 }
 
-/* Automatically repeating watermark */
+/* Automatically repeated watermark */
 .page::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 0;
+
   background-image: url("./my%20watermark.png");
   background-repeat: repeat;
-  background-position: center top;
-  background-size: 150px auto;
-  opacity: 0.18;
+  background-position: left top;
+  background-size: 95px auto;
+
+  opacity: 0.06;
   pointer-events: none;
 }
 
-/* Keep document content above watermark */
+/* Keep all document content above the watermark */
 .page-content {
   position: relative;
   z-index: 1;
   color: #000000;
 }
 
-/* All warning text and borders are black */
-.demo-warning,
-.footer-warning {
-  color: #000000 !important;
-  border-color: #000000 !important;
-}
-
 .demo-warning {
+  margin-bottom: 7mm;
+  padding: 8px;
+  border: 1.5px dashed #000000;
+  color: #000000;
+  background: transparent;
   text-align: center;
-  font-size: 17px;
+  font-size: 12px;
   font-weight: bold;
-  border: 2px dashed #000000;
-  padding: 9px;
-  margin-bottom: 25px;
-  letter-spacing: 1px;
-  background: rgba(255,255,255,0.35);
+  line-height: 1.4;
 }
 
 .document-header {
   text-align: center;
-  margin-bottom: 28px;
+  margin-bottom: 7mm;
   color: #000000;
 }
 
 .document-header h1 {
-  font-size: 25px;
-  margin: 8px 0;
+  margin: 4px 0;
+  font-size: 20px;
 }
 
 .document-header h2 {
-  font-size: 17px;
-  margin: 6px 0;
+  margin: 5px 0;
+  font-size: 14px;
   font-weight: normal;
 }
 
 .document-header p {
   margin: 5px 0;
-  font-size: 13px;
+  font-size: 11px;
 }
 
 .section-title {
-  margin-top: 24px;
-  margin-bottom: 12px;
-  padding: 10px;
-  background: rgba(220, 240, 245, 0.82);
-  border: 1px solid #8abcbc;
+  margin: 6mm 0 3mm;
+  padding: 7px;
+  border: 1px solid #000000;
+  background: transparent;
   color: #000000;
-  font-size: 15px;
+  font-size: 12px;
   font-weight: bold;
 }
 
 .details-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px 20px;
+  column-gap: 7mm;
+  row-gap: 3mm;
 }
 
 .field {
   min-width: 0;
-  padding: 7px 0;
-  border-bottom: 1px solid #629f9f;
+  padding: 5px 0;
+  border-bottom: 1px solid #000000;
   color: #000000;
 }
 
 .field label,
 .long-field label {
   display: block;
-  font-size: 11px;
-  color: #000000;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
+  font-size: 9px;
   font-weight: bold;
+  color: #000000;
 }
 
 .editable {
-  min-height: 22px;
-  outline: none;
+  min-height: 18px;
+  font-size: 11px;
+  line-height: 1.4;
   overflow-wrap: anywhere;
-  font-size: 14px;
-  line-height: 1.5;
+  outline: none;
   color: #000000;
 }
 
-.editable:focus,
 [contenteditable="true"]:focus {
-  background: rgba(255,249,190,0.8);
-  outline: 1px dashed #777777;
-  color: #000000;
+  outline: 1px dashed #000000;
+  background: rgba(255,255,255,.22);
 }
 
 .long-field {
-  margin-top: 12px;
-  padding: 8px 0;
-  border-bottom: 1px solid #629f9f;
+  margin-top: 3mm;
+  padding: 5px 0;
+  border-bottom: 1px solid #000000;
   color: #000000;
 }
 
 .notice {
-  margin-top: 25px;
-  padding: 12px;
-  border: 1px solid #8abcbc;
-  background: rgba(240,250,250,0.78);
+  margin-top: 6mm;
+  padding: 8px;
+  border: 1px solid #000000;
+  background: transparent;
   color: #000000;
-  font-size: 12px;
-  line-height: 1.6;
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+.notice p {
+  margin: 4px 0 0;
 }
 
 .footer-warning {
-  margin-top: 35px;
+  margin-top: 7mm;
+  padding-top: 7px;
+  border-top: 1px solid #000000;
   text-align: center;
-  font-size: 13px;
-  color: #000000 !important;
+  color: #000000;
+  font-size: 10px;
   font-weight: bold;
-  border-top: 1px solid #000000 !important;
-  padding-top: 12px;
 }
 
-@media (max-width: 600px) {
+@media screen and (max-width: 850px) {
   body {
-    padding: 6px;
+    padding: 8px;
   }
 
   .page {
-    padding: 18px 13px;
-    min-height: 100vh;
+    width: 100%;
+    height: auto;
+    min-height: 297mm;
+    padding: 8mm;
   }
 
   .page::before {
-    background-size: 105px auto;
-    opacity: 0.18;
+    background-size: 75px auto;
+    opacity: 0.06;
   }
 
   .document-header h1 {
-    font-size: 20px;
+    font-size: 18px;
   }
 
-  .document-header h2 {
-    font-size: 15px;
+  .details-grid {
+    column-gap: 5mm;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .toolbar button {
+    padding: 9px 10px;
+    font-size: 12px;
+  }
+
+  .page {
+    padding: 6mm;
   }
 
   .details-grid {
     grid-template-columns: 1fr;
-    gap: 8px;
+    row-gap: 2mm;
   }
 
   .demo-warning {
-    font-size: 13px;
+    font-size: 10px;
+  }
+}
+
+/* A4 printing settings */
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+@media print {
+  html,
+  body {
+    width: 210mm;
+    height: 297mm;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: var(--page-color) !important;
   }
 
-  .toolbar button {
-    padding: 9px 11px;
+  .toolbar {
+    display: none !important;
+  }
+
+  .page {
+    width: 210mm;
+    height: 297mm;
+    min-height: 297mm;
+    margin: 0;
+    padding: 12mm;
+    box-shadow: none;
+    overflow: hidden;
+
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page::before {
+    opacity: 0.06;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 }
 </style>
@@ -236,7 +299,10 @@ body {
 
 <div class="toolbar">
   <button type="button" onclick="addSection()">Add Section</button>
-  <button type="button" onclick="toggleEdit()">Edit / Lock Text</button>
+  <button type="button" onclick="toggleEdit()" id="editButton">
+    Lock Text
+  </button>
+  <button type="button" onclick="window.print()">Print A4</button>
   <button type="button" onclick="location.reload()">Reload Original</button>
 </div>
 
@@ -244,11 +310,7 @@ body {
   <div class="page-content" id="documentContent">
 
     <div class="demo-warning" contenteditable="true">
-      MINISTRY OF MIGRATION AND INTERNATIONAL PROTECTION
-GÖÇ VE ULUSLARARASI KORUMA BAKANLIĞI
-
-MIGRATION DEPARTMENT
-GÖÇ DAİRESİ
+      DEMO DOCUMENT — NOT FOR OFFICIAL USE
     </div>
 
     <header class="document-header">
@@ -330,15 +392,14 @@ GÖÇ DAİRESİ
     <div class="notice" contenteditable="true">
       <strong>IMPORTANT NOTICE / ÖNEMLİ NOT</strong>
       <p>
-        This page is a demonstration template for testing document
-        editing and watermark placement. It is not an official
-        document and does not establish identity, immigration status,
-        permission to reside, or any legal entitlement.
+        This is a sample document for design and editing tests.
+        It is not an official document and does not establish identity,
+        immigration status, residence permission, or legal entitlement.
       </p>
     </div>
 
     <div class="footer-warning" contenteditable="true">
-      DEMO ONLY — NOT A VALID OFFICIAL DOCUMENT
+      DEMO ONLY — NOT VALID FOR OFFICIAL USE
     </div>
 
   </div>
@@ -357,13 +418,8 @@ function toggleEdit() {
     element.contentEditable = editingEnabled ? "true" : "false";
   });
 
-  const button = document.querySelector(
-    '.toolbar button:nth-child(2)'
-  );
-
-  button.textContent = editingEnabled
-    ? "Lock Text"
-    : "Edit Text";
+  document.getElementById("editButton").textContent =
+    editingEnabled ? "Lock Text" : "Edit Text";
 }
 
 function addSection() {
@@ -406,6 +462,8 @@ function addSection() {
 
 </body>
 </html>
+
+
 
 
 
