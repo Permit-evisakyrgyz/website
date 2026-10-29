@@ -14,7 +14,7 @@
 body {
   margin: 0;
   padding: 15px;
-  background: #eeeeee;
+  background: #e8edf3;
   font-family: Arial, Helvetica, sans-serif;
   color: #222;
 }
@@ -51,25 +51,25 @@ body {
   min-height: 1100px;
   margin: 0 auto;
   padding: 35px;
-  background: white;
-  box-shadow: 0 2px 12px rgba(0,0,0,.18);
+  background: #f8fafc;
+  box-shadow: 0 2px 12px rgba(0,0,0,.12);
 }
 
-/* Automatically load the watermark image */
+/* Repeating watermark image */
 .page::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 0;
-  background-image: url("my%20watermark.png");
+  background-image: url("./my%20watermark.png");
   background-repeat: repeat;
-  background-position: center;
-  background-size: 220px auto;
-  opacity: 0.15;
+  background-position: center top;
+  background-size: 150px auto;
+  opacity: 0.14;
   pointer-events: none;
 }
 
-/* Keep document content above the watermark */
+/* Keep text above the watermark */
 .page-content {
   position: relative;
   z-index: 1;
@@ -77,10 +77,10 @@ body {
 
 .demo-warning {
   text-align: center;
-  color: #b00020;
+  color: #a51d36;
   font-size: 17px;
   font-weight: bold;
-  border: 2px dashed #b00020;
+  border: 2px dashed #a51d36;
   padding: 9px;
   margin-bottom: 25px;
   letter-spacing: 1px;
@@ -110,8 +110,8 @@ body {
 .section-title {
   margin-top: 24px;
   margin-bottom: 12px;
-  padding: 8px;
-  background: rgba(220, 230, 240, 0.88);
+  padding: 10px;
+  background: rgba(220, 230, 240, 0.9);
   border: 1px solid #aebdcd;
   font-size: 15px;
   font-weight: bold;
@@ -125,14 +125,15 @@ body {
 
 .field {
   min-width: 0;
-  padding: 5px 0;
-  border-bottom: 1px solid #999;
+  padding: 7px 0;
+  border-bottom: 1px solid #9da8b4;
 }
 
-.field label {
+.field label,
+.long-field label {
   display: block;
   font-size: 11px;
-  color: #444;
+  color: #414b56;
   margin-bottom: 5px;
   font-weight: bold;
 }
@@ -145,7 +146,8 @@ body {
   line-height: 1.5;
 }
 
-.editable:focus {
+.editable:focus,
+[contenteditable="true"]:focus {
   background: rgba(255, 249, 190, 0.75);
   outline: 1px dashed #777;
 }
@@ -153,14 +155,14 @@ body {
 .long-field {
   margin-top: 12px;
   padding: 8px 0;
-  border-bottom: 1px solid #999;
+  border-bottom: 1px solid #9da8b4;
 }
 
 .notice {
   margin-top: 25px;
   padding: 12px;
-  border: 1px solid #aaa;
-  background: rgba(255,255,255,.78);
+  border: 1px solid #b8c4d0;
+  background: rgba(239, 244, 249, 0.85);
   font-size: 12px;
   line-height: 1.6;
 }
@@ -169,9 +171,9 @@ body {
   margin-top: 35px;
   text-align: center;
   font-size: 13px;
-  color: #b00020;
+  color: #a51d36;
   font-weight: bold;
-  border-top: 1px solid #aaa;
+  border-top: 1px solid #aeb8c3;
   padding-top: 12px;
 }
 
@@ -186,7 +188,8 @@ body {
   }
 
   .page::before {
-    background-size: 150px auto;
+    background-size: 105px auto;
+    opacity: 0.14;
   }
 
   .document-header h1 {
@@ -224,14 +227,16 @@ body {
 <main class="page">
   <div class="page-content" id="documentContent">
 
-    <div class="demo-warning">
+    <div class="demo-warning" contenteditable="true">
       DEMO DOCUMENT — NOT FOR OFFICIAL USE
     </div>
 
     <header class="document-header">
       <h1 contenteditable="true">SAMPLE DOCUMENT</h1>
       <h2 contenteditable="true">ÖRNEK BELGE / SAMPLE RECORD</h2>
-      <p contenteditable="true">Document Design and Editing Demonstration</p>
+      <p contenteditable="true">
+        Document Design and Editing Demonstration
+      </p>
     </header>
 
     <div class="section-title" contenteditable="true">
@@ -239,6 +244,7 @@ body {
     </div>
 
     <div class="details-grid">
+
       <div class="field">
         <label>FULL NAME / AD SOYAD</label>
         <div class="editable" contenteditable="true">Sample Person</div>
@@ -278,6 +284,7 @@ body {
         <label>VALID UNTIL / BİTİŞ</label>
         <div class="editable" contenteditable="true">DD / MM / YYYY</div>
       </div>
+
     </div>
 
     <div class="section-title" contenteditable="true">
@@ -325,7 +332,7 @@ function toggleEdit() {
   editingEnabled = !editingEnabled;
 
   document.querySelectorAll(
-    '#documentContent [contenteditable="true"]'
+    '#documentContent [contenteditable]'
   ).forEach(function(element) {
     element.contentEditable = editingEnabled ? "true" : "false";
   });
@@ -349,12 +356,14 @@ function addSection() {
     <div class="section-title" contenteditable="true">
       EXTRA SECTION ${sectionCount}
     </div>
+
     <div class="long-field">
       <label>HEADING</label>
       <div class="editable" contenteditable="true">
         Click here to enter text.
       </div>
     </div>
+
     <div class="long-field">
       <label>DETAILS</label>
       <div class="editable" contenteditable="true">
@@ -364,10 +373,11 @@ function addSection() {
   `;
 
   if (!editingEnabled) {
-    section.querySelectorAll('[contenteditable="true"]')
-      .forEach(function(element) {
+    section.querySelectorAll('[contenteditable]').forEach(
+      function(element) {
         element.contentEditable = "false";
-      });
+      }
+    );
   }
 
   container.appendChild(section);
@@ -376,6 +386,7 @@ function addSection() {
 
 </body>
 </html>
+
 
 
 
