@@ -3,273 +3,243 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cyprus Entry Permit - Demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entry Permit - Demo Template</title>
 
 <style>
-* {
-  box-sizing: border-box;
+*{box-sizing:border-box}
+body{
+  margin:0;
+  padding:20px 8px;
+  background:#eee;
+  font-family:Arial,Helvetica,sans-serif;
+  color:#23484b;
 }
-
-body {
-  margin: 0;
-  padding: 20px 10px;
-  background: #eeeeee;
-  font-family: Arial, Helvetica, sans-serif;
-  color: #173b40;
+.toolbar{
+  max-width:850px;
+  margin:0 auto 12px;
+  display:flex;
+  justify-content:center;
+  gap:10px;
 }
-
-.toolbar {
-  max-width: 760px;
-  margin: 0 auto 15px;
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: center;
+button{
+  background:#075d78;
+  color:white;
+  padding:11px 18px;
+  border:0;
+  border-radius:5px;
+  cursor:pointer;
 }
-
-button {
-  padding: 11px 17px;
-  border: 0;
-  border-radius: 6px;
-  background: #075c78;
-  color: white;
-  font-size: 14px;
-  cursor: pointer;
+.page{
+  width:100%;
+  max-width:850px;
+  min-height:1180px;
+  margin:auto;
+  padding:32px 38px 25px;
+  position:relative;
+  overflow:hidden;
+  background-color:#a4e0e6;
+  background-image:
+    repeating-linear-gradient(35deg,
+    transparent 0px,transparent 7px,
+    rgba(255,255,255,.09) 8px,
+    transparent 10px),
+    repeating-linear-gradient(125deg,
+    transparent 0px,transparent 18px,
+    rgba(35,125,137,.045) 19px,
+    transparent 22px);
+  border:2px solid #78cbd4;
 }
-
-button:hover {
-  background: #034258;
+.demo-watermark{
+  position:absolute;
+  top:43%;
+  left:0;
+  width:100%;
+  text-align:center;
+  font-size:68px;
+  font-weight:900;
+  letter-spacing:8px;
+  color:rgba(20,91,105,.12);
+  transform:rotate(-28deg);
+  pointer-events:none;
 }
-
-.permit {
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  max-width: 760px;
-  min-height: 1100px;
-  margin: auto;
-  padding: 28px 30px;
-  background:
-    repeating-linear-gradient(
-      35deg,
-      rgba(255,255,255,.08) 0px,
-      rgba(255,255,255,.08) 2px,
-      transparent 2px,
-      transparent 8px
-    ),
-    #9edfe5;
-  border: 2px solid #6dc8d1;
-  box-shadow: 0 4px 18px #0002;
+.demo-tag{
+  position:absolute;
+  top:48%;
+  left:0;
+  width:100%;
+  text-align:center;
+  font-size:24px;
+  font-weight:bold;
+  color:rgba(20,75,89,.75);
+  transform:rotate(-28deg);
+  pointer-events:none;
 }
-
-.watermark {
-  position: absolute;
-  top: 43%;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  font-size: clamp(35px, 8vw, 75px);
-  font-weight: 900;
-  color: rgba(12, 77, 90, .13);
-  transform: rotate(-28deg);
-  pointer-events: none;
-  letter-spacing: 5px;
+.content{position:relative;z-index:1}
+.top{
+  display:grid;
+  grid-template-columns:1.25fr .75fr;
+  gap:18px;
+  align-items:start;
 }
-
-.demo-label {
-  position: absolute;
-  top: 47%;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  color: #124b58;
-  font-size: 24px;
-  font-weight: bold;
-  letter-spacing: 4px;
-  transform: rotate(-28deg);
-  pointer-events: none;
+.ministry{
+  font-size:11px;
+  line-height:1.5;
+  font-weight:bold;
 }
-
-.header {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr 60px;
-  gap: 12px;
-  align-items: center;
-  border-bottom: 1px solid #438f9a;
-  padding-bottom: 18px;
+.form-no{
+  text-align:right;
+  font-size:10px;
 }
-
-.header h3 {
-  font-size: 14px;
-  line-height: 1.5;
-  margin: 0 0 6px;
+.country{
+  text-align:center;
+  font-size:16px;
+  font-weight:bold;
+  line-height:1.4;
+  margin:12px 0 4px;
 }
-
-.header p {
-  font-size: 12px;
-  line-height: 1.5;
-  margin: 0;
+.country small{
+  display:block;
+  font-size:12px;
+  font-weight:normal;
 }
-
-.emblem {
-  width: 52px;
-  height: 52px;
-  border: 2px solid #478a91;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
+.title{
+  text-align:right;
+  font-size:22px;
+  font-weight:bold;
+  margin:7px 0 15px;
 }
-
-.country {
-  text-align: center;
-  margin: 17px 0;
-  font-weight: bold;
-  line-height: 1.7;
-  font-size: 15px;
+.info-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
 }
-
-.document-type {
-  border-top: 1px solid #5aabb5;
-  border-bottom: 1px solid #5aabb5;
-  padding: 12px 0;
-  margin-bottom: 18px;
-  font-weight: bold;
-  font-size: 14px;
+.box{
+  border:1.5px solid #528f96;
+  border-radius:8px;
+  min-height:125px;
+  padding:12px;
+  font-size:12px;
+  line-height:1.55;
 }
-
-.field {
-  position: relative;
-  margin: 14px 0;
-  padding-bottom: 7px;
-  border-bottom: 1px dashed rgba(25, 94, 103, .35);
+.box-title{
+  text-align:center;
+  font-size:10px;
+  margin-bottom:8px;
 }
-
-.field label {
-  display: block;
-  margin-bottom: 5px;
-  font-size: 10px;
-  font-weight: bold;
-  text-transform: uppercase;
+.right-info{
+  font-size:11px;
+  line-height:1.8;
 }
-
-.field input,
-.field textarea {
-  display: block;
-  width: 100%;
-  border: 0;
-  outline: none;
-  resize: vertical;
-  background: transparent;
-  color: #183f44;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  font-weight: bold;
+.details{margin-top:20px}
+.detail-row{
+  display:grid;
+  grid-template-columns:215px 1fr;
+  align-items:start;
+  gap:8px;
+  min-height:33px;
+  padding:5px 0;
 }
-
-.field textarea {
-  min-height: 50px;
+.label{
+  font-size:10px;
+  line-height:1.4;
 }
-
-.field input:focus,
-.field textarea:focus {
-  background: rgba(255,255,255,.3);
-  outline: 1px dashed #347d88;
+.label strong{
+  display:block;
+  font-size:11px;
 }
-
-.two-columns {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
+.value{
+  font-size:14px;
+  font-weight:bold;
+  overflow-wrap:anywhere;
 }
-
-.section-title {
-  font-size: 12px;
-  font-weight: bold;
-  margin: 23px 0 8px;
+.validity{
+  margin-top:105px;
+  display:grid;
+  grid-template-columns:1.25fr 1fr;
+  gap:15px;
+  align-items:center;
 }
-
-.paragraph {
-  position: relative;
-  font-size: 11px;
-  line-height: 1.7;
-  text-align: justify;
-  margin: 10px 0;
+.validity-label{
+  font-size:10px;
+  line-height:1.5;
 }
-
-.english {
-  font-size: 11px;
-  line-height: 1.7;
+.validity-date{
+  font-size:16px;
+  font-weight:bold;
+  text-align:center;
 }
-
-.notice {
-  position: relative;
-  margin-top: 28px;
-  padding: 14px;
-  border: 1px solid #347d88;
-  text-align: center;
-  font-size: 11px;
-  font-weight: bold;
-  line-height: 1.7;
+.conditions-title{
+  text-align:center;
+  font-size:13px;
+  font-weight:bold;
+  margin:20px 0 12px;
 }
-
-.footer {
-  position: relative;
-  margin-top: 28px;
-  padding-top: 12px;
-  border-top: 1px solid #438f9a;
-  font-size: 10px;
-  line-height: 1.8;
+.conditions{
+  font-size:10px;
+  line-height:1.5;
+  text-align:justify;
+  margin:0 0 14px;
 }
-
-@media (max-width: 480px) {
-  .permit {
-    padding: 18px 14px;
-    min-height: auto;
-  }
-
-  .header h3 {
-    font-size: 11px;
-  }
-
-  .header p {
-    font-size: 10px;
-  }
-
-  .two-columns {
-    grid-template-columns: 1fr;
-    gap: 0;
-  }
-
-  .country {
-    font-size: 12px;
-  }
+.english{
+  font-size:11px;
+  line-height:1.55;
+  text-align:justify;
+  margin:14px 0;
 }
-
-@media print {
-  body {
-    padding: 0;
-    background: white;
-  }
-
-  .toolbar {
-    display: none;
-  }
-
-  .permit {
-    width: 100%;
-    max-width: none;
-    box-shadow: none;
-    print-color-adjust: exact;
-    -webkit-print-color-adjust: exact;
-  }
-
-  .field input,
-  .field textarea {
-    appearance: none;
+.student-note{
+  font-size:10px;
+  line-height:1.5;
+  text-align:justify;
+  margin-top:16px;
+}
+.issue{
+  margin-top:38px;
+  font-size:11px;
+  display:flex;
+  gap:24px;
+  align-items:center;
+}
+.issue strong{font-size:13px}
+.notice{
+  border:1px solid #6b9ca1;
+  padding:12px 14px;
+  margin-top:18px;
+  font-size:10px;
+  line-height:1.6;
+}
+.notice strong{
+  font-size:12px;
+}
+.editable{
+  outline:none;
+}
+.editable:focus{
+  background:rgba(255,255,255,.24);
+}
+@media(max-width:560px){
+  .page{padding:20px 14px;min-height:auto}
+  .top{grid-template-columns:1fr}
+  .form-no{text-align:left}
+  .title{text-align:left;font-size:19px}
+  .info-grid{grid-template-columns:1fr;gap:10px}
+  .detail-row{grid-template-columns:42% 1fr}
+  .validity{margin-top:55px;grid-template-columns:1fr}
+  .validity-date{text-align:left}
+  .demo-watermark{font-size:42px}
+  .demo-tag{font-size:18px}
+}
+@page{size:A4 portrait;margin:8mm}
+@media print{
+  body{padding:0;background:white}
+  .toolbar{display:none}
+  .page{
+    width:100%;
+    max-width:none;
+    min-height:275mm;
+    border:1px solid #78cbd4;
+    print-color-adjust:exact;
+    -webkit-print-color-adjust:exact;
   }
 }
 </style>
@@ -279,136 +249,136 @@ button:hover {
 
 <div class="toolbar">
   <button onclick="window.print()">Print / Save PDF</button>
-  <button onclick="resetDemo()">Reset Demo</button>
+  <button onclick="resetText()">Reset Demo</button>
 </div>
 
-<main class="permit">
+<main class="page">
+  <div class="demo-watermark">SAMPLE</div>
+  <div class="demo-tag">DEMO ONLY</div>
 
-  <div class="watermark">SAMPLE</div>
-  <div class="demo-label">DEMO ONLY</div>
+  <div class="content">
 
-  <header class="header">
-    <div>
-      <h3>IMMIGRATION AND INTERNATIONAL PROTECTION</h3>
-      <p>DOCUMENT DESIGN DEMONSTRATION</p>
-      <p>Editable Entry Permit Sample Layout</p>
-    </div>
-    <div class="emblem">✦</div>
-  </header>
-
-  <div class="country">
-    REPUBLIC OF CYPRUS<br>
-    <span style="font-size:12px;font-weight:normal">
-      SAMPLE DOCUMENT — NOT VALID FOR TRAVEL
-    </span>
-  </div>
-
-  <div class="document-type">
-    ENTRY PERMIT — DEMO SAMPLE
-  </div>
-
-  <div class="field">
-    <label>Institution / Sponsor</label>
-    <input value="SAMPLE EDUCATIONAL INSTITUTION"
-           aria-label="Institution or sponsor">
-  </div>
-
-  <div class="field">
-    <label>Applicant Name</label>
-    <input value="SAMPLE APPLICANT"
-           aria-label="Applicant name">
-  </div>
-
-  <div class="field">
-    <label>Address / Institution Details</label>
-    <input value="Sample Street, Sample City"
-           aria-label="Address">
-  </div>
-
-  <div class="two-columns">
-    <div class="field">
-      <label>Nationality</label>
-      <input value="PAKISTANI">
+    <div class="top">
+      <div class="ministry editable" contenteditable="true">
+        IMMIGRATION AND INTERNATIONAL PROTECTION<br>
+        MIGRATION DEPARTMENT<br>
+        DEPARTMENT OF IMMIGRATION<br>
+        DOCUMENT DESIGN TEMPLATE
+      </div>
+      <div class="form-no editable" contenteditable="true">
+        (Sample Form D-01)
+      </div>
     </div>
 
-    <div class="field">
-      <label>Passport Number</label>
-      <input value="SAMPLE-PASSPORT">
-    </div>
-  </div>
-
-  <div class="two-columns">
-    <div class="field">
-      <label>Category of Entry</label>
-      <input value="DEMO CATEGORY">
+    <div class="country editable" contenteditable="true">
+      SAMPLE DOCUMENT AUTHORITY
+      <small>ENTRY PERMIT DESIGN — DEMONSTRATION</small>
     </div>
 
-    <div class="field">
-      <label>Permitted Period</label>
-      <input value="SAMPLE PERIOD">
+    <div class="info-grid">
+      <section>
+        <div class="box-title">EMPLOYER / APPLICANT</div>
+        <div class="box editable" contenteditable="true">
+          SAMPLE INSTITUTION<br>
+          60 SAMPLE AVENUE<br>
+          SAMPLE CITY, SAMPLE COUNTRY<br>
+          REFERENCE: DEMO-001
+        </div>
+      </section>
+
+      <section>
+        <div class="title editable" contenteditable="true">
+          ENTRY PERMIT
+        </div>
+        <div class="right-info editable" contenteditable="true">
+          Reference No. &nbsp; DEMO-001<br>
+          Nationality &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SAMPLE<br>
+          Code &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DEMO
+        </div>
+      </section>
     </div>
+
+    <section class="details">
+      <div class="detail-row">
+        <div class="label">NAME<br><strong>Applicant Name</strong></div>
+        <div class="value editable" contenteditable="true">SAMPLE APPLICANT</div>
+      </div>
+
+      <div class="detail-row">
+        <div class="label">NATIONALITY<br><strong>Nationality</strong></div>
+        <div class="value editable" contenteditable="true">SAMPLE NATIONALITY</div>
+      </div>
+
+      <div class="detail-row">
+        <div class="label">DOCUMENT NUMBER<br><strong>Reference Number</strong></div>
+        <div class="value editable" contenteditable="true">DEMO-000001</div>
+      </div>
+
+      <div class="detail-row">
+        <div class="label">CATEGORY OF ENTRY<br><strong>Entry Category</strong></div>
+        <div class="value editable" contenteditable="true">SAMPLE CATEGORY</div>
+      </div>
+
+      <div class="detail-row">
+        <div class="label">PURPOSE OF DOCUMENT<br><strong>Purpose</strong></div>
+        <div class="value editable" contenteditable="true">SAMPLE PURPOSE</div>
+      </div>
+    </section>
+
+    <section class="validity">
+      <div class="validity-label editable" contenteditable="true">
+        THIS SAMPLE DOCUMENT IS FOR DESIGN PRACTICE ONLY.
+        IT DOES NOT AUTHORIZE ENTRY INTO ANY COUNTRY.
+      </div>
+      <div class="validity-date editable" contenteditable="true">
+        SAMPLE VALIDITY PERIOD
+      </div>
+    </section>
+
+    <div class="conditions-title editable" contenteditable="true">
+      REMARKS / CONDITIONS
+    </div>
+
+    <p class="conditions editable" contenteditable="true">
+      This area is reserved for the conditions and explanatory
+      information associated with the sample layout. Text can be
+      edited directly by selecting this paragraph. Adjust the font
+      size, spacing and alignment in the CSS to match your design.
+      This is a non-official demonstration and must not be used as
+      proof of immigration status or authorization.
+    </p>
+
+    <p class="english editable" contenteditable="true">
+      This sample page demonstrates a document layout with different
+      font sizes, bold headings, left-aligned text, right-aligned
+      text and centered sections. It contains no official seal,
+      barcode or signature. All sample details can be edited.
+    </p>
+
+    <p class="student-note editable" contenteditable="true">
+      ADDITIONAL SAMPLE NOTES<br>
+      This section can contain further demonstration text. You can
+      change its alignment, font size, line spacing and position
+      using the CSS settings.
+    </p>
+
+    <div class="issue">
+      <span>DATE OF ISSUE</span>
+      <strong class="editable" contenteditable="true">SAMPLE DATE</strong>
+    </div>
+
+    <div class="notice editable" contenteditable="true">
+      <strong>NOTICE — DEMONSTRATION DOCUMENT</strong><br>
+      THIS PAGE IS A DESIGN SAMPLE ONLY.<br>
+      IT IS NOT AN OFFICIAL GOVERNMENT DOCUMENT OR TRAVEL PERMIT.
+    </div>
+
   </div>
-
-  <div class="field">
-    <label>Purpose of Entry</label>
-    <input value="SAMPLE PURPOSE">
-  </div>
-
-  <div class="field">
-    <label>Valid Until</label>
-    <input type="date" value="2026-12-25">
-  </div>
-
-  <div class="section-title">
-    REMARKS / CONDITIONS
-  </div>
-
-  <div class="field">
-    <label>Editable Conditions</label>
-    <textarea>Enter the sample conditions here. This document is a demonstration template and has no official status.</textarea>
-  </div>
-
-  <p class="paragraph">
-    This section is reserved for explanatory information,
-    registration requirements, and other sample document notes.
-    Replace the text with appropriate content for your own
-    legitimate document design.
-  </p>
-
-  <p class="english">
-    <strong>ENGLISH INFORMATION</strong><br>
-    This is an editable demonstration layout. It is not an
-    official entry permit, visa, residence permit, or work permit.
-    It cannot be used to enter or remain in any country.
-  </p>
-
-  <div class="field">
-    <label>Issue Date</label>
-    <input type="date" value="2026-10-29">
-  </div>
-
-  <div class="field">
-    <label>Reference Number</label>
-    <input value="DEMO-000001">
-  </div>
-
-  <div class="notice">
-    SAMPLE DOCUMENT — NOT VALID FOR TRAVEL<br>
-    NOT AN OFFICIAL GOVERNMENT DOCUMENT
-  </div>
-
-  <footer class="footer">
-    <strong>IMPORTANT NOTICE</strong><br>
-    This page is an independent design demo. No official
-    authorization, government seal, signature, or verification
-    is represented by this template.
-  </footer>
-
 </main>
 
 <script>
-function resetDemo() {
-  if (confirm("Reload the original demo template?")) {
+function resetText(){
+  if(confirm("Reload the original demo template?")){
     window.location.reload();
   }
 }
@@ -416,6 +386,8 @@ function resetDemo() {
 
 </body>
 </html>
+
+
 
 
 
