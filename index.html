@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ur">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Document Layer Studio</title>
+<title>Document Studio</title>
 
 <style>
 * { box-sizing: border-box; }
@@ -12,97 +12,225 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #eef4ff;
-  color: #17345d;
+  background: #edf3fa;
+  color: #183153;
 }
 
 header {
-  background: #0757c9;
+  background: #075bc5;
   color: white;
-  padding: 18px;
+  padding: 17px;
   text-align: center;
 }
 
-nav {
+header h2 { margin: 0 0 6px; }
+
+.toolbar {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   padding: 12px;
-  background: white;
   justify-content: center;
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 5px #0001;
 }
 
-button, .upload-btn {
-  background: #0967dc;
-  color: white;
+button, .file-label {
   border: 0;
-  border-radius: 8px;
-  padding: 11px 15px;
-  cursor: pointer;
+  border-radius: 7px;
+  background: #0968d5;
+  color: white;
+  padding: 10px 13px;
   font-size: 14px;
+  cursor: pointer;
 }
 
-main {
-  max-width: 1100px;
-  margin: auto;
-  padding: 15px;
-}
+button.secondary { background: #52657d; }
+button.danger { background: #bd3543; }
 
-.panel {
-  background: white;
-  padding: 16px;
-  border-radius: 12px;
-  margin-bottom: 15px;
-  box-shadow: 0 2px 8px #0001;
-}
-
-.preview {
-  background: #dce8f8;
-  padding: 12px;
-  border-radius: 8px;
-  overflow: auto;
-  text-align: center;
-}
-
-.preview img {
-  display: block;
+input, textarea, select {
   max-width: 100%;
-  height: auto;
-  margin: 12px auto;
-  border: 1px solid #b8c9df;
-  background: white;
-}
-
-.layer-item {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid #e5eaf2;
-  flex-wrap: wrap;
-}
-
-input[type="file"] {
-  max-width: 100%;
-}
-
-textarea {
-  width: 100%;
-  min-height: 100px;
-  padding: 10px;
+  padding: 9px;
   border: 1px solid #cbd5e1;
+  border-radius: 6px;
+}
+
+input[type="file"] { width: 100%; }
+
+.layout {
+  display: grid;
+  grid-template-columns: 270px minmax(0, 1fr);
+  gap: 15px;
+  max-width: 1400px;
+  padding: 15px;
+  margin: auto;
+}
+
+.sidebar, .workspace {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  min-width: 0;
+}
+
+.sidebar h3 { margin-top: 5px; }
+
+.field {
+  display: grid;
+  gap: 7px;
+  margin-bottom: 14px;
+}
+
+.field label {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.layers {
+  padding: 0;
+  list-style: none;
+}
+
+.layers li {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 0;
+  border-bottom: 1px solid #e5eaf1;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.layers button {
+  padding: 6px 8px;
+  font-size: 12px;
+}
+
+.canvas-wrap {
+  overflow: auto;
+  padding: 12px;
+  background: #dce5ef;
   border-radius: 8px;
 }
 
-#status {
-  color: #0757c9;
+#page {
+  position: relative;
+  width: 700px;
+  min-height: 990px;
+  margin: 0 auto;
+  background: white;
+  overflow: hidden;
+  box-shadow: 0 3px 15px #0002;
+  isolation: isolate;
+}
+
+#watermark {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 8;
+  overflow: hidden;
+}
+
+#watermark img {
+  width: 85%;
+  height: 85%;
+  object-fit: contain;
+  opacity: 0.12;
+}
+
+#watermark span {
+  position: absolute;
+  transform: rotate(-35deg);
+  color: rgba(190, 30, 45, 0.17);
+  font-size: 58px;
+  font-weight: bold;
+  text-align: center;
+  white-space: nowrap;
+}
+
+#sampleBanner {
+  position: absolute;
+  z-index: 20;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 8px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+  color: white;
+  background: #b52c39;
+  pointer-events: none;
+}
+
+.page-content {
+  position: relative;
+  z-index: 2;
+  padding: 65px 35px 40px;
+}
+
+.editable {
+  outline: 1px dashed #a8c8ec;
+  padding: 5px;
+  min-height: 25px;
   overflow-wrap: anywhere;
+}
+
+.editable:focus {
+  outline: 2px solid #0968d5;
+  background: #f0f7ff;
+}
+
+.sample-heading {
+  text-align: center;
+  color: #075bc5;
+  border-bottom: 2px solid #075bc5;
+  padding-bottom: 15px;
+}
+
+.sample-card {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #b9c9db;
+  border-radius: 6px;
+}
+
+.image-layer {
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  object-fit: contain;
+  cursor: move;
+  border: 1px dashed #8aa2bd;
+  touch-action: none;
+}
+
+.layer-help {
+  font-size: 12px;
+  color: #60748a;
+  line-height: 1.6;
 }
 
 footer {
   text-align: center;
+  color: #60748a;
   padding: 20px;
-  color: #52657d;
+}
+
+@media(max-width: 760px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { order: 2; }
+  .workspace { order: 1; }
+  #page { margin: 0; }
+  .canvas-wrap { overflow-x: auto; }
 }
 </style>
 </head>
@@ -110,196 +238,455 @@ footer {
 <body>
 
 <header>
-  <h2>Document Layer Studio</h2>
-  <p>Upload · Preview · OCR · Layers · Export</p>
+  <h2>Document Studio</h2>
+  <div>Image Layers · Text Editor · Watermark · Export</div>
 </header>
 
-<nav>
-  <button onclick="showSection('upload')">Upload</button>
-  <button onclick="showSection('editor')">Editor</button>
-  <button onclick="showSection('layers')">Layers</button>
-  <button onclick="showSection('ocr')">OCR Text</button>
-  <button onclick="showSection('export')">Export</button>
-</nav>
+<div class="toolbar">
+  <button onclick="addText()">+ Add Text</button>
 
-<main>
+  <label class="file-label">
+    + Add Image
+    <input type="file" id="imageInput" accept="image/*"
+      hidden>
+  </label>
 
-<section class="panel" id="upload">
-  <h3>Upload Document</h3>
-  <p>Upload a document for viewing and annotation.</p>
-  <input type="file" id="documentInput"
-    accept="image/png,image/jpeg,application/pdf">
-  <p id="status">No document uploaded.</p>
-</section>
+  <label class="file-label">
+    Watermark Image
+    <input type="file" id="watermarkInput" accept="image/*"
+      hidden>
+  </label>
 
-<section class="panel" id="editor">
-  <h3>Document Preview</h3>
-  <div class="preview" id="documentPreview">
-    <p>Your uploaded document will appear here.</p>
-  </div>
-</section>
+  <button onclick="printPage()">Print / Save PDF</button>
+  <button onclick="exportPNG()">Export PNG</button>
+  <button class="secondary" onclick="resetPage()">Reset</button>
+</div>
 
-<section class="panel" id="layers">
-  <h3>Reference Images and Layers</h3>
-  <p>Reference images are displayed separately for inspection.
-     They do not alter the original document.</p>
+<div class="layout">
 
-  <div class="layer-item">
-    <input type="checkbox" checked
-      onchange="toggleLayer('documentLayer',this.checked)">
-    <label>Original document</label>
-  </div>
-  <div id="documentLayer">
-    <img src="assets/document.jpg"
-      alt="Document reference"
-      style="max-width:100%;height:auto">
-  </div>
+  <aside class="sidebar">
+    <h3>Text Settings</h3>
 
-  <div class="layer-item">
-    <input type="checkbox" checked
-      onchange="toggleLayer('emblemLayer',this.checked)">
-    <label>Emblem reference</label>
-  </div>
-  <div id="emblemLayer">
-    <img src="assets/emblem.png"
-      alt="Emblem reference"
-      style="max-width:100%;height:auto">
-  </div>
+    <div class="field">
+      <label>Selected text</label>
+      <textarea id="textValue" rows="3"
+        placeholder="Select a text box on the page"></textarea>
+    </div>
 
-  <div class="layer-item">
-    <input type="checkbox" checked
-      onchange="toggleLayer('stampLayer',this.checked)">
-    <label>Stamp and signature reference</label>
-  </div>
-  <div id="stampLayer">
-    <img src="assets/stamp.png"
-      alt="Stamp reference"
-      style="max-width:100%;height:auto">
-  </div>
-</section>
+    <div class="field">
+      <label>Font size</label>
+      <input type="number" id="fontSize"
+        min="8" max="72" value="18">
+    </div>
 
-<section class="panel" id="ocr">
-  <h3>OCR Text / Notes</h3>
-  <p>Paste extracted text or add your own notes.</p>
-  <textarea id="notes"
-    placeholder="Enter OCR text or document notes..."></textarea>
-  <button onclick="copyNotes()">Copy Text</button>
-</section>
+    <div class="field">
+      <label>Text colour</label>
+      <input type="color" id="textColor" value="#183153">
+    </div>
 
-<section class="panel" id="export">
-  <h3>Export</h3>
-  <p>Export a clearly labelled annotated preview as a PNG image.</p>
-  <button onclick="exportPreview()">Export Preview PNG</button>
-  <button onclick="window.print()">Print / Save as PDF</button>
-</section>
+    <button onclick="applyText()">Apply Text Settings</button>
 
-</main>
+    <hr>
+
+    <h3>Watermark Settings</h3>
+
+    <div class="field">
+      <label>Watermark opacity</label>
+      <input type="range" id="opacity"
+        min="2" max="35" value="12">
+    </div>
+
+    <div class="field">
+      <label>Watermark size</label>
+      <input type="range" id="wmSize"
+        min="30" max="100" value="85">
+    </div>
+
+    <button onclick="applyWatermark()">Apply Watermark</button>
+
+    <hr>
+
+    <h3>Layers</h3>
+    <ul class="layers" id="layerList"></ul>
+
+    <p class="layer-help">
+      Image layer پر کلک کرکے منتخب کریں۔ تصویر کو ماؤس یا
+      انگلی سے حرکت دیں۔ Hide سے تصویر چھپائیں۔
+    </p>
+  </aside>
+
+  <section class="workspace">
+    <h3>Page Editor</h3>
+    <p class="layer-help">
+      یہ ایک نمونہ صفحہ ہے۔ متن پر کلک کرکے اسے تبدیل کریں۔
+      برآمد شدہ فائل پر SAMPLE واٹرمارک برقرار رہے گا۔
+    </p>
+
+    <div class="canvas-wrap">
+      <div id="page">
+
+        <div id="sampleBanner">
+          SAMPLE DOCUMENT — NOT AN OFFICIAL DOCUMENT
+        </div>
+
+        <div id="watermark">
+          <img id="wmImage" alt="" hidden>
+          <span>SAMPLE</span>
+        </div>
+
+        <div class="page-content">
+
+          <div class="sample-heading">
+            <h2 class="editable" contenteditable="true"
+              data-text="true">DOCUMENT STUDIO</h2>
+
+            <p class="editable" contenteditable="true"
+              data-text="true">Editable Sample Document</p>
+          </div>
+
+          <div class="sample-card">
+            <h3 class="editable" contenteditable="true"
+              data-text="true">General Information</h3>
+
+            <p class="editable" contenteditable="true"
+              data-text="true">Name: Sample User</p>
+
+            <p class="editable" contenteditable="true"
+              data-text="true">Document Number: SAMPLE-0001</p>
+
+            <p class="editable" contenteditable="true"
+              data-text="true">Date: 29 October 2026</p>
+
+            <p class="editable" contenteditable="true"
+              data-text="true">Category: Demonstration</p>
+          </div>
+
+          <div class="sample-card">
+            <h3 class="editable" contenteditable="true"
+              data-text="true">Additional Information</h3>
+
+            <p class="editable" contenteditable="true"
+              data-text="true">
+              Click here to type your own sample text.
+            </p>
+
+            <p class="editable" contenteditable="true"
+              data-text="true">
+              This page is for general document layout testing.
+            </p>
+          </div>
+
+          <div class="sample-card">
+            <h3 class="editable" contenteditable="true"
+              data-text="true">Notes</h3>
+
+            <p class="editable" contenteditable="true"
+              data-text="true">
+              Add your notes or other general information here.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
 
 <footer>
-  Document Layer Studio · GitHub Pages
+  Document Studio · Static HTML, CSS and JavaScript · No database
 </footer>
 
 <script>
-function showSection(id) {
-  document.getElementById(id).scrollIntoView({
-    behavior: "smooth",
-    block: "start"
-  });
+const page = document.getElementById("page");
+const imageInput = document.getElementById("imageInput");
+const watermarkInput = document.getElementById("watermarkInput");
+const layerList = document.getElementById("layerList");
+
+let selectedText = null;
+let selectedImage = null;
+let imageCounter = 0;
+
+document.addEventListener("click", function(event) {
+  if (event.target.matches("[data-text='true']")) {
+    selectedText = event.target;
+    selectedImage = null;
+
+    document.getElementById("textValue").value =
+      selectedText.innerText;
+
+    document.getElementById("fontSize").value =
+      parseInt(getComputedStyle(selectedText).fontSize) || 18;
+
+    document.getElementById("textColor").value =
+      rgbToHex(getComputedStyle(selectedText).color);
+  }
+});
+
+function rgbToHex(rgb) {
+  const nums = rgb.match(/\d+/g);
+  if (!nums || nums.length < 3) return "#183153";
+
+  return "#" + nums.slice(0, 3).map(n =>
+    Number(n).toString(16).padStart(2, "0")
+  ).join("");
 }
 
-function toggleLayer(id, visible) {
-  document.getElementById(id).style.display =
-    visible ? "block" : "none";
+function addText() {
+  const p = document.createElement("p");
+  p.contentEditable = "true";
+  p.dataset.text = "true";
+  p.className = "editable";
+  p.textContent = "New sample text";
+  p.style.fontSize = "18px";
+
+  page.querySelector(".page-content").appendChild(p);
+  p.focus();
+  selectedText = p;
+  document.getElementById("textValue").value = p.textContent;
 }
 
-document.getElementById("documentInput")
-.addEventListener("change", function(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-
-  const preview = document.getElementById("documentPreview");
-  const status = document.getElementById("status");
-
-  preview.replaceChildren();
-
-  if (file.type === "application/pdf") {
-    const message = document.createElement("p");
-    message.textContent =
-      "PDF selected: " + file.name +
-      ". Use the browser PDF viewer to inspect the original.";
-    preview.appendChild(message);
-
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(file);
-    link.target = "_blank";
-    link.rel = "noopener";
-    link.textContent = "Open original PDF";
-    preview.appendChild(link);
-  } else if (file.type.startsWith("image/")) {
-    const img = document.createElement("img");
-    img.src = URL.createObjectURL(file);
-    img.alt = "Uploaded document preview";
-    preview.appendChild(img);
-  } else {
-    status.textContent = "Unsupported file type.";
+function applyText() {
+  if (!selectedText) {
+    alert("Select a text box on the page first.");
     return;
   }
 
-  status.textContent =
-    "Loaded: " + file.name +
-    ". The original file remains unchanged.";
+  selectedText.innerText =
+    document.getElementById("textValue").value;
+
+  selectedText.style.fontSize =
+    Math.max(8, Math.min(72,
+      Number(document.getElementById("fontSize").value) || 18
+    )) + "px";
+
+  selectedText.style.color =
+    document.getElementById("textColor").value;
+}
+
+imageInput.addEventListener("change", function(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+    alert("Please choose an image.");
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = function() {
+    const img = document.createElement("img");
+    img.src = reader.result;
+    img.alt = "Sample image layer";
+    img.className = "image-layer";
+
+    imageCounter++;
+    img.dataset.layerId = "layer-" + imageCounter;
+
+    img.style.left = "40px";
+    img.style.top = (200 + imageCounter * 20) + "px";
+
+    page.appendChild(img);
+
+    img.addEventListener("click", function(e) {
+      e.stopPropagation();
+      selectedImage = img;
+      selectedText = null;
+      refreshLayers();
+    });
+
+    makeDraggable(img);
+    refreshLayers();
+  };
+
+  reader.readAsDataURL(file);
+  event.target.value = "";
 });
 
-function copyNotes() {
-  const text = document.getElementById("notes").value;
-  if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(text)
-      .then(() => alert("Text copied."))
-      .catch(() => alert("Please select and copy the text manually."));
-  } else {
-    document.getElementById("notes").select();
-    alert("Please copy the selected text.");
+function makeDraggable(element) {
+  let startX, startY, initialLeft, initialTop;
+
+  element.addEventListener("pointerdown", function(event) {
+    selectedImage = element;
+    startX = event.clientX;
+    startY = event.clientY;
+    initialLeft = element.offsetLeft;
+    initialTop = element.offsetTop;
+
+    element.setPointerCapture(event.pointerId);
+
+    function move(e) {
+      const scale = page.getBoundingClientRect().width /
+        page.offsetWidth;
+
+      element.style.left =
+        (initialLeft + (e.clientX - startX) / scale) + "px";
+
+      element.style.top =
+        (initialTop + (e.clientY - startY) / scale) + "px";
+    }
+
+    function up() {
+      element.removeEventListener("pointermove", move);
+      element.removeEventListener("pointerup", up);
+      refreshLayers();
+    }
+
+    element.addEventListener("pointermove", move);
+    element.addEventListener("pointerup", up);
+  });
+}
+
+watermarkInput.addEventListener("change", function(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+    alert("Please choose an image.");
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = function() {
+    const wm = document.getElementById("wmImage");
+    wm.src = reader.result;
+    wm.hidden = false;
+    applyWatermark();
+  };
+
+  reader.readAsDataURL(file);
+  event.target.value = "";
+});
+
+function applyWatermark() {
+  const wm = document.getElementById("wmImage");
+
+  wm.style.opacity =
+    Number(document.getElementById("opacity").value) / 100;
+
+  wm.style.width =
+    document.getElementById("wmSize").value + "%";
+
+  wm.style.height =
+    document.getElementById("wmSize").value + "%";
+}
+
+document.getElementById("opacity").addEventListener(
+  "input", applyWatermark
+);
+
+document.getElementById("wmSize").addEventListener(
+  "input", applyWatermark
+);
+
+function refreshLayers() {
+  layerList.replaceChildren();
+
+  page.querySelectorAll(".image-layer").forEach(function(img) {
+    const li = document.createElement("li");
+    const label = document.createElement("span");
+    label.textContent = img.dataset.layerId;
+
+    const hide = document.createElement("button");
+    hide.textContent = img.style.visibility === "hidden"
+      ? "Show" : "Hide";
+
+    hide.onclick = function() {
+      img.style.visibility =
+        img.style.visibility === "hidden" ? "visible" : "hidden";
+
+      refreshLayers();
+    };
+
+    const remove = document.createElement("button");
+    remove.textContent = "Delete";
+    remove.className = "danger";
+
+    remove.onclick = function() {
+      img.remove();
+
+      if (selectedImage === img) selectedImage = null;
+      refreshLayers();
+    };
+
+    li.append(label, hide, remove);
+    layerList.appendChild(li);
+  });
+}
+
+function resetPage() {
+  if (!confirm("Reset the editor to the original sample page?")) {
+    return;
+  }
+
+  location.reload();
+}
+
+function printPage() {
+  window.print();
+}
+
+async function exportPNG() {
+  if (!window.html2canvas) {
+    alert("Export library is loading. Please try again.");
+    return;
+  }
+
+  const banner = document.getElementById("sampleBanner");
+  banner.style.display = "block";
+
+  try {
+    const canvas = await html2canvas(page, {
+      scale: 2,
+      backgroundColor: "#ffffff",
+      useCORS: true
+    });
+
+    const link = document.createElement("a");
+    link.download = "sample-document.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  } catch (error) {
+    alert("Export failed. Please try printing the page instead.");
   }
 }
-
-function exportPreview() {
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
-  canvas.width = 1200;
-  canvas.height = 800;
-
-  ctx.fillStyle = "#ffffff";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  ctx.fillStyle = "#17345d";
-  ctx.font = "bold 34px Arial";
-  ctx.fillText("ANNOTATED SAMPLE", 40, 60);
-
-  ctx.font = "22px Arial";
-  ctx.fillText(
-    "Document preview export — not an official document",
-    40, 105
-  );
-
-  ctx.fillStyle = "#64748b";
-  ctx.fillText(
-    "Use the editor to view the original separately.",
-    40, 160
-  );
-
-  const link = document.createElement("a");
-  link.download = "annotated-sample.png";
-  link.href = canvas.toDataURL("image/png");
-  link.click();
-}
-
-window.addEventListener("beforeprint", function() {
-  document.body.style.color = "#000";
-});
 </script>
+
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
+</script>
+
+<style>
+@media print {
+  body { background: white; }
+  header, .toolbar, .sidebar, footer,
+  .workspace > h3, .workspace > p {
+    display: none !important;
+  }
+
+  .layout, .workspace, .canvas-wrap {
+    display: block;
+    padding: 0;
+    margin: 0;
+    background: white;
+    box-shadow: none;
+  }
+
+  #page {
+    margin: 0;
+    box-shadow: none;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .editable { outline: none; }
+}
+</style>
 
 </body>
 </html>
+
 
 
 
