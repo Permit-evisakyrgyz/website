@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>A4 Document Editor Demo</title>
 
 <style>
@@ -14,7 +15,6 @@
 :root {
   --page-color: #95DDDD;
   --text-color: #000000;
-  --line-color: #000000;
 }
 
 html,
@@ -22,7 +22,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, Helvetica, sans-serif;
-  color: var(--text-color);
+  color: #000000;
 }
 
 body {
@@ -30,6 +30,7 @@ body {
   background: #d9f3f3;
 }
 
+/* TOOLBAR */
 .toolbar {
   width: 100%;
   max-width: 850px;
@@ -42,7 +43,7 @@ body {
 
 .toolbar button {
   padding: 10px 14px;
-  border: 1px solid #123c66;
+  border: none;
   border-radius: 5px;
   background: #1456a0;
   color: #ffffff;
@@ -54,7 +55,7 @@ body {
   background: #0d3d75;
 }
 
-/* A4 PAPER: 210 x 297 mm */
+/* A4 PAPER SIZE */
 .page {
   position: relative;
   isolation: isolate;
@@ -69,10 +70,11 @@ body {
 
   background-color: var(--page-color);
   color: var(--text-color);
-  box-shadow: 0 2px 12px rgba(0,0,0,.15);
+
+  box-shadow: none;
 }
 
-/* Automatically repeated watermark */
+/* LIGHT REPEATING WATERMARK */
 .page::before {
   content: "";
   position: absolute;
@@ -88,25 +90,29 @@ body {
   pointer-events: none;
 }
 
-/* Keep all document content above the watermark */
+/* DOCUMENT CONTENT */
 .page-content {
   position: relative;
   z-index: 1;
   color: #000000;
 }
 
+/* WARNING WITHOUT BORDER */
 .demo-warning {
   margin-bottom: 7mm;
-  padding: 8px;
-  border: 1.5px dashed #000000;
-  color: #000000;
+  padding: 5px;
+
+  border: none;
   background: transparent;
+
+  color: #000000;
   text-align: center;
   font-size: 12px;
   font-weight: bold;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
+/* HEADER */
 .document-header {
   text-align: center;
   margin-bottom: 7mm;
@@ -116,6 +122,7 @@ body {
 .document-header h1 {
   margin: 4px 0;
   font-size: 20px;
+  font-weight: bold;
 }
 
 .document-header h2 {
@@ -129,16 +136,20 @@ body {
   font-size: 11px;
 }
 
+/* SECTION HEADINGS WITHOUT BOXES */
 .section-title {
   margin: 6mm 0 3mm;
-  padding: 7px;
-  border: 1px solid #000000;
+  padding: 5px 0;
+
+  border: none;
   background: transparent;
+
   color: #000000;
   font-size: 12px;
   font-weight: bold;
 }
 
+/* INFORMATION GRID */
 .details-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -146,10 +157,11 @@ body {
   row-gap: 3mm;
 }
 
+/* FIELDS WITHOUT BLACK LINES */
 .field {
   min-width: 0;
   padding: 5px 0;
-  border-bottom: 1px solid #000000;
+  border: none;
   color: #000000;
 }
 
@@ -157,6 +169,7 @@ body {
 .long-field label {
   display: block;
   margin-bottom: 4px;
+
   font-size: 9px;
   font-weight: bold;
   color: #000000;
@@ -165,29 +178,34 @@ body {
 .editable {
   min-height: 18px;
   font-size: 11px;
-  line-height: 1.4;
+  line-height: 1.5;
   overflow-wrap: anywhere;
   outline: none;
   color: #000000;
 }
 
+/* Editing highlight only */
 [contenteditable="true"]:focus {
-  outline: 1px dashed #000000;
-  background: rgba(255,255,255,.22);
+  outline: none;
+  background: rgba(255,255,255,0.22);
 }
 
+/* ADDITIONAL DETAILS WITHOUT LINES */
 .long-field {
   margin-top: 3mm;
   padding: 5px 0;
-  border-bottom: 1px solid #000000;
+  border: none;
   color: #000000;
 }
 
+/* NOTICE WITHOUT BORDER */
 .notice {
   margin-top: 6mm;
-  padding: 8px;
-  border: 1px solid #000000;
+  padding: 5px 0;
+
+  border: none;
   background: transparent;
+
   color: #000000;
   font-size: 9px;
   line-height: 1.5;
@@ -197,16 +215,20 @@ body {
   margin: 4px 0 0;
 }
 
+/* FOOTER WITHOUT LINE */
 .footer-warning {
   margin-top: 7mm;
-  padding-top: 7px;
-  border-top: 1px solid #000000;
+  padding-top: 5px;
+
+  border: none;
   text-align: center;
+
   color: #000000;
   font-size: 10px;
   font-weight: bold;
 }
 
+/* MOBILE DISPLAY */
 @media screen and (max-width: 850px) {
   body {
     padding: 8px;
@@ -253,7 +275,7 @@ body {
   }
 }
 
-/* A4 printing settings */
+/* A4 PRINT SETTINGS */
 @page {
   size: A4 portrait;
   margin: 0;
@@ -279,15 +301,9 @@ body {
     min-height: 297mm;
     margin: 0;
     padding: 12mm;
-    box-shadow: none;
     overflow: hidden;
+    box-shadow: none;
 
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-
-  .page::before {
-    opacity: 0.06;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
@@ -299,11 +315,21 @@ body {
 
 <div class="toolbar">
   <button type="button" onclick="addSection()">Add Section</button>
-  <button type="button" onclick="toggleEdit()" id="editButton">
+
+  <button
+    type="button"
+    onclick="toggleEdit()"
+    id="editButton">
     Lock Text
   </button>
-  <button type="button" onclick="window.print()">Print A4</button>
-  <button type="button" onclick="location.reload()">Reload Original</button>
+
+  <button type="button" onclick="window.print()">
+    Print A4
+  </button>
+
+  <button type="button" onclick="location.reload()">
+    Reload Original
+  </button>
 </div>
 
 <main class="page">
@@ -315,7 +341,11 @@ body {
 
     <header class="document-header">
       <h1 contenteditable="true">SAMPLE DOCUMENT</h1>
-      <h2 contenteditable="true">ÖRNEK BELGE / SAMPLE RECORD</h2>
+
+      <h2 contenteditable="true">
+        ÖRNEK BELGE / SAMPLE RECORD
+      </h2>
+
       <p contenteditable="true">
         Document Design and Editing Demonstration
       </p>
@@ -329,42 +359,58 @@ body {
 
       <div class="field">
         <label>FULL NAME / AD SOYAD</label>
-        <div class="editable" contenteditable="true">Sample Person</div>
+        <div class="editable" contenteditable="true">
+          Sample Person
+        </div>
       </div>
 
       <div class="field">
         <label>REFERENCE NUMBER / REFERANS NO</label>
-        <div class="editable" contenteditable="true">DEMO-000001</div>
+        <div class="editable" contenteditable="true">
+          DEMO-000001
+        </div>
       </div>
 
       <div class="field">
         <label>DATE OF BIRTH / DOĞUM TARİHİ</label>
-        <div class="editable" contenteditable="true">DD / MM / YYYY</div>
+        <div class="editable" contenteditable="true">
+          DD / MM / YYYY
+        </div>
       </div>
 
       <div class="field">
         <label>NATIONALITY / UYRUK</label>
-        <div class="editable" contenteditable="true">Sample Nationality</div>
+        <div class="editable" contenteditable="true">
+          Sample Nationality
+        </div>
       </div>
 
       <div class="field">
         <label>DOCUMENT TYPE / BELGE TÜRÜ</label>
-        <div class="editable" contenteditable="true">Sample Record</div>
+        <div class="editable" contenteditable="true">
+          Sample Record
+        </div>
       </div>
 
       <div class="field">
         <label>ISSUE DATE / DÜZENLEME TARİHİ</label>
-        <div class="editable" contenteditable="true">DD / MM / YYYY</div>
+        <div class="editable" contenteditable="true">
+          DD / MM / YYYY
+        </div>
       </div>
 
       <div class="field">
         <label>VALID FROM / BAŞLANGIÇ</label>
-        <div class="editable" contenteditable="true">DD / MM / YYYY</div>
+        <div class="editable" contenteditable="true">
+          DD / MM / YYYY
+        </div>
       </div>
 
       <div class="field">
         <label>VALID UNTIL / BİTİŞ</label>
-        <div class="editable" contenteditable="true">DD / MM / YYYY</div>
+        <div class="editable" contenteditable="true">
+          DD / MM / YYYY
+        </div>
       </div>
 
     </div>
@@ -383,7 +429,8 @@ body {
     <div class="long-field">
       <label>NOTES / NOTLAR</label>
       <div class="editable" contenteditable="true">
-        This is a demonstration template. Click any text to edit it.
+        This is a demonstration template.
+        Click any text to edit it.
       </div>
     </div>
 
@@ -391,6 +438,7 @@ body {
 
     <div class="notice" contenteditable="true">
       <strong>IMPORTANT NOTICE / ÖNEMLİ NOT</strong>
+
       <p>
         This is a sample document for design and editing tests.
         It is not an official document and does not establish identity,
@@ -415,7 +463,8 @@ function toggleEdit() {
   document.querySelectorAll(
     '#documentContent [contenteditable]'
   ).forEach(function(element) {
-    element.contentEditable = editingEnabled ? "true" : "false";
+    element.contentEditable =
+      editingEnabled ? "true" : "false";
   });
 
   document.getElementById("editButton").textContent =
@@ -425,7 +474,9 @@ function toggleEdit() {
 function addSection() {
   sectionCount++;
 
-  const container = document.getElementById("extraSections");
+  const container =
+    document.getElementById("extraSections");
+
   const section = document.createElement("section");
 
   section.innerHTML = `
@@ -449,11 +500,11 @@ function addSection() {
   `;
 
   if (!editingEnabled) {
-    section.querySelectorAll('[contenteditable]').forEach(
-      function(element) {
-        element.contentEditable = "false";
-      }
-    );
+    section.querySelectorAll(
+      '[contenteditable]'
+    ).forEach(function(element) {
+      element.contentEditable = "false";
+    });
   }
 
   container.appendChild(section);
@@ -462,6 +513,7 @@ function addSection() {
 
 </body>
 </html>
+
 
 
 
