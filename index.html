@@ -4,75 +4,83 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Document Sample Editor</title>
+<title>Demo Document Studio</title>
 
 <style>
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
   padding: 16px;
-  background: #e8eff5;
   font-family: Arial, sans-serif;
-  color: #263f4a;
+  background: #eaf1f7;
+  color: #24404b;
 }
 
 .toolbar {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
   justify-content: center;
-  margin-bottom: 15px;
+  gap: 8px;
+  margin: 0 auto 16px;
+  max-width: 820px;
 }
 
-button {
-  border: 0;
-  border-radius: 6px;
-  padding: 11px 16px;
-  background: #075ba7;
+button,
+.upload-label {
+  background: #075ca8;
   color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 11px 15px;
   cursor: pointer;
+  font-size: 14px;
+}
+
+#watermarkInput {
+  display: none;
 }
 
 .document {
   position: relative;
   max-width: 800px;
-  min-height: 1100px;
+  min-height: 1120px;
   margin: auto;
   padding: 30px;
-  background-color: #a9e1e6;
+  overflow: hidden;
+  background-color: #a9e1e7;
   background-image:
     repeating-linear-gradient(
-      35deg,
+      45deg,
       transparent 0,
       transparent 5px,
       #ffffff12 6px,
       #ffffff12 8px
     );
-  border: 5px solid #d1f0f1;
-  box-shadow: 0 3px 15px #0002;
+  border: 5px solid #d7f1f2;
+  box-shadow: 0 4px 15px #0002;
 }
 
-.demo {
-  padding: 12px;
-  margin-bottom: 24px;
+.demo-top {
   text-align: center;
-  color: #fff;
   background: #c00020;
-  font-size: 21px;
+  color: white;
   font-weight: 900;
-  letter-spacing: 1px;
+  font-size: 20px;
+  padding: 12px 6px;
+  margin-bottom: 22px;
 }
 
-.heading {
+.header {
   text-align: center;
-  padding: 15px 5px;
-  border-bottom: 2px solid #508b91;
+  padding: 12px;
+  border-bottom: 2px solid #578b91;
 }
 
-.heading h2 {
-  margin: 4px;
-  font-size: 22px;
+.header h2 {
+  margin: 5px;
 }
 
 .editable {
@@ -82,8 +90,8 @@ button {
 }
 
 .editable:focus {
-  outline: 2px dashed #075ba7;
-  background: #ffffff70;
+  outline: 2px dashed #075ca8;
+  background: #ffffff80;
 }
 
 .columns {
@@ -94,50 +102,85 @@ button {
 }
 
 .box {
-  min-width: 0;
-  padding: 13px;
   border: 1px solid #538d94;
+  padding: 14px;
   margin-bottom: 18px;
+  min-width: 0;
 }
 
 .box h3 {
   margin-top: 0;
-  font-size: 15px;
-  border-bottom: 1px solid #78a9ad;
   padding-bottom: 8px;
+  border-bottom: 1px solid #76a8ad;
+  font-size: 15px;
 }
 
-.info-row {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 4px;
-  margin: 11px 0;
+.field {
+  margin: 12px 0;
 }
 
-.label {
-  font-size: 12px;
-  font-weight: bold;
+.field label {
+  display: block;
   color: #315e68;
+  font-weight: bold;
+  font-size: 12px;
+  margin-bottom: 4px;
 }
 
-.notice {
-  margin-top: 25px;
-  padding: 12px;
+/* PNG watermark area */
+.demo-watermark {
+  margin-top: 30px;
+  padding: 10px;
   text-align: center;
-  border: 1px solid #538d94;
-  font-weight: bold;
+  min-height: 80px;
+}
+
+.demo-watermark img {
+  display: block;
+  width: 100%;
+  max-height: 220px;
+  object-fit: contain;
+  margin: auto;
+  opacity: 0.35;
+}
+
+.hint {
+  max-width: 800px;
+  margin: 12px auto;
+  color: #526779;
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 @media(max-width: 600px) {
-  body { padding: 5px; }
-  .document { padding: 14px; }
-  .columns { grid-template-columns: 1fr; }
-  .demo { font-size: 16px; }
+  body {
+    padding: 5px;
+  }
+
+  .document {
+    padding: 14px;
+  }
+
+  .columns {
+    grid-template-columns: 1fr;
+  }
+
+  .demo-top {
+    font-size: 16px;
+  }
 }
 
 @media print {
-  body { padding: 0; background: white; }
-  .toolbar { display: none; }
+  body {
+    padding: 0;
+    background: white;
+  }
+
+  .toolbar,
+  .hint {
+    display: none !important;
+  }
+
   .document {
     max-width: none;
     margin: 0;
@@ -145,7 +188,10 @@ button {
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
   }
-  .editable:focus { outline: none; }
+
+  .editable:focus {
+    outline: none;
+  }
 }
 </style>
 </head>
@@ -153,139 +199,227 @@ button {
 <body>
 
 <div class="toolbar">
-  <button onclick="addSection()">+ Add Section</button>
-  <button onclick="window.print()">Print / Save PDF</button>
-  <button onclick="resetPage()">Reset</button>
+
+  <button onclick="addSection()">
+    + Add Section
+  </button>
+
+  <label class="upload-label" for="watermarkInput">
+    Upload My Watermark PNG
+  </label>
+
+  <input
+    type="file"
+    id="watermarkInput"
+    accept="image/png,image/jpeg,image/webp"
+  >
+
+  <button onclick="window.print()">
+    Print / Save PDF
+  </button>
+
+  <button onclick="resetDocument()">
+    Reset Sample
+  </button>
+
 </div>
 
 <main class="document" id="document">
 
-  <div class="demo">
+  <div class="demo-top">
     DEMO — NOT FOR OFFICIAL USE
   </div>
 
-  <header class="heading">
+  <header class="header">
+
+    <h2 class="editable" contenteditable="true">
+      DEMO DOCUMENT
+    </h2>
+
     <h2 class="editable" contenteditable="true">
       ÖRNEK BELGE
     </h2>
-    <h2 class="editable" contenteditable="true">
-      SAMPLE DOCUMENT
-    </h2>
+
     <p class="editable" contenteditable="true">
-      Düzenlenebilir Örnek Sayfa / Editable Sample Page
+      Editable Demonstration Page
     </p>
+
   </header>
 
   <div class="columns">
 
     <section class="box">
+
       <h3 class="editable" contenteditable="true">
         KİŞİSEL BİLGİLER / PERSONAL INFORMATION
       </h3>
 
-      <div class="info-row">
-        <span class="label">Adı Soyadı / Full Name</span>
+      <div class="field">
+        <label>Adı Soyadı / Full Name</label>
+
         <div class="editable" contenteditable="true">
           Örnek Kullanıcı / Sample User
         </div>
       </div>
 
-      <div class="info-row">
-        <span class="label">Uyruğu / Nationality</span>
+      <div class="field">
+        <label>Uyruğu / Nationality</label>
+
         <div class="editable" contenteditable="true">
           Örnek / Sample
         </div>
       </div>
 
-      <div class="info-row">
-        <span class="label">Kategori / Category</span>
+      <div class="field">
+        <label>Kategori / Category</label>
+
         <div class="editable" contenteditable="true">
           Eğitim / Education
         </div>
       </div>
 
-      <div class="info-row">
-        <span class="label">Belge Amacı / Document Purpose</span>
+      <div class="field">
+        <label>Amaç / Purpose</label>
+
         <div class="editable" contenteditable="true">
-          Örnek Amaç / Sample Purpose
+          Demo Purpose
         </div>
       </div>
+
     </section>
 
     <section class="box">
+
       <h3 class="editable" contenteditable="true">
         BELGE BİLGİLERİ / DOCUMENT DETAILS
       </h3>
 
-      <div class="info-row">
-        <span class="label">Referans / Reference</span>
+      <div class="field">
+        <label>Referans / Reference</label>
+
         <div class="editable" contenteditable="true">
-          SAMPLE-001
+          DEMO-001
         </div>
       </div>
 
-      <div class="info-row">
-        <span class="label">Tarih / Date</span>
+      <div class="field">
+        <label>Tarih / Date</label>
+
         <div class="editable" contenteditable="true">
           29 October 2026
         </div>
       </div>
 
-      <div class="info-row">
-        <span class="label">Durum / Status</span>
+      <div class="field">
+        <label>Durum / Status</label>
+
         <div class="editable" contenteditable="true">
-          Demo
+          Sample Only
         </div>
       </div>
+
+      <div class="field">
+        <label>Belge Türü / Document Type</label>
+
+        <div class="editable" contenteditable="true">
+          Demo Document
+        </div>
+      </div>
+
     </section>
 
   </div>
 
   <section class="box">
+
     <h3 class="editable" contenteditable="true">
       AÇIKLAMALAR / REMARKS
     </h3>
 
     <p class="editable" contenteditable="true">
-      Bu alanı kendi örnek metninizle değiştirebilirsiniz.
+      Bu bölüm örnek metin içindir. Metni değiştirmek için tıklayın.
     </p>
 
     <p class="editable" contenteditable="true">
-      You can replace this paragraph with your own sample text.
+      This section contains demonstration text. Click to edit.
     </p>
 
-    <p class="editable" contenteditable="true">
-      Bu belge yalnızca tasarım ve düzenleme denemeleri içindir.
-    </p>
-
-    <p class="editable" contenteditable="true">
-      This document is for layout and editing demonstrations only.
-    </p>
   </section>
 
   <section class="box">
+
     <h3 class="editable" contenteditable="true">
       EK BİLGİLER / ADDITIONAL INFORMATION
     </h3>
 
     <p class="editable" contenteditable="true">
-      Buraya ek açıklamalar yazabilirsiniz.
+      Buraya kendi notlarınızı ekleyebilirsiniz.
     </p>
 
     <p class="editable" contenteditable="true">
-      You can enter additional notes here.
+      You can add your own notes here.
     </p>
+
   </section>
 
-  <div class="notice">
-    ÖRNEK BELGE / SAMPLE DOCUMENT
+  <!-- Uploaded PNG watermark -->
+  <div class="demo-watermark">
+    <img
+      id="watermarkImage"
+      alt="My Watermark PNG"
+      hidden
+    >
+  </div>
+
+  <div class="editable" contenteditable="true"
+       style="text-align:center;font-weight:bold;color:#a32332;">
+    NOT FOR OFFICIAL USE — DEMO ONLY
   </div>
 
 </main>
 
+<p class="hint">
+  ٹیکسٹ تبدیل کرنے کے لیے اس پر کلک کریں۔
+  اپنی PNG تصویر لگانے کے لیے Upload My Watermark PNG دبائیں۔
+  PDF کے لیے Print / Save PDF دبائیں۔
+</p>
+
 <script>
-const doc = document.getElementById("document");
-const original = doc.innerHTML;
+const documentPage = document.getElementById("document");
+const watermarkInput = document.getElementById("watermarkInput");
+const watermarkImage = document.getElementById("watermarkImage");
+
+const initialContent = documentPage.innerHTML;
+
+let watermarkObjectURL = null;
+
+watermarkInput.addEventListener("change", function(event) {
+  const file = event.target.files[0];
+
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+    alert("Please upload an image file.");
+    return;
+  }
+
+  if (watermarkObjectURL) {
+    URL.revokeObjectURL(watermarkObjectURL);
+  }
+
+  watermarkObjectURL = URL.createObjectURL(file);
+
+  watermarkImage.onload = function() {
+    watermarkImage.hidden = false;
+  };
+
+  watermarkImage.onerror = function() {
+    watermarkImage.hidden = true;
+    alert("Image could not be loaded. Please try another file.");
+  };
+
+  watermarkImage.src = watermarkObjectURL;
+});
 
 function addSection() {
   const section = document.createElement("section");
@@ -296,23 +430,34 @@ function addSection() {
       Yeni Bölüm / New Section
     </h3>
     <p class="editable" contenteditable="true">
-      Metin girin / Enter text here
+      Metin girin / Enter your text here.
     </p>
   `;
 
-  doc.appendChild(section);
+  documentPage.appendChild(section);
   section.querySelector("p").focus();
 }
 
-function resetPage() {
-  if (confirm("Reset the sample document?")) {
-    doc.innerHTML = original;
+function resetDocument() {
+  if (!confirm("Reset the sample document?")) return;
+
+  documentPage.innerHTML = initialContent;
+  watermarkInput.value = "";
+
+  const newImage = document.getElementById("watermarkImage");
+  newImage.hidden = true;
+  newImage.removeAttribute("src");
+
+  if (watermarkObjectURL) {
+    URL.revokeObjectURL(watermarkObjectURL);
+    watermarkObjectURL = null;
   }
 }
 </script>
 
 </body>
 </html>
+
 
 
 
