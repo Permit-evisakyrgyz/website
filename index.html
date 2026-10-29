@@ -4,308 +4,272 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>A4 Document Editor Demo</title>
+<title>Cyprus Entry Permit - Demo</title>
 
 <style>
 * {
   box-sizing: border-box;
 }
 
-:root {
-  --page-color: #95DDDD;
-  --text-color: #000000;
-}
-
-html,
 body {
   margin: 0;
-  padding: 0;
+  padding: 20px 10px;
+  background: #eeeeee;
   font-family: Arial, Helvetica, sans-serif;
-  color: #000000;
+  color: #173b40;
 }
 
-body {
-  padding: 16px;
-  background: #d9f3f3;
-}
-
-/* TOOLBAR */
 .toolbar {
-  width: 100%;
-  max-width: 850px;
-  margin: 0 auto 14px;
+  max-width: 760px;
+  margin: 0 auto 15px;
   display: flex;
+  gap: 8px;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 8px;
 }
 
-.toolbar button {
-  padding: 10px 14px;
-  border: none;
-  border-radius: 5px;
-  background: #1456a0;
-  color: #ffffff;
+button {
+  padding: 11px 17px;
+  border: 0;
+  border-radius: 6px;
+  background: #075c78;
+  color: white;
   font-size: 14px;
   cursor: pointer;
 }
 
-.toolbar button:hover {
-  background: #0d3d75;
+button:hover {
+  background: #034258;
 }
 
-/* A4 PAPER SIZE */
-.page {
+.permit {
   position: relative;
-  isolation: isolate;
   overflow: hidden;
-
-  width: 210mm;
-  height: 297mm;
-  min-height: 297mm;
-
-  margin: 0 auto;
-  padding: 12mm;
-
-  background-color: var(--page-color);
-  color: var(--text-color);
-
-  box-shadow: none;
+  width: 100%;
+  max-width: 760px;
+  min-height: 1100px;
+  margin: auto;
+  padding: 28px 30px;
+  background:
+    repeating-linear-gradient(
+      35deg,
+      rgba(255,255,255,.08) 0px,
+      rgba(255,255,255,.08) 2px,
+      transparent 2px,
+      transparent 8px
+    ),
+    #9edfe5;
+  border: 2px solid #6dc8d1;
+  box-shadow: 0 4px 18px #0002;
 }
 
-/* LIGHT REPEATING WATERMARK */
-.page::before {
-  content: "";
+.watermark {
   position: absolute;
-  inset: 0;
-  z-index: 0;
+  top: 43%;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: clamp(35px, 8vw, 75px);
+  font-weight: 900;
+  color: rgba(12, 77, 90, .13);
+  transform: rotate(-28deg);
+  pointer-events: none;
+  letter-spacing: 5px;
+}
 
-  background-image: url("./my%20watermark.png");
-  background-repeat: repeat;
-  background-position: left top;
-  background-size: 95px auto;
-
-  opacity: 0.06;
+.demo-label {
+  position: absolute;
+  top: 47%;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: #124b58;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 4px;
+  transform: rotate(-28deg);
   pointer-events: none;
 }
 
-/* DOCUMENT CONTENT */
-.page-content {
+.header {
   position: relative;
-  z-index: 1;
-  color: #000000;
-}
-
-/* WARNING WITHOUT BORDER */
-.demo-warning {
-  margin-bottom: 7mm;
-  padding: 5px;
-
-  border: none;
-  background: transparent;
-
-  color: #000000;
-  text-align: center;
-  font-size: 12px;
-  font-weight: bold;
-  line-height: 1.5;
-}
-
-/* HEADER */
-.document-header {
-  text-align: center;
-  margin-bottom: 7mm;
-  color: #000000;
-}
-
-.document-header h1 {
-  margin: 4px 0;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.document-header h2 {
-  margin: 5px 0;
-  font-size: 14px;
-  font-weight: normal;
-}
-
-.document-header p {
-  margin: 5px 0;
-  font-size: 11px;
-}
-
-/* SECTION HEADINGS WITHOUT BOXES */
-.section-title {
-  margin: 6mm 0 3mm;
-  padding: 5px 0;
-
-  border: none;
-  background: transparent;
-
-  color: #000000;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-/* INFORMATION GRID */
-.details-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 7mm;
-  row-gap: 3mm;
+  grid-template-columns: 1fr 60px;
+  gap: 12px;
+  align-items: center;
+  border-bottom: 1px solid #438f9a;
+  padding-bottom: 18px;
 }
 
-/* FIELDS WITHOUT BLACK LINES */
-.field {
-  min-width: 0;
-  padding: 5px 0;
-  border: none;
-  color: #000000;
-}
-
-.field label,
-.long-field label {
-  display: block;
-  margin-bottom: 4px;
-
-  font-size: 9px;
-  font-weight: bold;
-  color: #000000;
-}
-
-.editable {
-  min-height: 18px;
-  font-size: 11px;
+.header h3 {
+  font-size: 14px;
   line-height: 1.5;
-  overflow-wrap: anywhere;
-  outline: none;
-  color: #000000;
+  margin: 0 0 6px;
 }
 
-/* Editing highlight only */
-[contenteditable="true"]:focus {
-  outline: none;
-  background: rgba(255,255,255,0.22);
-}
-
-/* ADDITIONAL DETAILS WITHOUT LINES */
-.long-field {
-  margin-top: 3mm;
-  padding: 5px 0;
-  border: none;
-  color: #000000;
-}
-
-/* NOTICE WITHOUT BORDER */
-.notice {
-  margin-top: 6mm;
-  padding: 5px 0;
-
-  border: none;
-  background: transparent;
-
-  color: #000000;
-  font-size: 9px;
+.header p {
+  font-size: 12px;
   line-height: 1.5;
-}
-
-.notice p {
-  margin: 4px 0 0;
-}
-
-/* FOOTER WITHOUT LINE */
-.footer-warning {
-  margin-top: 7mm;
-  padding-top: 5px;
-
-  border: none;
-  text-align: center;
-
-  color: #000000;
-  font-size: 10px;
-  font-weight: bold;
-}
-
-/* MOBILE DISPLAY */
-@media screen and (max-width: 850px) {
-  body {
-    padding: 8px;
-  }
-
-  .page {
-    width: 100%;
-    height: auto;
-    min-height: 297mm;
-    padding: 8mm;
-  }
-
-  .page::before {
-    background-size: 75px auto;
-    opacity: 0.06;
-  }
-
-  .document-header h1 {
-    font-size: 18px;
-  }
-
-  .details-grid {
-    column-gap: 5mm;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .toolbar button {
-    padding: 9px 10px;
-    font-size: 12px;
-  }
-
-  .page {
-    padding: 6mm;
-  }
-
-  .details-grid {
-    grid-template-columns: 1fr;
-    row-gap: 2mm;
-  }
-
-  .demo-warning {
-    font-size: 10px;
-  }
-}
-
-/* A4 PRINT SETTINGS */
-@page {
-  size: A4 portrait;
   margin: 0;
 }
 
+.emblem {
+  width: 52px;
+  height: 52px;
+  border: 2px solid #478a91;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.country {
+  text-align: center;
+  margin: 17px 0;
+  font-weight: bold;
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+.document-type {
+  border-top: 1px solid #5aabb5;
+  border-bottom: 1px solid #5aabb5;
+  padding: 12px 0;
+  margin-bottom: 18px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.field {
+  position: relative;
+  margin: 14px 0;
+  padding-bottom: 7px;
+  border-bottom: 1px dashed rgba(25, 94, 103, .35);
+}
+
+.field label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.field input,
+.field textarea {
+  display: block;
+  width: 100%;
+  border: 0;
+  outline: none;
+  resize: vertical;
+  background: transparent;
+  color: #183f44;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.field textarea {
+  min-height: 50px;
+}
+
+.field input:focus,
+.field textarea:focus {
+  background: rgba(255,255,255,.3);
+  outline: 1px dashed #347d88;
+}
+
+.two-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.section-title {
+  font-size: 12px;
+  font-weight: bold;
+  margin: 23px 0 8px;
+}
+
+.paragraph {
+  position: relative;
+  font-size: 11px;
+  line-height: 1.7;
+  text-align: justify;
+  margin: 10px 0;
+}
+
+.english {
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.notice {
+  position: relative;
+  margin-top: 28px;
+  padding: 14px;
+  border: 1px solid #347d88;
+  text-align: center;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 1.7;
+}
+
+.footer {
+  position: relative;
+  margin-top: 28px;
+  padding-top: 12px;
+  border-top: 1px solid #438f9a;
+  font-size: 10px;
+  line-height: 1.8;
+}
+
+@media (max-width: 480px) {
+  .permit {
+    padding: 18px 14px;
+    min-height: auto;
+  }
+
+  .header h3 {
+    font-size: 11px;
+  }
+
+  .header p {
+    font-size: 10px;
+  }
+
+  .two-columns {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .country {
+    font-size: 12px;
+  }
+}
+
 @media print {
-  html,
   body {
-    width: 210mm;
-    height: 297mm;
-    margin: 0 !important;
-    padding: 0 !important;
-    background: var(--page-color) !important;
+    padding: 0;
+    background: white;
   }
 
   .toolbar {
-    display: none !important;
+    display: none;
   }
 
-  .page {
-    width: 210mm;
-    height: 297mm;
-    min-height: 297mm;
-    margin: 0;
-    padding: 12mm;
-    overflow: hidden;
+  .permit {
+    width: 100%;
+    max-width: none;
     box-shadow: none;
-
-    -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .field input,
+  .field textarea {
+    appearance: none;
   }
 }
 </style>
@@ -314,205 +278,145 @@ body {
 <body>
 
 <div class="toolbar">
-  <button type="button" onclick="addSection()">Add Section</button>
-
-  <button
-    type="button"
-    onclick="toggleEdit()"
-    id="editButton">
-    Lock Text
-  </button>
-
-  <button type="button" onclick="window.print()">
-    Print A4
-  </button>
-
-  <button type="button" onclick="location.reload()">
-    Reload Original
-  </button>
+  <button onclick="window.print()">Print / Save PDF</button>
+  <button onclick="resetDemo()">Reset Demo</button>
 </div>
 
-<main class="page">
-  <div class="page-content" id="documentContent">
+<main class="permit">
 
-    <div class="demo-warning" contenteditable="true">
-      DEMO DOCUMENT — NOT FOR OFFICIAL USE
+  <div class="watermark">SAMPLE</div>
+  <div class="demo-label">DEMO ONLY</div>
+
+  <header class="header">
+    <div>
+      <h3>IMMIGRATION AND INTERNATIONAL PROTECTION</h3>
+      <p>DOCUMENT DESIGN DEMONSTRATION</p>
+      <p>Editable Entry Permit Sample Layout</p>
     </div>
+    <div class="emblem">✦</div>
+  </header>
 
-    <header class="document-header">
-      <h1 contenteditable="true">SAMPLE DOCUMENT</h1>
-
-      <h2 contenteditable="true">
-        ÖRNEK BELGE / SAMPLE RECORD
-      </h2>
-
-      <p contenteditable="true">
-        Document Design and Editing Demonstration
-      </p>
-    </header>
-
-    <div class="section-title" contenteditable="true">
-      PERSONAL INFORMATION / KİŞİSEL BİLGİLER
-    </div>
-
-    <div class="details-grid">
-
-      <div class="field">
-        <label>FULL NAME / AD SOYAD</label>
-        <div class="editable" contenteditable="true">
-          Sample Person
-        </div>
-      </div>
-
-      <div class="field">
-        <label>REFERENCE NUMBER / REFERANS NO</label>
-        <div class="editable" contenteditable="true">
-          DEMO-000001
-        </div>
-      </div>
-
-      <div class="field">
-        <label>DATE OF BIRTH / DOĞUM TARİHİ</label>
-        <div class="editable" contenteditable="true">
-          DD / MM / YYYY
-        </div>
-      </div>
-
-      <div class="field">
-        <label>NATIONALITY / UYRUK</label>
-        <div class="editable" contenteditable="true">
-          Sample Nationality
-        </div>
-      </div>
-
-      <div class="field">
-        <label>DOCUMENT TYPE / BELGE TÜRÜ</label>
-        <div class="editable" contenteditable="true">
-          Sample Record
-        </div>
-      </div>
-
-      <div class="field">
-        <label>ISSUE DATE / DÜZENLEME TARİHİ</label>
-        <div class="editable" contenteditable="true">
-          DD / MM / YYYY
-        </div>
-      </div>
-
-      <div class="field">
-        <label>VALID FROM / BAŞLANGIÇ</label>
-        <div class="editable" contenteditable="true">
-          DD / MM / YYYY
-        </div>
-      </div>
-
-      <div class="field">
-        <label>VALID UNTIL / BİTİŞ</label>
-        <div class="editable" contenteditable="true">
-          DD / MM / YYYY
-        </div>
-      </div>
-
-    </div>
-
-    <div class="section-title" contenteditable="true">
-      ADDITIONAL DETAILS / EK BİLGİLER
-    </div>
-
-    <div class="long-field">
-      <label>ADDRESS / ADRES</label>
-      <div class="editable" contenteditable="true">
-        Enter sample address here.
-      </div>
-    </div>
-
-    <div class="long-field">
-      <label>NOTES / NOTLAR</label>
-      <div class="editable" contenteditable="true">
-        This is a demonstration template.
-        Click any text to edit it.
-      </div>
-    </div>
-
-    <div id="extraSections"></div>
-
-    <div class="notice" contenteditable="true">
-      <strong>IMPORTANT NOTICE / ÖNEMLİ NOT</strong>
-
-      <p>
-        This is a sample document for design and editing tests.
-        It is not an official document and does not establish identity,
-        immigration status, residence permission, or legal entitlement.
-      </p>
-    </div>
-
-    <div class="footer-warning" contenteditable="true">
-      DEMO ONLY — NOT VALID FOR OFFICIAL USE
-    </div>
-
+  <div class="country">
+    REPUBLIC OF CYPRUS<br>
+    <span style="font-size:12px;font-weight:normal">
+      SAMPLE DOCUMENT — NOT VALID FOR TRAVEL
+    </span>
   </div>
+
+  <div class="document-type">
+    ENTRY PERMIT — DEMO SAMPLE
+  </div>
+
+  <div class="field">
+    <label>Institution / Sponsor</label>
+    <input value="SAMPLE EDUCATIONAL INSTITUTION"
+           aria-label="Institution or sponsor">
+  </div>
+
+  <div class="field">
+    <label>Applicant Name</label>
+    <input value="SAMPLE APPLICANT"
+           aria-label="Applicant name">
+  </div>
+
+  <div class="field">
+    <label>Address / Institution Details</label>
+    <input value="Sample Street, Sample City"
+           aria-label="Address">
+  </div>
+
+  <div class="two-columns">
+    <div class="field">
+      <label>Nationality</label>
+      <input value="PAKISTANI">
+    </div>
+
+    <div class="field">
+      <label>Passport Number</label>
+      <input value="SAMPLE-PASSPORT">
+    </div>
+  </div>
+
+  <div class="two-columns">
+    <div class="field">
+      <label>Category of Entry</label>
+      <input value="DEMO CATEGORY">
+    </div>
+
+    <div class="field">
+      <label>Permitted Period</label>
+      <input value="SAMPLE PERIOD">
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Purpose of Entry</label>
+    <input value="SAMPLE PURPOSE">
+  </div>
+
+  <div class="field">
+    <label>Valid Until</label>
+    <input type="date" value="2026-12-25">
+  </div>
+
+  <div class="section-title">
+    REMARKS / CONDITIONS
+  </div>
+
+  <div class="field">
+    <label>Editable Conditions</label>
+    <textarea>Enter the sample conditions here. This document is a demonstration template and has no official status.</textarea>
+  </div>
+
+  <p class="paragraph">
+    This section is reserved for explanatory information,
+    registration requirements, and other sample document notes.
+    Replace the text with appropriate content for your own
+    legitimate document design.
+  </p>
+
+  <p class="english">
+    <strong>ENGLISH INFORMATION</strong><br>
+    This is an editable demonstration layout. It is not an
+    official entry permit, visa, residence permit, or work permit.
+    It cannot be used to enter or remain in any country.
+  </p>
+
+  <div class="field">
+    <label>Issue Date</label>
+    <input type="date" value="2026-10-29">
+  </div>
+
+  <div class="field">
+    <label>Reference Number</label>
+    <input value="DEMO-000001">
+  </div>
+
+  <div class="notice">
+    SAMPLE DOCUMENT — NOT VALID FOR TRAVEL<br>
+    NOT AN OFFICIAL GOVERNMENT DOCUMENT
+  </div>
+
+  <footer class="footer">
+    <strong>IMPORTANT NOTICE</strong><br>
+    This page is an independent design demo. No official
+    authorization, government seal, signature, or verification
+    is represented by this template.
+  </footer>
+
 </main>
 
 <script>
-let editingEnabled = true;
-let sectionCount = 0;
-
-function toggleEdit() {
-  editingEnabled = !editingEnabled;
-
-  document.querySelectorAll(
-    '#documentContent [contenteditable]'
-  ).forEach(function(element) {
-    element.contentEditable =
-      editingEnabled ? "true" : "false";
-  });
-
-  document.getElementById("editButton").textContent =
-    editingEnabled ? "Lock Text" : "Edit Text";
-}
-
-function addSection() {
-  sectionCount++;
-
-  const container =
-    document.getElementById("extraSections");
-
-  const section = document.createElement("section");
-
-  section.innerHTML = `
-    <div class="section-title" contenteditable="true">
-      EXTRA SECTION ${sectionCount}
-    </div>
-
-    <div class="long-field">
-      <label>HEADING</label>
-      <div class="editable" contenteditable="true">
-        Click here to enter text.
-      </div>
-    </div>
-
-    <div class="long-field">
-      <label>DETAILS</label>
-      <div class="editable" contenteditable="true">
-        Enter details here.
-      </div>
-    </div>
-  `;
-
-  if (!editingEnabled) {
-    section.querySelectorAll(
-      '[contenteditable]'
-    ).forEach(function(element) {
-      element.contentEditable = "false";
-    });
+function resetDemo() {
+  if (confirm("Reload the original demo template?")) {
+    window.location.reload();
   }
-
-  container.appendChild(section);
 }
 </script>
 
 </body>
 </html>
+
 
 
 
