@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Document Demo Editor</title>
+<title>Document Sample Editor</title>
 
 <style>
 * { box-sizing: border-box; }
@@ -12,24 +12,24 @@
 body {
   margin: 0;
   padding: 16px;
-  background: #eaf1f7;
+  background: #e8eff5;
   font-family: Arial, sans-serif;
-  color: #17364e;
+  color: #263f4a;
 }
 
 .toolbar {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 8px;
-  margin-bottom: 16px;
+  justify-content: center;
+  margin-bottom: 15px;
 }
 
 button {
-  padding: 11px 15px;
   border: 0;
   border-radius: 6px;
-  background: #075eaa;
+  padding: 11px 16px;
+  background: #075ba7;
   color: white;
   cursor: pointer;
 }
@@ -37,85 +37,107 @@ button {
 .document {
   position: relative;
   max-width: 800px;
-  min-height: 1050px;
+  min-height: 1100px;
   margin: auto;
-  padding: 35px;
-  background: #b9e5e8;
-  border: 5px solid #d9f2f3;
-  box-shadow: 0 4px 16px #0002;
+  padding: 30px;
+  background-color: #a9e1e6;
+  background-image:
+    repeating-linear-gradient(
+      35deg,
+      transparent 0,
+      transparent 5px,
+      #ffffff12 6px,
+      #ffffff12 8px
+    );
+  border: 5px solid #d1f0f1;
+  box-shadow: 0 3px 15px #0002;
 }
 
-.demo-banner {
+.demo {
   padding: 12px;
-  margin-bottom: 25px;
+  margin-bottom: 24px;
   text-align: center;
-  color: white;
-  background: #b32435;
-  font-weight: bold;
-  font-size: 20px;
+  color: #fff;
+  background: #c00020;
+  font-size: 21px;
+  font-weight: 900;
   letter-spacing: 1px;
 }
 
-.header {
+.heading {
   text-align: center;
-  padding: 15px;
-  border: 2px solid #3c8792;
-  background: #d9f1f1;
+  padding: 15px 5px;
+  border-bottom: 2px solid #508b91;
 }
 
-.header h2 { margin: 5px; }
-
-.section {
-  margin-top: 22px;
-  padding: 16px;
-  border: 1px solid #538f98;
-  background: #ffffff35;
-}
-
-.section h3 {
-  margin-top: 0;
-  color: #174e66;
-  border-bottom: 1px solid #6c9fa7;
-  padding-bottom: 8px;
-}
-
-.field {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-  padding: 8px 0;
-  border-bottom: 1px solid #83b5bb;
+.heading h2 {
+  margin: 4px;
+  font-size: 22px;
 }
 
 .editable {
-  min-height: 24px;
+  min-height: 22px;
   padding: 3px;
   overflow-wrap: anywhere;
 }
 
 .editable:focus {
-  outline: 2px dashed #075eaa;
-  background: #ffffff90;
+  outline: 2px dashed #075ba7;
+  background: #ffffff70;
 }
 
-.hint {
-  max-width: 800px;
-  margin: 12px auto;
-  color: #526a7d;
-  font-size: 13px;
-  line-height: 1.6;
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.box {
+  min-width: 0;
+  padding: 13px;
+  border: 1px solid #538d94;
+  margin-bottom: 18px;
+}
+
+.box h3 {
+  margin-top: 0;
+  font-size: 15px;
+  border-bottom: 1px solid #78a9ad;
+  padding-bottom: 8px;
+}
+
+.info-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+  margin: 11px 0;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: bold;
+  color: #315e68;
+}
+
+.notice {
+  margin-top: 25px;
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #538d94;
+  font-weight: bold;
 }
 
 @media(max-width: 600px) {
-  body { padding: 6px; }
+  body { padding: 5px; }
   .document { padding: 14px; }
-  .field { grid-template-columns: 1fr; gap: 4px; }
-  .demo-banner { font-size: 16px; }
+  .columns { grid-template-columns: 1fr; }
+  .demo { font-size: 16px; }
 }
 
 @media print {
   body { padding: 0; background: white; }
-  .toolbar, .hint { display: none !important; }
+  .toolbar { display: none; }
   .document {
     max-width: none;
     margin: 0;
@@ -133,138 +155,165 @@ button {
 <div class="toolbar">
   <button onclick="addSection()">+ Add Section</button>
   <button onclick="window.print()">Print / Save PDF</button>
-  <button onclick="resetPage()">Reset Sample</button>
+  <button onclick="resetPage()">Reset</button>
 </div>
 
-<div class="document" id="document">
+<main class="document" id="document">
 
-  <div class="demo-banner">
+  <div class="demo">
     DEMO — NOT FOR OFFICIAL USE
   </div>
 
-  <header class="header">
+  <header class="heading">
     <h2 class="editable" contenteditable="true">
       ÖRNEK BELGE
     </h2>
-    <p class="editable" contenteditable="true">
+    <h2 class="editable" contenteditable="true">
       SAMPLE DOCUMENT
-    </p>
+    </h2>
     <p class="editable" contenteditable="true">
-      Düzenlenebilir Demo Sayfası / Editable Demo Page
+      Düzenlenebilir Örnek Sayfa / Editable Sample Page
     </p>
   </header>
 
-  <section class="section">
+  <div class="columns">
+
+    <section class="box">
+      <h3 class="editable" contenteditable="true">
+        KİŞİSEL BİLGİLER / PERSONAL INFORMATION
+      </h3>
+
+      <div class="info-row">
+        <span class="label">Adı Soyadı / Full Name</span>
+        <div class="editable" contenteditable="true">
+          Örnek Kullanıcı / Sample User
+        </div>
+      </div>
+
+      <div class="info-row">
+        <span class="label">Uyruğu / Nationality</span>
+        <div class="editable" contenteditable="true">
+          Örnek / Sample
+        </div>
+      </div>
+
+      <div class="info-row">
+        <span class="label">Kategori / Category</span>
+        <div class="editable" contenteditable="true">
+          Eğitim / Education
+        </div>
+      </div>
+
+      <div class="info-row">
+        <span class="label">Belge Amacı / Document Purpose</span>
+        <div class="editable" contenteditable="true">
+          Örnek Amaç / Sample Purpose
+        </div>
+      </div>
+    </section>
+
+    <section class="box">
+      <h3 class="editable" contenteditable="true">
+        BELGE BİLGİLERİ / DOCUMENT DETAILS
+      </h3>
+
+      <div class="info-row">
+        <span class="label">Referans / Reference</span>
+        <div class="editable" contenteditable="true">
+          SAMPLE-001
+        </div>
+      </div>
+
+      <div class="info-row">
+        <span class="label">Tarih / Date</span>
+        <div class="editable" contenteditable="true">
+          29 October 2026
+        </div>
+      </div>
+
+      <div class="info-row">
+        <span class="label">Durum / Status</span>
+        <div class="editable" contenteditable="true">
+          Demo
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <section class="box">
     <h3 class="editable" contenteditable="true">
-      KİŞİSEL BİLGİLER / PERSONAL INFORMATION
+      AÇIKLAMALAR / REMARKS
     </h3>
 
-    <div class="field">
-      <strong>Adı Soyadı / Full Name</strong>
-      <div class="editable" contenteditable="true">
-        Örnek Kullanıcı / Sample User
-      </div>
-    </div>
-
-    <div class="field">
-      <strong>Uyruğu / Nationality</strong>
-      <div class="editable" contenteditable="true">
-        Örnek / Sample
-      </div>
-    </div>
-
-    <div class="field">
-      <strong>Doğum Tarihi / Date of Birth</strong>
-      <div class="editable" contenteditable="true">
-        01.01.1990
-      </div>
-    </div>
-
-    <div class="field">
-      <strong>Belge Türü / Document Type</strong>
-      <div class="editable" contenteditable="true">
-        Demo Belgesi / Demo Document
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <h3 class="editable" contenteditable="true">
-      BELGE BİLGİLERİ / DOCUMENT INFORMATION
-    </h3>
-
-    <div class="field">
-      <strong>Tarih / Date</strong>
-      <div class="editable" contenteditable="true">
-        29.10.2026
-      </div>
-    </div>
-
-    <div class="field">
-      <strong>Referans / Reference</strong>
-      <div class="editable" contenteditable="true">
-        SAMPLE-001
-      </div>
-    </div>
-
-    <div class="field">
-      <strong>Durum / Status</strong>
-      <div class="editable" contenteditable="true">
-        Örnek / Sample
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <h3 class="editable" contenteditable="true">
-      AÇIKLAMALAR / NOTES
-    </h3>
     <p class="editable" contenteditable="true">
-      Buraya kendi örnek metninizi yazabilirsiniz.
+      Bu alanı kendi örnek metninizle değiştirebilirsiniz.
     </p>
+
     <p class="editable" contenteditable="true">
-      You can enter your own sample text here.
+      You can replace this paragraph with your own sample text.
+    </p>
+
+    <p class="editable" contenteditable="true">
+      Bu belge yalnızca tasarım ve düzenleme denemeleri içindir.
+    </p>
+
+    <p class="editable" contenteditable="true">
+      This document is for layout and editing demonstrations only.
     </p>
   </section>
 
-</div>
+  <section class="box">
+    <h3 class="editable" contenteditable="true">
+      EK BİLGİLER / ADDITIONAL INFORMATION
+    </h3>
 
-<p class="hint">
-  متن تبدیل کرنے کے لیے اس پر کلک کریں اور ٹائپ کریں۔
-  PDF کے لیے Print / Save PDF دبائیں۔
-  تمام معلومات صرف نمونے کے لیے ہیں۔
-</p>
+    <p class="editable" contenteditable="true">
+      Buraya ek açıklamalar yazabilirsiniz.
+    </p>
+
+    <p class="editable" contenteditable="true">
+      You can enter additional notes here.
+    </p>
+  </section>
+
+  <div class="notice">
+    ÖRNEK BELGE / SAMPLE DOCUMENT
+  </div>
+
+</main>
 
 <script>
-const initialHTML =
-  document.getElementById("document").innerHTML;
+const doc = document.getElementById("document");
+const original = doc.innerHTML;
 
 function addSection() {
   const section = document.createElement("section");
-  section.className = "section";
+  section.className = "box";
 
   section.innerHTML = `
     <h3 class="editable" contenteditable="true">
       Yeni Bölüm / New Section
     </h3>
     <p class="editable" contenteditable="true">
-      Buraya metin yazın / Enter text here
+      Metin girin / Enter text here
     </p>
   `;
 
-  document.getElementById("document").appendChild(section);
+  doc.appendChild(section);
   section.querySelector("p").focus();
 }
 
 function resetPage() {
-  if (!confirm("Reset the sample page?")) return;
-
-  document.getElementById("document").innerHTML = initialHTML;
+  if (confirm("Reset the sample document?")) {
+    doc.innerHTML = original;
+  }
 }
 </script>
 
 </body>
 </html>
+
 
 
 
