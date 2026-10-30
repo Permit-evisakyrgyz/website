@@ -353,6 +353,80 @@ button {
     transform: rotate(0deg);
   }
 }
+ /* DATE AND QR CODE POSITION */
+
+.issue {
+  margin-top: 38px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+}
+
+.issue-date {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 11px;
+}
+
+.issue-date strong {
+  font-size: 13px;
+}
+
+.qr-demo {
+  width: 105px;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.qr-demo img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  display: block;
+  margin-left: auto;
+  background: white;
+  padding: 3px;
+}
+
+.qr-demo small {
+  display: block;
+  font-size: 8px;
+  font-weight: bold;
+  color: #a00000;
+  margin-top: 3px;
+}
+
+/* MOBILE */
+@media(max-width:560px) {
+  .issue {
+    align-items: center;
+  }
+
+  .qr-demo {
+    width: 85px;
+  }
+
+  .qr-demo img {
+    width: 75px;
+    height: 75px;
+  }
+}
+
+/* PRINT */
+@media print {
+  .issue {
+    display: flex !important;
+    justify-content: space-between;
+  }
+
+  .qr-demo img {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+} 
 </style>
 </head>
 
