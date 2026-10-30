@@ -14,11 +14,12 @@
 body {
   margin: 0;
   padding: 20px 8px;
-  background: #eee;
+  background: #eeeeee;
   font-family: Arial, Helvetica, sans-serif;
   color: #23484b;
 }
 
+/* TOOLBAR */
 .toolbar {
   max-width: 850px;
   margin: 0 auto 12px;
@@ -36,6 +37,7 @@ button {
   cursor: pointer;
 }
 
+/* PAGE */
 .page {
   width: 100%;
   max-width: 850px;
@@ -46,36 +48,24 @@ button {
   overflow: hidden;
   isolation: isolate;
 
-  background-color: #a4e0e6;
+  /* ONE UNIFORM BACKGROUND COLOR */
+  background-color: #A4E0E6;
+  background-image: none;
 
-  background-image:
-    repeating-linear-gradient(
-      35deg,
-      transparent 0px,
-      transparent 7px,
-      rgba(255,255,255,.09) 8px,
-      transparent 10px
-    ),
-    repeating-linear-gradient(
-      125deg,
-      transparent 0px,
-      transparent 18px,
-      rgba(35,125,137,.045) 19px,
-      transparent 22px
-    );
-
-  border: 2px solid #78cbd4;
+  border: 2px solid #78CBD4;
 }
 
-/* STRAIGHT FULL PAGE WATERMARK */
+/* SINGLE STRAIGHT WATERMARK */
 .demo-watermark {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   pointer-events: none;
   z-index: 0;
   overflow: hidden;
@@ -86,11 +76,14 @@ button {
   height: auto;
   max-height: 90%;
   object-fit: contain;
+
   opacity: 0.16;
+
+  /* STRAIGHT - NO ROTATION */
   transform: rotate(0deg);
 }
 
-/* DOCUMENT CONTENT */
+/* DEMO CONTENT */
 .content {
   position: relative;
   z-index: 1;
@@ -142,7 +135,7 @@ button {
 }
 
 .box {
-  border: 1.5px solid #528f96;
+  border: 1.5px solid #528F96;
   border-radius: 8px;
   min-height: 125px;
   padding: 12px;
@@ -190,6 +183,7 @@ button {
   overflow-wrap: anywhere;
 }
 
+/* VALIDITY */
 .validity {
   margin-top: 105px;
   display: grid;
@@ -209,6 +203,7 @@ button {
   text-align: center;
 }
 
+/* CONDITIONS */
 .conditions-title {
   text-align: center;
   font-size: 13px;
@@ -237,6 +232,7 @@ button {
   margin-top: 16px;
 }
 
+/* ISSUE */
 .issue {
   margin-top: 38px;
   font-size: 11px;
@@ -249,8 +245,9 @@ button {
   font-size: 13px;
 }
 
+/* NOTICE */
 .notice {
-  border: 1px solid #6b9ca1;
+  border: 1px solid #6B9CA1;
   padding: 12px 14px;
   margin-top: 18px;
   font-size: 10px;
@@ -261,6 +258,7 @@ button {
   font-size: 12px;
 }
 
+/* EDITABLE TEXT */
 .editable {
   outline: none;
 }
@@ -315,7 +313,7 @@ button {
   }
 }
 
-/* PRINT / SAVE PDF */
+/* A4 PRINT */
 @page {
   size: A4 portrait;
   margin: 8mm;
@@ -336,7 +334,12 @@ button {
     width: 100%;
     max-width: none;
     min-height: 275mm;
-    border: 1px solid #78cbd4;
+
+    background-color: #A4E0E6;
+    background-image: none;
+
+    border: 1px solid #78CBD4;
+
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
   }
@@ -355,16 +358,26 @@ button {
 
 <body>
 
+<!-- TOOLBAR -->
 <div class="toolbar">
-  <button onclick="window.print()">Print / Save PDF</button>
-  <button onclick="resetText()">Reset Demo</button>
+  <button onclick="window.print()">
+    Print / Save PDF
+  </button>
+
+  <button onclick="resetText()">
+    Reset Demo
+  </button>
 </div>
 
+<!-- DOCUMENT PAGE -->
 <main class="page">
 
-  <!-- ONE LARGE STRAIGHT WATERMARK IMAGE -->
+  <!-- WATERMARK IMAGE - ONLY ONCE -->
   <div class="demo-watermark">
-    <img src="my watermark.png" alt="Demo Watermark">
+    <img
+      src="my watermark.png"
+      alt="Demo Watermark"
+    >
   </div>
 
   <div class="content">
@@ -386,13 +399,19 @@ button {
 
     <div class="country editable" contenteditable="true">
       SAMPLE DOCUMENT AUTHORITY
-      <small>ENTRY PERMIT DESIGN — DEMONSTRATION</small>
+
+      <small>
+        ENTRY PERMIT DESIGN — DEMONSTRATION
+      </small>
     </div>
 
     <div class="info-grid">
 
       <section>
-        <div class="box-title">EMPLOYER / APPLICANT</div>
+
+        <div class="box-title">
+          EMPLOYER / APPLICANT
+        </div>
 
         <div class="box editable" contenteditable="true">
           SAMPLE INSTITUTION<br>
@@ -400,9 +419,11 @@ button {
           SAMPLE CITY, SAMPLE COUNTRY<br>
           REFERENCE: DEMO-001
         </div>
+
       </section>
 
       <section>
+
         <div class="title editable" contenteditable="true">
           ENTRY PERMIT
         </div>
@@ -412,39 +433,72 @@ button {
           Nationality &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SAMPLE<br>
           Code &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DEMO
         </div>
+
       </section>
 
     </div>
 
+    <!-- DETAILS -->
     <section class="details">
 
       <div class="detail-row">
-        <div class="label">NAME<br><strong>Applicant Name</strong></div>
-        <div class="value editable" contenteditable="true">SAMPLE APPLICANT</div>
+        <div class="label">
+          NAME<br>
+          <strong>Applicant Name</strong>
+        </div>
+
+        <div class="value editable" contenteditable="true">
+          SAMPLE APPLICANT
+        </div>
       </div>
 
       <div class="detail-row">
-        <div class="label">NATIONALITY<br><strong>Nationality</strong></div>
-        <div class="value editable" contenteditable="true">SAMPLE NATIONALITY</div>
+        <div class="label">
+          NATIONALITY<br>
+          <strong>Nationality</strong>
+        </div>
+
+        <div class="value editable" contenteditable="true">
+          SAMPLE NATIONALITY
+        </div>
       </div>
 
       <div class="detail-row">
-        <div class="label">DOCUMENT NUMBER<br><strong>Reference Number</strong></div>
-        <div class="value editable" contenteditable="true">DEMO-000001</div>
+        <div class="label">
+          DOCUMENT NUMBER<br>
+          <strong>Reference Number</strong>
+        </div>
+
+        <div class="value editable" contenteditable="true">
+          DEMO-000001
+        </div>
       </div>
 
       <div class="detail-row">
-        <div class="label">CATEGORY OF ENTRY<br><strong>Entry Category</strong></div>
-        <div class="value editable" contenteditable="true">SAMPLE CATEGORY</div>
+        <div class="label">
+          CATEGORY OF ENTRY<br>
+          <strong>Entry Category</strong>
+        </div>
+
+        <div class="value editable" contenteditable="true">
+          SAMPLE CATEGORY
+        </div>
       </div>
 
       <div class="detail-row">
-        <div class="label">PURPOSE OF DOCUMENT<br><strong>Purpose</strong></div>
-        <div class="value editable" contenteditable="true">SAMPLE PURPOSE</div>
+        <div class="label">
+          PURPOSE OF DOCUMENT<br>
+          <strong>Purpose</strong>
+        </div>
+
+        <div class="value editable" contenteditable="true">
+          SAMPLE PURPOSE
+        </div>
       </div>
 
     </section>
 
+    <!-- VALIDITY -->
     <section class="validity">
 
       <div class="validity-label editable" contenteditable="true">
@@ -458,6 +512,7 @@ button {
 
     </section>
 
+    <!-- CONDITIONS -->
     <div class="conditions-title editable" contenteditable="true">
       REMARKS / CONDITIONS
     </div>
@@ -485,30 +540,58 @@ button {
       using the CSS settings.
     </p>
 
+    <!-- ISSUE DATE -->
     <div class="issue">
-      <span>DATE OF ISSUE</span>
-      <strong class="editable" contenteditable="true">SAMPLE DATE</strong>
+
+      <span>
+        DATE OF ISSUE
+      </span>
+
+      <strong class="editable" contenteditable="true">
+        SAMPLE DATE
+      </strong>
+
     </div>
 
+    <!-- DEMO NOTICE -->
     <div class="notice editable" contenteditable="true">
-      <strong>NOTICE — DEMONSTRATION DOCUMENT</strong><br>
-      THIS PAGE IS A DESIGN SAMPLE ONLY.<br>
+
+      <strong>
+        NOTICE — DEMONSTRATION DOCUMENT
+      </strong>
+
+      <br>
+
+      THIS PAGE IS A DESIGN SAMPLE ONLY.
+
+      <br>
+
       IT IS NOT AN OFFICIAL GOVERNMENT DOCUMENT OR TRAVEL PERMIT.
+
     </div>
 
   </div>
 </main>
 
 <script>
+
 function resetText() {
-  if (confirm("Reload the original demo template?")) {
+
+  if (
+    confirm("Reload the original demo template?")
+  ) {
+
     window.location.reload();
+
   }
+
 }
+
 </script>
 
 </body>
 </html>
+
 
 
 
