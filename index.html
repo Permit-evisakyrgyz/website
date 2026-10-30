@@ -434,6 +434,34 @@ button {
   transform: translateY(-50px) !important;
   z-index: 5 !important;
 }
+  .passport-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  position: relative;
+}
+
+.sample-stamp {
+  position: relative;
+  width: 95px;
+  flex-shrink: 0;
+  opacity: 0.28;
+  text-align: center;
+}
+
+.sample-stamp img {
+  width: 85px;
+  height: 85px;
+  object-fit: contain;
+}
+
+.sample-stamp span {
+  display: block;
+  font-size: 10px;
+  font-weight: bold;
+  color: #a00000;
+}
 </style>
 </head>
 
@@ -544,16 +572,23 @@ button {
         </div>
       </div>
 
-      <div class="detail-row">
-        <div class="label">
-          PASAPORT NUMARASI<br>
-          <strong>Passport Number</strong>
-        </div>
+      <div class="detail-row passport-row">
+  <div class="label">
+    PASAPORT NUMARASI<br>
+    <strong>Passport Number</strong>
+  </div>
 
-        <div class="value editable" contenteditable="true">
-          FP1161263
-        </div>
-      </div>
+  <div class="passport-content">
+    <div class="value editable" contenteditable="true">
+      FP1161263
+    </div>
+
+    <div class="sample-stamp">
+      <img src="my stamp.png" alt="Sample Stamp">
+      <span>SAMPLE</span>
+    </div>
+  </div>
+</div>
 
       <div class="detail-row">
         <div class="label">
